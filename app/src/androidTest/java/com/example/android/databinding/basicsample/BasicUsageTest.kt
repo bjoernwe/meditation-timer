@@ -24,7 +24,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
-import com.example.android.databinding.basicsample.ui.MainActivity
+import com.example.android.databinding.basicsample.ui.ViewModelActivity
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -39,13 +39,10 @@ import org.junit.runner.RunWith
 class BasicUsageTest {
 
     @get:Rule
-    var activityRule = ActivityTestRule(MainActivity::class.java)
+    var activityRule = ActivityTestRule(ViewModelActivity::class.java)
 
     @Test
     fun viewmodelActivity_likes() {
-        // Click on button to open activity
-        onView(withId(R.id.viewmodel_activity_button)).perform(click())
-
         // Click Like 5 times
         repeat(5) {
             onView(withId(R.id.like_button)).perform(click())
