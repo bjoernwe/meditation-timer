@@ -25,7 +25,7 @@ import com.example.android.databinding.basicsample.data.ProfileLiveDataViewModel
 import com.example.android.databinding.basicsample.databinding.ViewmodelProfileBinding
 
 
-class ViewModelActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
