@@ -29,12 +29,9 @@ import androidx.lifecycle.ViewModel
  * changes to any of the exposed observables automatically refresh the UI. *
  */
 class ProfileLiveDataViewModel : ViewModel() {
-    private val _name = MutableLiveData("Ada")
-    private val _lastName = MutableLiveData("Lovelace")
+
     private val _likes =  MutableLiveData(0)
 
-    val name: LiveData<String> = _name
-    val lastName: LiveData<String> = _lastName
     val likes: LiveData<Int> = _likes
 
     // popularity is exposed as LiveData using a Transformation instead of a @Bindable property.
