@@ -16,17 +16,7 @@
 
 package com.example.android.databinding.basicsample
 
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.rule.ActivityTestRule
-import com.example.android.databinding.basicsample.ui.ViewModelActivity
-import org.junit.Rule
-import org.junit.Test
 import org.junit.runner.RunWith
 
 
@@ -38,18 +28,4 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class BasicUsageTest {
 
-    @get:Rule
-    var activityRule = ActivityTestRule(ViewModelActivity::class.java)
-
-    @Test
-    fun viewmodelActivity_likes() {
-        // Click Like 5 times
-        repeat(5) {
-            onView(withId(R.id.like_button)).perform(click())
-        }
-
-        // Check that the number of likes is displayed and the progressBar appeared
-        onView(withId(R.id.likes)).check(matches(withText("5")))
-        onView(withId(R.id.progressBar)).check(matches(isDisplayed()))
-    }
 }

@@ -17,10 +17,8 @@
 package com.example.android.databinding.basicsample.data
 
 import android.os.CountDownTimer
-import androidx.databinding.ObservableInt
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 
 
@@ -30,44 +28,28 @@ import androidx.lifecycle.ViewModel
  */
 class ProfileLiveDataViewModel : ViewModel() {
 
-    private val _likes =  MutableLiveData(0)
+    private val _counter =  MutableLiveData(0)
 
-    val likes: LiveData<Int> = _likes
-
-    // popularity is exposed as LiveData using a Transformation instead of a @Bindable property.
-    val popularity: LiveData<Popularity> = Transformations.map(_likes) {
-        when {
-            it > 9 -> Popularity.STAR
-            it > 4 -> Popularity.POPULAR
-            else -> Popularity.NORMAL
-        }
-    }
-
-    fun onLike() {
-        _likes.value = (_likes.value ?: 0) + 1
-    }
+    val counter: LiveData<Int> = _counter
 
     fun startCountdown() {
-        val timerDuration: Long = 1000*(_likes.value ?: 0).toLong()
+
+        _counter.value = 10
+
+        val timerDuration: Long = 1000*(_counter.value ?: 0).toLong()
+
         val timer = object: CountDownTimer(timerDuration, 1000) {
+
             override fun onTick(millisRemaining: Long) {
-                _likes.value = (millisRemaining / 1000).toInt()
+                _counter.value = (millisRemaining / 1000).toInt()
             }
 
             override fun onFinish() {
-                _likes.value = 0
+                _counter.value = 0
             }
 
         }.start()
+
     }
-}
 
-enum class Popularity {
-    NORMAL,
-    POPULAR,
-    STAR
-}
-
-private fun ObservableInt.increment() {
-    set(get() + 1)
 }

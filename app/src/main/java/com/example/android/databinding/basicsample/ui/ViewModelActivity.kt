@@ -24,13 +24,7 @@ import com.example.android.databinding.basicsample.R
 import com.example.android.databinding.basicsample.data.ProfileLiveDataViewModel
 import com.example.android.databinding.basicsample.databinding.ViewmodelProfileBinding
 
-/**
- * This activity uses a [android.arch.lifecycle.ViewModel] to hold the data and respond to user
- * actions. Also, the layout uses [android.databinding.BindingAdapter]s instead of expressions
- * which are much more powerful.
- *
- * @see com.example.android.databinding.basicsample.util.BindingAdapters
- */
+
 class ViewModelActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
