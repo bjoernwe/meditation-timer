@@ -26,26 +26,26 @@ import androidx.lifecycle.ViewModel
  * This class is used as a variable in the XML layout and it's fully observable, meaning that
  * changes to any of the exposed observables automatically refresh the UI. *
  */
-class ProfileLiveDataViewModel : ViewModel() {
+class TimerViewModel : ViewModel() {
 
-    private val _counter =  MutableLiveData(0)
+    private val _secondsLeft =  MutableLiveData(0)
 
-    val counter: LiveData<Int> = _counter
+    val secondsLeft: LiveData<Int> = _secondsLeft
 
     fun startCountdown() {
 
-        _counter.value = 10
+        _secondsLeft.value = 10
 
-        val timerDuration: Long = 1000*(_counter.value ?: 0).toLong()
+        val timerDuration: Long = (_secondsLeft.value ?: 0).toLong() * 1000
 
-        val timer = object: CountDownTimer(timerDuration, 1000) {
+        object: CountDownTimer(timerDuration, 1000) {
 
             override fun onTick(millisRemaining: Long) {
-                _counter.value = (millisRemaining / 1000).toInt()
+                _secondsLeft.value = (millisRemaining / 1000).toInt()
             }
 
             override fun onFinish() {
-                _counter.value = 0
+                _secondsLeft.value = 0
             }
 
         }.start()

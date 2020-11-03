@@ -23,7 +23,7 @@
 
         <variable
             name="viewmodel"
-            type="com.example.android.databinding.basicsample.data.ProfileLiveDataViewModel"/>
+            type="com.example.android.databinding.basicsample.data.TimerViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -34,8 +34,9 @@
             android:id="@+id/imageView"
             android:layout_width="96dp"
             android:layout_height="96dp"
-            android:enabled="@{viewmodel.counter == 0}"
+            android:enabled="@{viewmodel.secondsLeft == 0}"
             android:onClick="@{() -> viewmodel.startCountdown()}"
+            android:contentDescription="@string/clock_image_description"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -46,7 +47,7 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{viewmodel.counter.toString()}"
+            android:text="@{viewmodel.secondsLeft.toString()}"
             android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

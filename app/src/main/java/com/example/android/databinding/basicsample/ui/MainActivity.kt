@@ -21,7 +21,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import com.example.android.databinding.basicsample.R
-import com.example.android.databinding.basicsample.data.ProfileLiveDataViewModel
+import com.example.android.databinding.basicsample.data.TimerViewModel
 import com.example.android.databinding.basicsample.databinding.ViewmodelProfileBinding
 
 
@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         // Obtain ViewModel from ViewModelProviders
-        val viewModel = ViewModelProviders.of(this).get(ProfileLiveDataViewModel::class.java)
+        val viewModel = ViewModelProviders.of(this).get(TimerViewModel::class.java)
 
         // An alternative ViewModel using Observable fields and @Bindable properties can be used:
         // val viewModel = ViewModelProviders.of(this).get(ProfileObservableViewModel::class.java)
