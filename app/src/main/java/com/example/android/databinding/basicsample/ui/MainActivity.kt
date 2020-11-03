@@ -21,8 +21,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import com.example.android.databinding.basicsample.R
-import com.example.android.databinding.basicsample.data.TimerViewModel
-import com.example.android.databinding.basicsample.databinding.ViewmodelProfileBinding
+import com.example.android.databinding.basicsample.data.TimerModel
+import com.example.android.databinding.basicsample.databinding.MainActivityBinding
 
 
 class MainActivity : AppCompatActivity() {
@@ -30,14 +30,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         // Obtain ViewModel from ViewModelProviders
-        val viewModel = ViewModelProviders.of(this).get(TimerViewModel::class.java)
+        val viewModel = ViewModelProviders.of(this).get(TimerModel::class.java)
 
         // An alternative ViewModel using Observable fields and @Bindable properties can be used:
         // val viewModel = ViewModelProviders.of(this).get(ProfileObservableViewModel::class.java)
 
         // Obtain binding
-        val binding: ViewmodelProfileBinding =
-                DataBindingUtil.setContentView(this, R.layout.viewmodel_profile)
+        val binding: MainActivityBinding =
+                DataBindingUtil.setContentView(this, R.layout.main_activity)
 
         // Bind layout with ViewModel
         binding.viewmodel = viewModel

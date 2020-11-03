@@ -29,7 +29,7 @@ enum class TimerState {
 }
 
 
-class TimerViewModel : ViewModel() {
+class TimerModel : ViewModel() {
 
     private val _state = MutableLiveData(TimerState.WAITING_FOR_START)
     private val _secondsLeft =  MutableLiveData(0)
@@ -39,7 +39,7 @@ class TimerViewModel : ViewModel() {
 
     fun startCountdown() {
 
-        _secondsLeft.value = 10
+        _secondsLeft.value = 3
         _state.value = TimerState.RUNNING
 
         val timerDuration: Long = (_secondsLeft.value ?: 0).toLong() * 1000
