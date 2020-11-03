@@ -20,6 +20,7 @@ import android.os.CountDownTimer
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import kotlin.math.*
 
 
 /**
@@ -29,23 +30,27 @@ import androidx.lifecycle.ViewModel
 class TimerViewModel : ViewModel() {
 
     private val _secondsLeft =  MutableLiveData(0)
+    private val _gettingRating =  MutableLiveData(false)
 
     val secondsLeft: LiveData<Int> = _secondsLeft
+    val gettingRating: LiveData<Boolean> = _gettingRating
 
     fun startCountdown() {
 
         _secondsLeft.value = 10
+        _gettingRating.value = false
 
         val timerDuration: Long = (_secondsLeft.value ?: 0).toLong() * 1000
 
         object: CountDownTimer(timerDuration, 1000) {
 
             override fun onTick(millisRemaining: Long) {
-                _secondsLeft.value = (millisRemaining / 1000).toInt()
+                _secondsLeft.value = round(millisRemaining / 1000.0).toInt()
             }
 
             override fun onFinish() {
                 _secondsLeft.value = 0
+                _gettingRating.value = true
             }
 
         }.start()
