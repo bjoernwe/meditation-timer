@@ -17,28 +17,30 @@
 package com.example.android.databinding.basicsample.data
 
 import android.os.CountDownTimer
+import android.os.health.TimerStat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlin.math.*
 
 
-/**
- * This class is used as a variable in the XML layout and it's fully observable, meaning that
- * changes to any of the exposed observables automatically refresh the UI. *
- */
+enum class TimerState {
+    WAITING_FOR_START, RUNNING, WAITING_FOR_FEEDBACK
+}
+
+
 class TimerViewModel : ViewModel() {
 
+    private val _state = MutableLiveData(TimerState.WAITING_FOR_START)
     private val _secondsLeft =  MutableLiveData(0)
-    private val _gettingRating =  MutableLiveData(false)
 
+    val state: LiveData<TimerState> = _state
     val secondsLeft: LiveData<Int> = _secondsLeft
-    val gettingRating: LiveData<Boolean> = _gettingRating
 
     fun startCountdown() {
 
         _secondsLeft.value = 10
-        _gettingRating.value = false
+        _state.value = TimerState.RUNNING
 
         val timerDuration: Long = (_secondsLeft.value ?: 0).toLong() * 1000
 
@@ -50,7 +52,7 @@ class TimerViewModel : ViewModel() {
 
             override fun onFinish() {
                 _secondsLeft.value = 0
-                _gettingRating.value = true
+                _state.value = TimerState.WAITING_FOR_FEEDBACK
             }
 
         }.start()
