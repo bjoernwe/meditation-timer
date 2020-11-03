@@ -32,9 +32,6 @@ class MainActivity : AppCompatActivity() {
         // Obtain ViewModel from ViewModelProviders
         val viewModel = ViewModelProviders.of(this).get(TimerModel::class.java)
 
-        // An alternative ViewModel using Observable fields and @Bindable properties can be used:
-        // val viewModel = ViewModelProviders.of(this).get(ProfileObservableViewModel::class.java)
-
         // Obtain binding
         val binding: MainActivityBinding =
                 DataBindingUtil.setContentView(this, R.layout.main_activity)
