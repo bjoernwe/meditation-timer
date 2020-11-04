@@ -17,6 +17,7 @@
 package com.example.android.databinding.basicsample.ui
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
@@ -26,20 +27,20 @@ import com.example.android.databinding.basicsample.databinding.MainActivityBindi
 
 
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
 
         // Obtain ViewModel from ViewModelProviders
         val viewModel = ViewModelProviders.of(this).get(TimerModel::class.java)
 
         // Obtain binding
-        val binding: MainActivityBinding =
-                DataBindingUtil.setContentView(this, R.layout.main_activity)
-
-        // Bind layout with ViewModel
+        val binding: MainActivityBinding = DataBindingUtil.setContentView(this, R.layout.main_activity)
         binding.viewmodel = viewModel
-
-        // LiveData needs the lifecycle owner
         binding.lifecycleOwner = this
+
+        binding.ratingBar.setOnRatingBarChangeListener { ratingBar, rating, _ -> viewModel.submitRating(rating / ratingBar.max) }
     }
+
 }

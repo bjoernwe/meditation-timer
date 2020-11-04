@@ -17,30 +17,29 @@
 package com.example.android.databinding.basicsample.data
 
 import android.os.CountDownTimer
-import android.os.health.TimerStat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlin.math.*
 
 
-enum class TimerState {
+enum class TimerStates {
     WAITING_FOR_START, RUNNING, WAITING_FOR_FEEDBACK
 }
 
 
 class TimerModel : ViewModel() {
 
-    private val _state = MutableLiveData(TimerState.WAITING_FOR_START)
+    private val _state = MutableLiveData(TimerStates.WAITING_FOR_START)
     private val _secondsLeft =  MutableLiveData(0)
 
-    val state: LiveData<TimerState> = _state
+    val state: LiveData<TimerStates> = _state
     val secondsLeft: LiveData<Int> = _secondsLeft
 
     fun startCountdown() {
 
         _secondsLeft.value = 3
-        _state.value = TimerState.RUNNING
+        _state.value = TimerStates.RUNNING
 
         val timerDuration: Long = (_secondsLeft.value ?: 0).toLong() * 1000
 
@@ -52,11 +51,15 @@ class TimerModel : ViewModel() {
 
             override fun onFinish() {
                 _secondsLeft.value = 0
-                _state.value = TimerState.WAITING_FOR_FEEDBACK
+                _state.value = TimerStates.WAITING_FOR_FEEDBACK
             }
 
         }.start()
 
+    }
+
+    fun submitRating(rating: Float) {
+        _state.value = TimerStates.WAITING_FOR_START
     }
 
 }

@@ -20,7 +20,7 @@
 
     <data>
         <import type="android.view.View" />
-        <import type="com.example.android.databinding.basicsample.data.TimerState" />
+        <import type="com.example.android.databinding.basicsample.data.TimerStates" />
         <variable
             name="viewmodel"
             type="com.example.android.databinding.basicsample.data.TimerModel"/>
@@ -35,7 +35,7 @@
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:contentDescription="@string/clock_image_description"
-            android:enabled="@{viewmodel.state != TimerState.RUNNING}"
+            android:enabled="@{viewmodel.state != TimerStates.RUNNING}"
             android:onClick="@{() -> viewmodel.startCountdown()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@{viewmodel.secondsLeft.toString()}"
-            android:visibility="@{viewmodel.state == TimerState.RUNNING ? View.VISIBLE : View.INVISIBLE}"
+            android:visibility="@{viewmodel.state == TimerStates.RUNNING ? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView" />
@@ -58,7 +58,7 @@
             android:id="@+id/ratingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="@{viewmodel.state == TimerState.WAITING_FOR_FEEDBACK ? View.VISIBLE : View.INVISIBLE}"
+            android:visibility="@{viewmodel.state == TimerStates.WAITING_FOR_FEEDBACK ? View.VISIBLE : View.INVISIBLE}"
             android:stepSize="1"
             android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
