@@ -38,10 +38,11 @@
             android:contentDescription="@string/clock_image_description"
             android:enabled="@{viewmodel.state == TimerStates.WAITING_FOR_START}"
             android:onClick="@{() -> viewmodel.startCountdown()}"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/textView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
             app:srcCompat="@drawable/ic_baseline_access_time_24" />
 
         <TextView
@@ -51,6 +52,7 @@
             android:layout_marginTop="8dp"
             android:text="@{Converter.fromSecsToTimeString(viewmodel.secondsLeft)}"
             visibleWhen="@{viewmodel.state == TimerStates.RUNNING}"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView" />
