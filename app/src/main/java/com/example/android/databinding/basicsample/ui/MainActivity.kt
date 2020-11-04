@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         //
         binding.ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
             if (fromUser) {
-                viewModel.submitRating(rating / ratingBar.max)
+                viewModel.submitRating(rating, ratingBar.max)
                 ratingBar.rating = 0F
             }
         }
