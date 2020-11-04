@@ -17,6 +17,7 @@
 package com.example.android.databinding.basicsample.ui
 
 import android.os.Bundle
+import android.widget.RatingBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -40,7 +41,14 @@ class MainActivity : AppCompatActivity() {
         binding.viewmodel = viewModel
         binding.lifecycleOwner = this
 
-        binding.ratingBar.setOnRatingBarChangeListener { ratingBar, rating, _ -> viewModel.submitRating(rating / ratingBar.max) }
+        //
+        binding.ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
+            if (fromUser) {
+                viewModel.submitRating(rating / ratingBar.max)
+                ratingBar.rating = 0F
+            }
+        }
+
     }
 
 }
