@@ -28,7 +28,7 @@ enum class TimerStates {
 }
 
 
-class TimerModel : ViewModel() {
+class TimerViewModel : ViewModel() {
 
     private val _state = MutableLiveData(TimerStates.WAITING_FOR_START)
     private val _secondsLeft =  MutableLiveData(0)

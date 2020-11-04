@@ -23,7 +23,7 @@
         <import type="com.example.android.databinding.basicsample.data.TimerStates" />
         <variable
             name="viewmodel"
-            type="com.example.android.databinding.basicsample.data.TimerModel"/>
+            type="com.example.android.databinding.basicsample.data.TimerViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
