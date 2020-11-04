@@ -15,9 +15,11 @@ class MeditationTimer {
     val state = MutableLiveData(TimerStates.WAITING_FOR_START)
     val secondsLeft =  MutableLiveData(0)
 
+    private var duration = 10.0
+
     fun startCountdown() {
 
-        secondsLeft.value = 3
+        secondsLeft.value = duration.toInt()
         state.value = TimerStates.RUNNING
 
         val timerDuration: Long = (secondsLeft.value ?: 0).toLong() * 1000
@@ -39,6 +41,7 @@ class MeditationTimer {
 
     fun submitRating(rating: Float) {
         state.value = TimerStates.WAITING_FOR_START
+        duration *= if (rating >= .5) 1.1 else 0.8
     }
 
 }
