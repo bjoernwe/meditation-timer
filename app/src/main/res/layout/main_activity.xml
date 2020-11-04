@@ -21,6 +21,7 @@
     <data>
         <import type="android.view.View" />
         <import type="com.example.android.databinding.basicsample.data.TimerStates" />
+        <import type="com.example.android.databinding.basicsample.utils.Converter" />
         <variable
             name="viewmodel"
             type="com.example.android.databinding.basicsample.data.TimerViewModel"/>
@@ -48,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@{viewmodel.secondsLeft.toString()}"
+            android:text="@{Converter.fromSecsToTimeString(viewmodel.secondsLeft)}"
             android:visibility="@{viewmodel.state == TimerStates.RUNNING ? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
