@@ -70,6 +70,7 @@ class MainActivity : AppCompatActivity(), Observer<TimerStates>, RatingBar.OnRat
     }
 
     private fun playBell() {
+        mediaPlayer?.seekTo(0)
         mediaPlayer?.start()
     }
 
