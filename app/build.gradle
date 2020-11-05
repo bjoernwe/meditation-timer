@@ -52,6 +52,7 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
 
     implementation "androidx.lifecycle:lifecycle-extensions:$archLifecycleVersion"
+    implementation 'com.jakewharton.timber:timber:4.7.1'
 
     testImplementation "junit:junit:$junitVersion"
     testImplementation "org.hamcrest:hamcrest-all:$hamcrestVersion"
