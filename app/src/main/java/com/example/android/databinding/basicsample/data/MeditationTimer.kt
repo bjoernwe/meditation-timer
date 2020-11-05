@@ -10,12 +10,10 @@ enum class TimerStates {
 }
 
 
-class MeditationTimer {
+class MeditationTimer(private var duration: Double = 10.0) {
 
     val state = MutableLiveData(TimerStates.WAITING_FOR_START)
     val secondsLeft =  MutableLiveData(0)
-
-    private var duration = 10.0
 
     fun startCountdown() {
 
