@@ -39,8 +39,13 @@ class MainActivity : AppCompatActivity() {
         binding.viewmodel = viewModel
         binding.lifecycleOwner = this
 
-        //
-        binding.ratingBar.onRatingBarChangeListener = viewModel
+        // RatingBar change callback
+        binding.ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
+            if (fromUser) {
+                viewModel.submitRating(rating, ratingBar.max)
+                ratingBar.rating = 0F
+            }
+        }
 
     }
 
