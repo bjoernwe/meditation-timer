@@ -1,4 +1,4 @@
-package com.example.android.databinding.basicsample
+package com.example.android.meditation_timer
 
 import android.app.Application
 import timber.log.Timber

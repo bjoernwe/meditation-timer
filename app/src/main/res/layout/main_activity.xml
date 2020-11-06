@@ -5,11 +5,11 @@
 
     <data>
         <import type="android.view.View" />
-        <import type="com.example.android.databinding.basicsample.timer.TimerStates" />
-        <import type="com.example.android.databinding.basicsample.utils.Converter" />
+        <import type="com.example.android.meditation_timer.timer.TimerStates" />
+        <import type="com.example.android.meditation_timer.utils.Converter" />
         <variable
             name="viewmodel"
-            type="com.example.android.databinding.basicsample.timer.TimerViewModel"/>
+            type="com.example.android.meditation_timer.timer.TimerViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

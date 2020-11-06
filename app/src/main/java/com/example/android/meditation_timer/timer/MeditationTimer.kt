@@ -1,4 +1,4 @@
-package com.example.android.databinding.basicsample.timer
+package com.example.android.meditation_timer.timer
 
 import android.os.CountDownTimer
 import androidx.lifecycle.LiveData

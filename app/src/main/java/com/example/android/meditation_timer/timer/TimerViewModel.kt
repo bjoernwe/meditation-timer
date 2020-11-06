@@ -1,4 +1,4 @@
-package com.example.android.databinding.basicsample.timer
+package com.example.android.meditation_timer.timer
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel

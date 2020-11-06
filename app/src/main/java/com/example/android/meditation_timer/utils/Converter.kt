@@ -1,6 +1,6 @@
 @file:JvmName("Converter")
 
-package com.example.android.databinding.basicsample.utils
+package com.example.android.meditation_timer.utils
 
 import kotlin.math.round
 
