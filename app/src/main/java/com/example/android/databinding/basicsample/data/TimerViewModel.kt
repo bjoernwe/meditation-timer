@@ -4,12 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 
 
-class TimerViewModel : ViewModel() {
+class TimerViewModel(initialSessionLength: Double) : ViewModel() {
 
-    private val timer = MeditationTimer(duration = 10.0)
+    private val timer = MeditationTimer(initialSessionLength)
 
-    val state: LiveData<TimerStates> = timer.state
+    val sessionLength: LiveData<Double> = timer.sessionLength
     val secondsLeft: LiveData<Int> = timer.secondsLeft
+    val state: LiveData<TimerStates> = timer.state
 
     fun startCountdown() {
         timer.startCountdown()

@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">BasicSample</string>
+    <string name="pref_session_length" translatable="false">pref_session_length</string>
     <string name="clock_image_description">Clock Symbol</string>
 </resources>

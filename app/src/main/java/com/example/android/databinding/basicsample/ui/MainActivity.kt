@@ -1,31 +1,38 @@
 package com.example.android.databinding.basicsample.ui
 
+import android.content.SharedPreferences
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.preference.PreferenceManager
 import android.widget.RatingBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.android.databinding.basicsample.R
 import com.example.android.databinding.basicsample.data.TimerStates
 import com.example.android.databinding.basicsample.data.TimerViewModel
+import com.example.android.databinding.basicsample.data.TimerViewModelFactory
 import com.example.android.databinding.basicsample.databinding.MainActivityBinding
 import timber.log.Timber
 
 
-class MainActivity : AppCompatActivity(), Observer<TimerStates>, RatingBar.OnRatingBarChangeListener, MediaPlayer.OnErrorListener {
+class MainActivity : AppCompatActivity(), RatingBar.OnRatingBarChangeListener, MediaPlayer.OnErrorListener {
 
-    var mediaPlayer: MediaPlayer? = null
+    private var prefs: SharedPreferences? = null
+    private var mediaPlayer: MediaPlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
 
+        // SharedPreferences
+        prefs = PreferenceManager.getDefaultSharedPreferences(this)
+
         // Obtain ViewModel from ViewModelProviders
-        val timerViewModel = ViewModelProvider(this).get(TimerViewModel::class.java)
+        val timerViewModelFactory = TimerViewModelFactory(application)
+        val timerViewModel = ViewModelProvider(this, timerViewModelFactory).get(TimerViewModel::class.java)
 
         // Obtain binding
         val binding: MainActivityBinding = DataBindingUtil.setContentView(this, R.layout.main_activity)
@@ -33,10 +40,10 @@ class MainActivity : AppCompatActivity(), Observer<TimerStates>, RatingBar.OnRat
         binding.lifecycleOwner = this
 
         // Register event callbacks
-        timerViewModel.state.observe(this, this)
         binding.ratingBar.onRatingBarChangeListener = this
+        timerViewModel.state.observe(this, { onTimerStateChanged(it) })
+        timerViewModel.sessionLength.observe(this, { onSessionLengthChanged(it) })
         mediaPlayer?.setOnErrorListener(this)
-
     }
 
     override fun onStart() {
@@ -54,7 +61,7 @@ class MainActivity : AppCompatActivity(), Observer<TimerStates>, RatingBar.OnRat
         mediaPlayer = null
     }
 
-    override fun onChanged(newTimerState: TimerStates?) {
+    private fun onTimerStateChanged(newTimerState: TimerStates) {
         when (newTimerState) {
             TimerStates.FINISHED -> { playBell() }
             else -> {}
@@ -67,6 +74,10 @@ class MainActivity : AppCompatActivity(), Observer<TimerStates>, RatingBar.OnRat
         getSystemService(Vibrator::class.java).vibrate(
                 VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE)
         )
+    }
+
+    private fun onSessionLengthChanged(newSessionLength: Double) {
+        prefs?.edit()?.putFloat(getString(R.string.pref_session_length), newSessionLength.toFloat())?.apply()
     }
 
     override fun onRatingChanged(ratingBar: RatingBar, rating: Float, fromUser: Boolean) {
