@@ -1,10 +1,10 @@
-package com.example.android.databinding.basicsample.data
+package com.example.android.meditation_timer.timer
 
 import android.app.Application
 import android.preference.PreferenceManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.android.databinding.basicsample.R
+import com.example.android.meditation_timer.R
 import java.lang.IllegalArgumentException
 
 

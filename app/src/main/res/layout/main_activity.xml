@@ -1,30 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  Copyright (C) 2018 The Android Open Source Project
-
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
-  -->
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <import type="android.view.View" />
-        <import type="com.example.android.databinding.basicsample.data.TimerStates" />
-        <import type="com.example.android.databinding.basicsample.utils.Converter" />
+        <import type="com.example.android.meditation_timer.timer.TimerStates" />
+        <import type="com.example.android.meditation_timer.utils.Converter" />
         <variable
             name="viewmodel"
-            type="com.example.android.databinding.basicsample.data.TimerViewModel"/>
+            type="com.example.android.meditation_timer.timer.TimerViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -70,4 +55,5 @@
             app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

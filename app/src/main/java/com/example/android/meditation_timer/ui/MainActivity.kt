@@ -1,4 +1,4 @@
-package com.example.android.databinding.basicsample.ui
+package com.example.android.meditation_timer.ui
 
 import android.content.SharedPreferences
 import android.media.MediaPlayer
@@ -10,11 +10,11 @@ import android.widget.RatingBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import com.example.android.databinding.basicsample.R
-import com.example.android.databinding.basicsample.data.TimerStates
-import com.example.android.databinding.basicsample.data.TimerViewModel
-import com.example.android.databinding.basicsample.data.TimerViewModelFactory
-import com.example.android.databinding.basicsample.databinding.MainActivityBinding
+import com.example.android.meditation_timer.R
+import com.example.android.meditation_timer.timer.TimerStates
+import com.example.android.meditation_timer.timer.TimerViewModel
+import com.example.android.meditation_timer.timer.TimerViewModelFactory
+import com.example.android.meditation_timer.databinding.MainActivityBinding
 import timber.log.Timber
 
 

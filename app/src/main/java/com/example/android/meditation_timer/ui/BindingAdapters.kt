@@ -1,4 +1,4 @@
-package com.example.android.databinding.basicsample.ui
+package com.example.android.meditation_timer.ui
 
 import android.view.View
 import androidx.databinding.BindingAdapter
