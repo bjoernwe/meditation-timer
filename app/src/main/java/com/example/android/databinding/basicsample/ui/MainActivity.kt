@@ -2,6 +2,8 @@ package com.example.android.databinding.basicsample.ui
 
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.widget.RatingBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -62,6 +64,9 @@ class MainActivity : AppCompatActivity(), Observer<TimerStates>, RatingBar.OnRat
     private fun playBell() {
         mediaPlayer?.seekTo(0)
         mediaPlayer?.start()
+        getSystemService(Vibrator::class.java).vibrate(
+                VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE)
+        )
     }
 
     override fun onRatingChanged(ratingBar: RatingBar, rating: Float, fromUser: Boolean) {
