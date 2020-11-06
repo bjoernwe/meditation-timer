@@ -11,9 +11,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.android.databinding.basicsample.R
-import com.example.android.databinding.basicsample.data.TimerStates
-import com.example.android.databinding.basicsample.data.TimerViewModel
-import com.example.android.databinding.basicsample.data.TimerViewModelFactory
+import com.example.android.databinding.basicsample.timer.TimerStates
+import com.example.android.databinding.basicsample.timer.TimerViewModel
+import com.example.android.databinding.basicsample.timer.TimerViewModelFactory
 import com.example.android.databinding.basicsample.databinding.MainActivityBinding
 import timber.log.Timber
 

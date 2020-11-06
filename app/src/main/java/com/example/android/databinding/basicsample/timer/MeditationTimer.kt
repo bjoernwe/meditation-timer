@@ -1,4 +1,4 @@
-package com.example.android.databinding.basicsample.data
+package com.example.android.databinding.basicsample.timer
 
 import android.os.CountDownTimer
 import androidx.lifecycle.LiveData
