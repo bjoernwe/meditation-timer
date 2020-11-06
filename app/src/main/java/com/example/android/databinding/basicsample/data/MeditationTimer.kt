@@ -11,17 +11,19 @@ enum class TimerStates {
 }
 
 
-class MeditationTimer(private var duration: Double = 10.0) {
+class MeditationTimer(initialSessionLength: Double = 10.0) {
 
-    private val _state = MutableLiveData(TimerStates.WAITING_FOR_START)
+    private val _sessionLength = MutableLiveData(initialSessionLength)
     private val _secondsLeft =  MutableLiveData(0)
+    private val _state = MutableLiveData(TimerStates.WAITING_FOR_START)
 
-    val state: LiveData<TimerStates> = _state
+    val sessionLength: LiveData<Double> = _sessionLength
     val secondsLeft: LiveData<Int> = _secondsLeft
+    val state: LiveData<TimerStates> = _state
 
     fun startCountdown() {
 
-        _secondsLeft.value = duration.toInt()
+        _secondsLeft.value = sessionLength.value?.toInt() ?: 10
         _state.value = TimerStates.RUNNING
 
         val timerDuration: Long = (secondsLeft.value ?: 0).toLong() * 1000
@@ -44,7 +46,7 @@ class MeditationTimer(private var duration: Double = 10.0) {
 
     fun submitRating(rating: Float) {
         _state.value = TimerStates.WAITING_FOR_START
-        duration *= if (rating >= .5) 1.1 else 0.8
+        _sessionLength.value = if (rating >= .5) _sessionLength.value?.times(1.1) else _sessionLength.value?.times(0.8)
     }
 
 }
