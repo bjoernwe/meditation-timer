@@ -46,7 +46,6 @@ class MeditationTimer(initialSessionLength: Double = 10.0) {
 
     fun submitRating(rating: Float) {
         _sessionLength.value = if (rating >= .5) _sessionLength.value?.times(1.1) else _sessionLength.value?.times(0.8)
-        _state.value = TimerStates.WAITING_FOR_START
     }
 
 }
