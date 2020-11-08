@@ -18,7 +18,7 @@ import com.example.android.meditation_timer.databinding.MainActivityBinding
 import timber.log.Timber
 
 
-class MainActivity : AppCompatActivity(), RatingBar.OnRatingBarChangeListener, MediaPlayer.OnErrorListener {
+class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
 
     private var prefs: SharedPreferences? = null
     private var mediaPlayer: MediaPlayer? = null
@@ -40,7 +40,6 @@ class MainActivity : AppCompatActivity(), RatingBar.OnRatingBarChangeListener, M
         binding.lifecycleOwner = this
 
         // Register event callbacks
-        binding.ratingBar.onRatingBarChangeListener = this
         timerViewModel.state.observe(this, { onTimerStateChanged(it) })
         timerViewModel.sessionLength.observe(this, { onSessionLengthChanged(it) })
         mediaPlayer?.setOnErrorListener(this)
@@ -63,7 +62,10 @@ class MainActivity : AppCompatActivity(), RatingBar.OnRatingBarChangeListener, M
 
     private fun onTimerStateChanged(newTimerState: TimerStates) {
         when (newTimerState) {
-            TimerStates.FINISHED -> { playBell() }
+            TimerStates.FINISHED -> {
+                playBell()
+                showSessionRatingDialog()
+            }
             else -> {}
         }
     }
@@ -80,12 +82,8 @@ class MainActivity : AppCompatActivity(), RatingBar.OnRatingBarChangeListener, M
         prefs?.edit()?.putFloat(getString(R.string.pref_session_length), newSessionLength.toFloat())?.apply()
     }
 
-    override fun onRatingChanged(ratingBar: RatingBar, rating: Float, fromUser: Boolean) {
-        if (fromUser) {
-            val timerViewModel = ViewModelProvider(this).get(TimerViewModel::class.java)
-            timerViewModel.submitRating(rating, ratingBar.max)
-            ratingBar.rating = 0F
-        }
+    private fun showSessionRatingDialog() {
+        SessionRatingDialogFragment().apply { show(supportFragmentManager, tag) }
     }
 
     override fun onError(mediaPlayer: MediaPlayer?, what: Int, extra: Int): Boolean {
