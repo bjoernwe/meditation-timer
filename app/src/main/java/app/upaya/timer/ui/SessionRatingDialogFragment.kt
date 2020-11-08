@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.lifecycle.ViewModelProvider
-import com.example.android.meditation_timer.R
+import app.upaya.timer.R
 import app.upaya.timer.timer.TimerViewModel
 import app.upaya.timer.timer.TimerViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment

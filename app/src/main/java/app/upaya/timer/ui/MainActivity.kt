@@ -10,11 +10,11 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import com.example.android.meditation_timer.R
+import app.upaya.timer.R
+import app.upaya.timer.databinding.MainActivityBinding
 import app.upaya.timer.timer.TimerStates
 import app.upaya.timer.timer.TimerViewModel
 import app.upaya.timer.timer.TimerViewModelFactory
-import com.example.android.meditation_timer.databinding.MainActivityBinding
 import timber.log.Timber
 
 
