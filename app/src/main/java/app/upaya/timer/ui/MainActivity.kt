@@ -1,4 +1,4 @@
-package com.example.android.meditation_timer.ui
+package app.upaya.timer.ui
 
 import android.content.SharedPreferences
 import android.media.MediaPlayer
@@ -11,9 +11,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.android.meditation_timer.R
-import com.example.android.meditation_timer.timer.TimerStates
-import com.example.android.meditation_timer.timer.TimerViewModel
-import com.example.android.meditation_timer.timer.TimerViewModelFactory
+import app.upaya.timer.timer.TimerStates
+import app.upaya.timer.timer.TimerViewModel
+import app.upaya.timer.timer.TimerViewModelFactory
 import com.example.android.meditation_timer.databinding.MainActivityBinding
 import timber.log.Timber
 

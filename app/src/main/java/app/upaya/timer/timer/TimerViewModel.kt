@@ -1,4 +1,4 @@
-package com.example.android.meditation_timer.timer
+package app.upaya.timer.timer
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel

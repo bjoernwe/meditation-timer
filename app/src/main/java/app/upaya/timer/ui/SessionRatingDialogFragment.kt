@@ -1,4 +1,4 @@
-package com.example.android.meditation_timer.ui
+package app.upaya.timer.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.lifecycle.ViewModelProvider
 import com.example.android.meditation_timer.R
-import com.example.android.meditation_timer.timer.TimerViewModel
-import com.example.android.meditation_timer.timer.TimerViewModelFactory
+import app.upaya.timer.timer.TimerViewModel
+import app.upaya.timer.timer.TimerViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class SessionRatingDialogFragment : BottomSheetDialogFragment() {

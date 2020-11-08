@@ -1,4 +1,4 @@
-package com.example.android.meditation_timer
+package app.upaya.timer
 
 import android.app.Application
 import timber.log.Timber

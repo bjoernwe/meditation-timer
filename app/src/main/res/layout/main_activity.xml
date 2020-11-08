@@ -6,11 +6,11 @@
 
     <data>
         <import type="android.view.View" />
-        <import type="com.example.android.meditation_timer.timer.TimerStates" />
-        <import type="com.example.android.meditation_timer.utils.Converter" />
+        <import type="app.upaya.timer.timer.TimerStates" />
+        <import type="app.upaya.timer.utils.Converter" />
         <variable
             name="viewmodel"
-            type="com.example.android.meditation_timer.timer.TimerViewModel"/>
+            type="app.upaya.timer.timer.TimerViewModel"/>
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
