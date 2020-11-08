@@ -4,7 +4,7 @@ import android.content.Context
 import android.preference.PreferenceManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.android.meditation_timer.R
+import app.upaya.timer.R
 import java.lang.IllegalArgumentException
 
 /* This factory allows passing arguments to the TimerViewModel*/
