@@ -46,9 +46,9 @@ class MeditationTimer(initialSessionLength: Double = 10.0) {
 
     fun submitRating(rating: Float) {
         if (rating >= .5) {
-            _sessionLength.value?.times(1.1)
+            _sessionLength.value = _sessionLength.value?.times(1.1)
         } else {
-            _sessionLength.value?.times(0.8)
+            _sessionLength.value = _sessionLength.value?.times(0.8)
         }
     }
 
