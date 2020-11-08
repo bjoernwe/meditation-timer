@@ -7,7 +7,7 @@ import kotlin.math.round
 
 
 enum class TimerStates {
-    WAITING_FOR_START, RUNNING, FINISHED, WAITING_FOR_FEEDBACK
+    WAITING_FOR_START, RUNNING, FINISHED
 }
 
 
@@ -36,8 +36,8 @@ class MeditationTimer(initialSessionLength: Double = 10.0) {
 
             override fun onFinish() {
                 _secondsLeft.value = 0
-                _state.value = TimerStates.FINISHED  // trigger bell
-                _state.value = TimerStates.WAITING_FOR_FEEDBACK
+                _state.value = TimerStates.FINISHED  // trigger bell & feedback dialog
+                _state.value = TimerStates.WAITING_FOR_START
             }
 
         }.start()
@@ -45,7 +45,6 @@ class MeditationTimer(initialSessionLength: Double = 10.0) {
     }
 
     fun submitRating(rating: Float) {
-        _state.value = TimerStates.WAITING_FOR_START
         _sessionLength.value = if (rating >= .5) _sessionLength.value?.times(1.1) else _sessionLength.value?.times(0.8)
     }
 

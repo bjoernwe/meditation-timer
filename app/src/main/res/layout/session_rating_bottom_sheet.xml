@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sessionRatingBottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="32dp">
+
+    <TextView
+        android:id="@+id/ratingQuestionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/session_feedback_question"
+        android:paddingBottom="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/ratingDownImageView"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:contentDescription="@string/session_feedback_thumb_down"
+        android:longClickable="false"
+        app:layout_constraintEnd_toStartOf="@id/ratingUpImageView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ratingQuestionTextView"
+        app:srcCompat="@drawable/ic_baseline_thumb_down_64" />
+
+    <ImageView
+        android:id="@+id/ratingUpImageView"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:contentDescription="@string/session_feedback_thumb_up"
+        android:longClickable="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ratingDownImageView"
+        app:layout_constraintTop_toBottomOf="@id/ratingQuestionTextView"
+        app:srcCompat="@drawable/ic_baseline_thumb_up_64" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
