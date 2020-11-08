@@ -76,12 +76,16 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
         mediaPlayer?.seekTo(0)
         mediaPlayer?.start()
         getSystemService(Vibrator::class.java).vibrate(
-                VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE)
+                VibrationEffect.createOneShot(750, VibrationEffect.DEFAULT_AMPLITUDE)
         )
     }
 
     private fun onSessionLengthChanged(newSessionLength: Double) {
-        prefs?.edit()?.putFloat(getString(R.string.pref_session_length), newSessionLength.toFloat())?.apply()
+        saveSessionLength(newSessionLength.toFloat())
+    }
+
+    private fun saveSessionLength(newSessionLength: Float) {
+        prefs?.edit()?.putFloat(getString(R.string.pref_session_length), newSessionLength)?.apply()
     }
 
     private fun showSessionRatingDialog() {
