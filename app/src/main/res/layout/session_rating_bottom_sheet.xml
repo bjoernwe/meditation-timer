@@ -5,14 +5,17 @@
     android:id="@+id/sessionRatingBottomSheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/secondaryColor"
     android:padding="32dp">
 
     <TextView
         android:id="@+id/ratingQuestionTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/session_feedback_question"
         android:paddingBottom="24dp"
+        android:text="@string/session_feedback_question"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/primaryTextColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,6 +26,7 @@
         android:layout_height="32dp"
         android:contentDescription="@string/session_feedback_thumb_down"
         android:longClickable="false"
+        app:tint="@color/secondaryLightColor"
         app:layout_constraintEnd_toStartOf="@id/ratingUpImageView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ratingQuestionTextView"
@@ -34,6 +38,7 @@
         android:layout_height="32dp"
         android:contentDescription="@string/session_feedback_thumb_up"
         android:longClickable="false"
+        app:tint="@color/secondaryLightColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/ratingDownImageView"
         app:layout_constraintTop_toBottomOf="@id/ratingQuestionTextView"
