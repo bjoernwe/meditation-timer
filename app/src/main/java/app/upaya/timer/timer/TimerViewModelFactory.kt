@@ -1,4 +1,4 @@
-package com.example.android.meditation_timer.timer
+package app.upaya.timer.timer
 
 import android.content.Context
 import android.preference.PreferenceManager

@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">Meditation Timer</string>
-    <string name="main_activity_label">Meditation Timer</string>
+    <string name="app_name">Upaya Timer</string>
+    <string name="main_activity_label">Upaya Timer</string>
     <string name="pref_session_length" translatable="false">pref_session_length</string>
     <string name="clock_image_description">Clock Symbol</string>
     <string name="session_feedback_question">Did you lose your focus?</string>

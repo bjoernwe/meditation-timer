@@ -1,4 +1,4 @@
-package com.example.android.meditation_timer.timer
+package app.upaya.timer.timer
 
 import android.os.CountDownTimer
 import androidx.lifecycle.LiveData
@@ -45,7 +45,11 @@ class MeditationTimer(initialSessionLength: Double = 10.0) {
     }
 
     fun submitRating(rating: Float) {
-        _sessionLength.value = if (rating >= .5) _sessionLength.value?.times(1.1) else _sessionLength.value?.times(0.8)
+        if (rating >= .5) {
+            _sessionLength.value?.times(1.1)
+        } else {
+            _sessionLength.value?.times(0.8)
+        }
     }
 
 }

@@ -1,6 +1,6 @@
 @file:JvmName("Converter")
 
-package com.example.android.meditation_timer.utils
+package app.upaya.timer.utils
 
 import kotlin.math.round
 

@@ -1,4 +1,4 @@
-package com.example.android.meditation_timer.ui
+package app.upaya.timer.ui
 
 import android.content.SharedPreferences
 import android.media.MediaPlayer
@@ -11,9 +11,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.android.meditation_timer.R
-import com.example.android.meditation_timer.timer.TimerStates
-import com.example.android.meditation_timer.timer.TimerViewModel
-import com.example.android.meditation_timer.timer.TimerViewModelFactory
+import app.upaya.timer.timer.TimerStates
+import app.upaya.timer.timer.TimerViewModel
+import app.upaya.timer.timer.TimerViewModelFactory
 import com.example.android.meditation_timer.databinding.MainActivityBinding
 import timber.log.Timber
 
@@ -76,12 +76,16 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
         mediaPlayer?.seekTo(0)
         mediaPlayer?.start()
         getSystemService(Vibrator::class.java).vibrate(
-                VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE)
+                VibrationEffect.createOneShot(750, VibrationEffect.DEFAULT_AMPLITUDE)
         )
     }
 
     private fun onSessionLengthChanged(newSessionLength: Double) {
-        prefs?.edit()?.putFloat(getString(R.string.pref_session_length), newSessionLength.toFloat())?.apply()
+        saveSessionLength(newSessionLength.toFloat())
+    }
+
+    private fun saveSessionLength(newSessionLength: Float) {
+        prefs?.edit()?.putFloat(getString(R.string.pref_session_length), newSessionLength)?.apply()
     }
 
     private fun showSessionRatingDialog() {
