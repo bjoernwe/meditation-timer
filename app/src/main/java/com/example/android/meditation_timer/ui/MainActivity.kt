@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.preference.PreferenceManager
-import android.widget.RatingBar
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -47,6 +47,7 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
 
     override fun onStart() {
         super.onStart()
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         applicationContext.resources.openRawResourceFd(R.raw.bell_347378).use {
             mediaPlayer = MediaPlayer()
             mediaPlayer?.setDataSource(it)
@@ -56,6 +57,7 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
 
     override fun onStop() {
         super.onStop()
+        window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         mediaPlayer?.release()
         mediaPlayer = null
     }
