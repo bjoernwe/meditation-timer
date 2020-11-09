@@ -15,7 +15,9 @@ import app.upaya.timer.databinding.MainActivityBinding
 import app.upaya.timer.timer.TimerStates
 import app.upaya.timer.timer.TimerViewModel
 import app.upaya.timer.timer.TimerViewModelFactory
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import timber.log.Timber
+import java.lang.RuntimeException
 
 
 class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
@@ -93,8 +95,10 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
     }
 
     override fun onError(mediaPlayer: MediaPlayer?, what: Int, extra: Int): Boolean {
-        Timber.e("MediaPlayer Error $what")
-        return false
+        val errorMessage = "MediaPlayer Error $what"
+        Timber.e(errorMessage)
+        FirebaseCrashlytics.getInstance().recordException(RuntimeException(errorMessage))
+        return true
     }
 
 }
