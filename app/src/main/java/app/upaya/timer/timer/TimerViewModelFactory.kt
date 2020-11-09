@@ -14,6 +14,7 @@ class TimerViewModelFactory(private val context: Context) : ViewModelProvider.Fa
         if (modelClass.isAssignableFrom(TimerViewModel::class.java)) {
             val prefs = PreferenceManager.getDefaultSharedPreferences(context)
             val initialSessionLength = prefs.getFloat(context.getString(R.string.pref_session_length), 10.0F).toDouble()
+            @Suppress("UNCHECKED_CAST")
             return TimerViewModel(initialSessionLength) as T
         } else {
             throw IllegalArgumentException("Unknown ViewModel class $modelClass")
