@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "855290353421",
+    "firebase_url": "https://upaya-timer.firebaseio.com",
+    "project_id": "upaya-timer",
+    "storage_bucket": "upaya-timer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:855290353421:android:d734c240b612e930d84244",
+        "android_client_info": {
+          "package_name": "app.upaya.timer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "855290353421-8uadclq9nav1mutpg2h8r7m0h7rj8lnl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqL1f45POIeihGiVRctWBj4HizLcC5YbU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "855290353421-8uadclq9nav1mutpg2h8r7m0h7rj8lnl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
