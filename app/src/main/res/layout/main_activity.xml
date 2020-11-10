@@ -27,15 +27,15 @@
                 android:id="@+id/circleView"
                 android:layout_width="180dp"
                 android:layout_height="180dp"
-                android:contentDescription="@string/clock_image_description"
+                android:contentDescription="@string/circle_description"
                 android:enabled="@{viewmodel.state == TimerStates.WAITING_FOR_START}"
                 android:longClickable="false"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_outline_brightness_1_24"
-                app:tint="@color/primaryLightColor" />
+                app:srcCompat="@drawable/circle"
+                app:tint="@color/circle_color" />
 
             <TextView
                 android:id="@+id/textView"
