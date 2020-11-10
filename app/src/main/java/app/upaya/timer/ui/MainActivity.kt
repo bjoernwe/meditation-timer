@@ -23,6 +23,8 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
     private var prefs: SharedPreferences? = null
     private var mediaPlayer: MediaPlayer? = null
 
+    private var timerViewModel: TimerViewModel? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -32,7 +34,7 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
 
         // Obtain ViewModel from ViewModelProviders
         val timerViewModelFactory = TimerViewModelFactory(application)
-        val timerViewModel = ViewModelProvider(this, timerViewModelFactory).get(TimerViewModel::class.java)
+        timerViewModel = ViewModelProvider(this, timerViewModelFactory).get(TimerViewModel::class.java)
 
         // Obtain binding
         val binding: MainActivityBinding = DataBindingUtil.setContentView(this, R.layout.main_activity)
@@ -40,8 +42,9 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
         binding.lifecycleOwner = this
 
         // Register event callbacks
-        timerViewModel.state.observe(this, { onTimerStateChanged(it) })
-        timerViewModel.sessionLength.observe(this, { onSessionLengthChanged(it) })
+        timerViewModel?.state?.observe(this, { onTimerStateChanged(it) })
+        timerViewModel?.sessionLength?.observe(this, { onSessionLengthChanged(it) })
+        binding.circleView.setOnClickListener { onCircleClicked() }
         mediaPlayer?.setOnErrorListener(this)
     }
 
@@ -62,6 +65,11 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
         mediaPlayer = null
     }
 
+    private fun onCircleClicked() {
+        timerViewModel?.startCountdown()
+        vibrate(50, 100)
+    }
+
     private fun onTimerStateChanged(newTimerState: TimerStates) {
         when (newTimerState) {
             TimerStates.FINISHED -> {
@@ -75,8 +83,12 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
     private fun playBell() {
         mediaPlayer?.seekTo(0)
         mediaPlayer?.start()
+        vibrate(1000)
+    }
+
+    private fun vibrate(milliseconds: Long, amplitude: Int = VibrationEffect.DEFAULT_AMPLITUDE) {
         getSystemService(Vibrator::class.java).vibrate(
-                VibrationEffect.createOneShot(750, VibrationEffect.DEFAULT_AMPLITUDE)
+                VibrationEffect.createOneShot(milliseconds, amplitude)
         )
     }
 
