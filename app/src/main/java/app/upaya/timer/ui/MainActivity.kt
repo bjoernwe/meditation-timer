@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import app.upaya.timer.R
+import app.upaya.timer.timer.TimerAnalyticsLogger
 import app.upaya.timer.databinding.MainActivityBinding
 import app.upaya.timer.timer.TimerStates
 import app.upaya.timer.timer.TimerViewModel
@@ -24,6 +25,7 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
     private var mediaPlayer: MediaPlayer? = null
 
     private var timerViewModel: TimerViewModel? = null
+    private var timerAnalyticsLogger: TimerAnalyticsLogger? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -35,6 +37,9 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
         // Obtain ViewModel from ViewModelProviders
         val timerViewModelFactory = TimerViewModelFactory(application)
         timerViewModel = ViewModelProvider(this, timerViewModelFactory).get(TimerViewModel::class.java)
+
+        // Firebase Analytics
+        timerAnalyticsLogger = TimerAnalyticsLogger(this, timerViewModel)
 
         // Obtain binding
         val binding: MainActivityBinding = DataBindingUtil.setContentView(this, R.layout.main_activity)
@@ -75,6 +80,7 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
             TimerStates.FINISHED -> {
                 playBell()
                 showSessionRatingDialog()
+                timerAnalyticsLogger?.logSessionFinished()
             }
             else -> {}
         }
