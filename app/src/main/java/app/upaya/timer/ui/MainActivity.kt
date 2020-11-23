@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
         timerViewModel = ViewModelProvider(this, timerViewModelFactory).get(TimerViewModel::class.java)
 
         // Firebase Analytics
-        timerAnalyticsLogger = TimerAnalyticsLogger(this, timerViewModel)
+        timerAnalyticsLogger = TimerAnalyticsLogger(this)
 
         // Obtain binding
         val binding: MainActivityBinding = DataBindingUtil.setContentView(this, R.layout.main_activity)
