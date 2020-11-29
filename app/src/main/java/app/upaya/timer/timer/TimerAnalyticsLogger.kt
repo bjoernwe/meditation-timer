@@ -1,22 +1,19 @@
 package app.upaya.timer.timer
 
-import android.app.Activity
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
 
-class TimerAnalyticsLogger(activity: Activity, private val timerViewModel: TimerViewModel?) {
+
+class TimerAnalyticsLogger(activity: AppCompatActivity) {
 
     private val firebaseAnalytics = FirebaseAnalytics.getInstance(activity)
+    private val timerViewModel = ViewModelProvider(activity, TimerViewModelFactory(activity.applicationContext)).get(TimerViewModel::class.java)
 
     fun logSessionFinished() {
         firebaseAnalytics.logEvent("timer_session") {
-            timerViewModel?.sessionLength?.value?.let { this.param("duration", it) }
-        }
-    }
-
-    fun logSessionRating(rating: Float) {
-        firebaseAnalytics.logEvent("timer_session_rating") {
-            this.param("rating", rating.toDouble())
+            timerViewModel.sessionLength.value?.let { this.param("duration", it) }
         }
     }
 
