@@ -16,9 +16,8 @@ class TimerViewModel(initialSessionLength: Double) : ViewModel() {
         timer.startCountdown()
     }
 
-    fun submitRating(rating: Float, maxRating: Int) {
-        val normalizedRating: Float = rating / maxRating.toFloat()
-        timer.submitRating(normalizedRating)
+    fun submitRating(rating: Float) {
+        timer.submitRating(rating)
     }
 
 }

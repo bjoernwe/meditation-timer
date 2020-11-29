@@ -11,6 +11,7 @@ import app.upaya.timer.timer.TimerViewModel
 import app.upaya.timer.timer.TimerViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
+
 class SessionRatingDialogFragment : BottomSheetDialogFragment() {
 
     override fun onCreateView(
@@ -22,16 +23,16 @@ class SessionRatingDialogFragment : BottomSheetDialogFragment() {
         val view = inflater.inflate(R.layout.session_rating_bottom_sheet, container, false)
 
         // User activity context for the same ViewModel as in the main activity
-        val timerViewModelFactory = TimerViewModelFactory(activity!!.applicationContext)
-        val timerViewModel = ViewModelProvider(activity!!, timerViewModelFactory).get(TimerViewModel::class.java)
+        val timerViewModelFactory = TimerViewModelFactory(requireActivity().applicationContext)
+        val timerViewModel = ViewModelProvider(requireActivity(), timerViewModelFactory).get(TimerViewModel::class.java)
 
         view.findViewById<ImageView>(R.id.ratingDownImageView).setOnClickListener {
-            timerViewModel.submitRating(1F, 1)
+            timerViewModel.submitRating(1F)
             this.dismiss()
         }
 
         view.findViewById<ImageView>(R.id.ratingUpImageView).setOnClickListener {
-            timerViewModel.submitRating(0F, 1)
+            timerViewModel.submitRating(0F)
             this.dismiss()
         }
 
