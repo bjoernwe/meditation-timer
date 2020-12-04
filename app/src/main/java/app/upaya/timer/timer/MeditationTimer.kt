@@ -23,6 +23,8 @@ class MeditationTimer(initialSessionLength: Double = 10.0) {
 
     fun startCountdown() {
 
+        if (_state.value != TimerStates.WAITING_FOR_START) return
+
         _secondsLeft.value = sessionLength.value?.toInt() ?: 10
         _state.value = TimerStates.RUNNING
 
