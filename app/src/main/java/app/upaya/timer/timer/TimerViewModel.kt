@@ -8,9 +8,9 @@ import androidx.lifecycle.ViewModel
 class TimerViewModel(initialSessionLength: Double) : ViewModel() {
 
     private val timer = MeditationTimer(initialSessionLength)
+    private val secondsLeft: LiveData<Int> = timer.secondsLeft
 
     val sessionLength: LiveData<Double> = timer.sessionLength
-    val secondsLeft: LiveData<Int> = timer.secondsLeft
     val state: LiveData<TimerStates> = timer.state
 
     val isRunning: LiveData<Boolean> = Transformations.map(state) { it == TimerStates.RUNNING }
