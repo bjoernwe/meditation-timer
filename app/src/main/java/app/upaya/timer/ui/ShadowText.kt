@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 
 
 @Composable
-fun ShadowText(text: String) {
+fun ShadowText(text: String, modifier: Modifier = Modifier) {
 
     Box(contentAlignment = Alignment.Center) {
 
@@ -22,7 +22,7 @@ fun ShadowText(text: String) {
             Text(
                 text = it,
                 color = Color(0, 0, 0, 64),
-                modifier = Modifier.offset(2.dp, 2.dp)
+                modifier = modifier.offset(2.dp, 2.dp)
             )
 
             // Shadow
