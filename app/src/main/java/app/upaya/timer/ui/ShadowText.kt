@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun ShadowText(text: String) {
 
-    Box(alignment = Alignment.Center) {
+    Box(contentAlignment = Alignment.Center) {
 
         text.let {
 
