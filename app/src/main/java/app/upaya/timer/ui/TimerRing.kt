@@ -16,11 +16,11 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun TimerRing(isRunning: State<Boolean?>, secondsLeft: State<String?>, onClick: () -> Unit) {
 
-    Box(alignment = Alignment.Center,
-            modifier = Modifier
-                    .clickable(onClick = onClick)
-                    .fillMaxSize()
-                    .background(MaterialTheme.colors.background)
+    Box(contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .clickable(onClick = onClick)
+            .fillMaxSize()
+            .background(MaterialTheme.colors.background)
     ) {
 
         // Ring
