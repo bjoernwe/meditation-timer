@@ -23,13 +23,13 @@ fun TimerRing(isRunning: State<Boolean>, secondsLeft: State<String>, onClick: ()
     )
 
     Box(contentAlignment = Alignment.Center,
-            modifier = Modifier
-                    .background(MaterialTheme.colors.background)
+        modifier = Modifier
+            .background(MaterialTheme.colors.background)
                     .fillMaxSize()
                     .clickable(
                             onClick = onClick,
                             indication = rippleIndication,
-                    )
+            )
     ) {
 
         // Ring
