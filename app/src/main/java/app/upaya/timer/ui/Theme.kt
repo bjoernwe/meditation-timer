@@ -11,7 +11,7 @@ private val darkColorPalette = darkColors(
         primaryVariant = teal700,
         secondary = purple200,
         background = Color.DarkGray,
-        onBackground = Color.White
+        onBackground = Color.Gray
 )
 
 @Composable
