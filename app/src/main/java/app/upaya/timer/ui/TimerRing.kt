@@ -17,7 +17,7 @@ fun TimerRing(isRunning: State<Boolean>, secondsLeft: State<String>, onClick: ()
 
     // Ripple effect when clicking ring
     val rippleIndication = rememberRippleIndication(
-            radius = 0.dp,
+            //radius = 0.dp,
             bounded = false,
             color = Color.Transparent
     )
@@ -28,6 +28,7 @@ fun TimerRing(isRunning: State<Boolean>, secondsLeft: State<String>, onClick: ()
                     .fillMaxSize()
                     .clickable(
                             onClick = onClick,
+                            enabled = !isRunning.value,
                             indication = rippleIndication,
             )
     ) {
