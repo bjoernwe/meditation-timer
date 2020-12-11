@@ -18,17 +18,17 @@ fun ShadowText(text: String, modifier: Modifier = Modifier) {
 
         text.let {
 
-            // Text
+            // Shadow
             Text(
                 text = it,
                 color = Color(0, 0, 0, 64),
                 modifier = modifier.offset(2.dp, 2.dp)
             )
 
-            // Shadow
+            // Text
             Text(
                 text = it,
-                color = MaterialTheme.colors.onBackground
+                color = Color.White
             )
 
         }
