@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import app.upaya.timer.timer.TimerViewModel
-import app.upaya.timer.ui.teal200
 
 
 @Composable
@@ -41,9 +40,9 @@ fun TimerRing(timerViewModel: TimerViewModel, onClick: () -> Unit) {
         // Ring
         MaterialRing(
             size = 180.dp,
-            thickness = 16.dp,
+            thickness = 12.dp,
             depth = 3.dp,
-            color = if (isRunning.value) Color.White else teal200
+            color = if (isRunning.value) Color.White else MaterialTheme.colors.primary
         )
 
         // Text

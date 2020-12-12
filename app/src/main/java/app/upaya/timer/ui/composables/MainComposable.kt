@@ -27,10 +27,11 @@ fun MainComposable(timerViewModel: TimerViewModel, onClick: () -> Unit) {
         ModalBottomSheetLayout(
                 sheetState = sheetState,
                 scrimColor = Color(0, 0, 0, 128),
+                sheetBackgroundColor = MaterialTheme.colors.background,
                 sheetContent = {
                     Text(
                             text = "Current Session Length: ${sessionLength.value}",
-                            color = MaterialTheme.colors.onBackground,
+                            color = MaterialTheme.colors.onSurface,
                             modifier = Modifier.padding(16.dp)
                     )
                 }
