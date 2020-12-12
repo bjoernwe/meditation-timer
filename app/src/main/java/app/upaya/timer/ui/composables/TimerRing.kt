@@ -1,4 +1,4 @@
-package app.upaya.timer.ui
+package app.upaya.timer.ui.composables
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.Box
@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import app.upaya.timer.timer.TimerViewModel
+import app.upaya.timer.ui.teal200
 
 
 @Composable

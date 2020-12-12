@@ -1,5 +1,7 @@
-package app.upaya.timer.ui
+package app.upaya.timer.ui.composables
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.ConstraintLayout
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
@@ -8,15 +10,18 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import app.upaya.timer.timer.TimerStates
 import app.upaya.timer.timer.TimerViewModel
 
 
+@ExperimentalAnimationApi
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun MainComposable(timerViewModel: TimerViewModel, onClick: () -> Unit) {
 
     val sessionLength = timerViewModel.sessionLengthString.observeAsState("")
     val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
+    val timerState = timerViewModel.state.observeAsState(TimerStates.WAITING_FOR_START)
 
     TimerTheme {
         ModalBottomSheetLayout(
@@ -25,6 +30,7 @@ fun MainComposable(timerViewModel: TimerViewModel, onClick: () -> Unit) {
                 sheetContent = {
                     Text(
                             text = "Current Session Length: ${sessionLength.value}",
+                            color = MaterialTheme.colors.onBackground,
                             modifier = Modifier.padding(16.dp)
                     )
                 }
@@ -35,13 +41,16 @@ fun MainComposable(timerViewModel: TimerViewModel, onClick: () -> Unit) {
                         timerViewModel = timerViewModel,
                         onClick = onClick
                 )
-                StatsButton(onClick = { sheetState.show() },
+                AnimatedVisibility(
+                        visible = timerState.value == TimerStates.WAITING_FOR_START,
                         modifier = Modifier
                                 .constrainAs(optionsButton) {
-                                    top.linkTo(parent.top, margin = 8.dp)
-                                    end.linkTo(parent.end, margin = 8.dp)
+                                    top.linkTo(parent.top, margin = 12.dp)
+                                    end.linkTo(parent.end, margin = 12.dp)
                                 },
-                )
+                ) {
+                    StatsButton(onClick = { sheetState.show() } )
+                }
             }
         }
     }

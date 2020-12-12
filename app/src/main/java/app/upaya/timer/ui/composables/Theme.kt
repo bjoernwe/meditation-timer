@@ -1,9 +1,12 @@
-package app.upaya.timer.ui
+package app.upaya.timer.ui.composables
 
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import app.upaya.timer.ui.purple200
+import app.upaya.timer.ui.teal200
+import app.upaya.timer.ui.teal700
 
 
 private val darkColorPalette = darkColors(

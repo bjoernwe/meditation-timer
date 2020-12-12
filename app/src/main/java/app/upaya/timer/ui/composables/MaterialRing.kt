@@ -1,4 +1,4 @@
-package app.upaya.timer.ui
+package app.upaya.timer.ui.composables
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background

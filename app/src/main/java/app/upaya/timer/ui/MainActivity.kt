@@ -7,7 +7,7 @@ import android.os.Vibrator
 import android.preference.PreferenceManager
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.ui.platform.setContent
 import androidx.lifecycle.ViewModelProvider
 import app.upaya.timer.R
@@ -15,6 +15,7 @@ import app.upaya.timer.timer.TimerAnalyticsLogger
 import app.upaya.timer.timer.TimerStates
 import app.upaya.timer.timer.TimerViewModel
 import app.upaya.timer.timer.TimerViewModelFactory
+import app.upaya.timer.ui.composables.MainComposable
 import timber.log.Timber
 
 
@@ -23,6 +24,7 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
     private var mediaPlayer: MediaPlayer? = null
     private var timerAnalyticsLogger: TimerAnalyticsLogger? = null
 
+    @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
