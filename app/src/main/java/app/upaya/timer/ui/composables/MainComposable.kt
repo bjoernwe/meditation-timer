@@ -24,24 +24,32 @@ fun MainComposable(timerViewModel: TimerViewModel, onClick: () -> Unit) {
     val timerState = timerViewModel.state.observeAsState(TimerStates.WAITING_FOR_START)
 
     TimerTheme {
+
         ModalBottomSheetLayout(
                 sheetState = sheetState,
                 scrimColor = Color(0, 0, 0, 128),
                 sheetBackgroundColor = MaterialTheme.colors.background,
                 sheetContent = {
+
                     Text(
                             text = "Current Session Length: ${sessionLength.value}",
                             color = MaterialTheme.colors.onSurface,
                             modifier = Modifier.padding(16.dp)
                     )
-                }
+
+                }  // sheetContent
         ) {
+
             ConstraintLayout {
-                val optionsButton = createRef()
+
                 TimerRing(
-                        timerViewModel = timerViewModel,
+                        activated = timerViewModel.isRunning.observeAsState(false),
+                        text = timerViewModel.secondsLeftString.observeAsState(""),
                         onClick = onClick
                 )
+
+                val optionsButton = createRef()
+
                 AnimatedVisibility(
                         visible = timerState.value == TimerStates.WAITING_FOR_START,
                         modifier = Modifier
@@ -52,8 +60,11 @@ fun MainComposable(timerViewModel: TimerViewModel, onClick: () -> Unit) {
                 ) {
                     StatsButton(onClick = { sheetState.show() } )
                 }
-            }
-        }
-    }
 
-}
+            }  // ConstraintLayout
+
+        }  // ModalBottomSheetLayout
+
+    }  // TimerTheme
+
+}  // MainComposable
