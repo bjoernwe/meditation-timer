@@ -34,8 +34,7 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
         // Emit Main Composable
         setContent {
             MainComposable(
-                    isRunning = timerViewModel.isRunning.observeAsState(initial = false),
-                    secondsLeft = timerViewModel.secondsLeftString.observeAsState(initial = ""),
+                    timerViewModel = timerViewModel,
                     onClick = { onCircleClicked(timerViewModel) }
             )
         }

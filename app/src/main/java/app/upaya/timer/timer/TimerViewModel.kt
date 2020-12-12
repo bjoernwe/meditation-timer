@@ -3,6 +3,7 @@ package app.upaya.timer.timer
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import kotlin.math.round
 
 
 class TimerViewModel(initialSessionLength: Double) : ViewModel() {
@@ -15,6 +16,9 @@ class TimerViewModel(initialSessionLength: Double) : ViewModel() {
 
     val isRunning: LiveData<Boolean> = Transformations.map(state) { it == TimerStates.RUNNING }
     val secondsLeftString: LiveData<String> = Transformations.map(secondsLeft) { fromSecsToTimeString(it) }
+    val sessionLengthString: LiveData<String> = Transformations.map(timer.sessionLength) {
+        fromSecsToTimeString(round(it).toInt())
+    }
 
     fun startCountdown() {
         if (state.value == TimerStates.WAITING_FOR_START) {

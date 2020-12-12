@@ -6,18 +6,22 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ripple.rememberRippleIndication
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import app.upaya.timer.timer.TimerViewModel
 
 
 @Composable
-fun TimerRing(isRunning: State<Boolean>, secondsLeft: State<String>, onClick: () -> Unit) {
+fun TimerRing(timerViewModel: TimerViewModel, onClick: () -> Unit) {
+
+    val isRunning = timerViewModel.isRunning.observeAsState(false)
+    val secondsLeft = timerViewModel.secondsLeftString.observeAsState("")
 
     // Ripple effect when clicking ring
     val rippleIndication = rememberRippleIndication(
-        //radius = 0.dp,
         bounded = false,
         color = Color.Transparent
     )
@@ -35,7 +39,7 @@ fun TimerRing(isRunning: State<Boolean>, secondsLeft: State<String>, onClick: ()
 
         // Ring
         MaterialRing(
-            size = 200.dp,
+            size = 180.dp,
             thickness = 16.dp,
             depth = 3.dp,
             color = if (isRunning.value) Color.White else teal200
