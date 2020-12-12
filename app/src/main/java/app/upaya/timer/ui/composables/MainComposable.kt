@@ -45,8 +45,8 @@ fun MainComposable(timerViewModel: TimerViewModel, onClick: () -> Unit) {
                         visible = timerState.value == TimerStates.WAITING_FOR_START,
                         modifier = Modifier
                                 .constrainAs(optionsButton) {
-                                    top.linkTo(parent.top, margin = 12.dp)
-                                    end.linkTo(parent.end, margin = 12.dp)
+                                    top.linkTo(parent.top, margin = 16.dp)
+                                    end.linkTo(parent.end, margin = 16.dp)
                                 },
                 ) {
                     StatsButton(onClick = { sheetState.show() } )
