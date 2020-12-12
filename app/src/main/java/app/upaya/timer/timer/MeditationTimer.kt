@@ -47,7 +47,8 @@ class MeditationTimer(initialSessionLength: Double = 10.0) {
     }
 
     fun submitRating(rating: Float) {
-        // TODO Handle NaN
+        if (rating.isNaN())
+            return
         if (rating >= .5) {
             _sessionLength.value = _sessionLength.value?.times(1.1)
         } else {
