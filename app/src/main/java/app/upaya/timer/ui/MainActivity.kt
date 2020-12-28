@@ -1,10 +1,10 @@
 package app.upaya.timer.ui
 
+import android.content.Context
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
-import android.preference.PreferenceManager
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.livedata.observeAsState
@@ -101,7 +101,7 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
     }
 
     private fun saveSessionLength(newSessionLength: Float) {
-        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        val prefs = application.getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE)
         prefs.edit()?.putFloat(getString(R.string.pref_session_length), newSessionLength)?.apply()
     }
 
