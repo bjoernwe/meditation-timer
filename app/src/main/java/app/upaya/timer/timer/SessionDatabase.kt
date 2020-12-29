@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase
 @Database(entities = [Session::class], version = 1, exportSchema = false)
 abstract class SessionDatabase : RoomDatabase() {
 
-    abstract val sessionDatabaseDao: SessionDatabaseDao
+    abstract val sessionDao: SessionDao
 
     companion object {
 

@@ -7,10 +7,10 @@ import androidx.room.Query
 
 
 @Dao
-interface SessionDatabaseDao {
+interface SessionDao {
 
     @Insert
-    fun insert(session: Session)
+    suspend fun insert(session: Session)
 
     @Query("SELECT * FROM sessions")
     fun getAll(): LiveData<List<Session>>
