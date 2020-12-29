@@ -6,11 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import kotlin.math.round
 
 
-enum class TimerStates {
-    WAITING_FOR_START, RUNNING, FINISHED
-}
-
-
 class MeditationTimer(initialSessionLength: Double = 10.0) {
 
     private val _sessionLength = MutableLiveData(initialSessionLength)
