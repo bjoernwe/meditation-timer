@@ -9,6 +9,7 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.platform.setContent
+import androidx.core.content.edit
 import androidx.lifecycle.ViewModelProvider
 import app.upaya.timer.R
 import app.upaya.timer.timer.TimerAnalyticsLogger
@@ -102,7 +103,7 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
 
     private fun saveSessionLength(newSessionLength: Float) {
         val prefs = application.getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE)
-        prefs.edit()?.putFloat(getString(R.string.pref_session_length), newSessionLength)?.apply()
+        prefs.edit { putFloat(getString(R.string.pref_session_length), newSessionLength) }
     }
 
     private fun showSessionRatingDialog() {
