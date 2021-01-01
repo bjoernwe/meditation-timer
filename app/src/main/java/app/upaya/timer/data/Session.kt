@@ -1,8 +1,7 @@
-package app.upaya.timer.timer
+package app.upaya.timer.data
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.Ignore
 import androidx.room.PrimaryKey
 
 
@@ -17,8 +16,5 @@ data class Session @JvmOverloads constructor(
 
     @ColumnInfo
     val length: Int,
-
-    //@Ignore
-    //val start_time: Float = endTime - length
 
 )
