@@ -1,33 +1,59 @@
 package app.upaya.timer.timer
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.*
+import kotlinx.coroutines.*
 
 
-class TimerViewModel(initialSessionLength: Double) : ViewModel() {
+class TimerViewModel(application: Application, initialSessionLength: Double) : AndroidViewModel(application) {
 
-    private val timer = MeditationTimer(initialSessionLength)
-    private val secondsLeft: LiveData<Int> = timer.secondsLeft
+    // Timer
+    val timer = MeditationTimer(initialSessionLength)
 
-    val sessionLength: LiveData<Double> = timer.sessionLength
-    val state: LiveData<TimerStates> = timer.state
+    // Transformations
+    val isRunning: LiveData<Boolean> = Transformations.map(timer.state) { it == TimerStates.RUNNING }
+    val secondsLeftString: LiveData<String> = Transformations.map(timer.secondsLeft) { fromSecsToTimeString(it) }
 
-    val isRunning: LiveData<Boolean> = Transformations.map(state) { it == TimerStates.RUNNING }
-    val secondsLeftString: LiveData<String> = Transformations.map(secondsLeft) { fromSecsToTimeString(it) }
+    // Room Database
+    private val db = SessionDatabase.getInstance(this.getApplication())
+    private val sessionDao = db.sessionDao
 
-    fun startCountdown() {
-        if (state.value == TimerStates.WAITING_FOR_START) {
-            timer.startCountdown()
+    // Coroutines
+    private val viewModelJob = Job()
+    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+
+    // Event Handling
+    private var stateObserver: Observer<TimerStates> = Observer { onTimerStateChanged(it) }
+    init { timer.state.observeForever(stateObserver) }
+
+    private fun onTimerStateChanged(newState: TimerStates) {
+        when (newState) {
+            TimerStates.FINISHED -> {
+                logSessionFinished()
+            } else -> { }
         }
     }
 
-    fun submitRating(rating: Float) {
-        timer.submitRating(rating)
+    private fun logSessionFinished() {
+        uiScope.launch {
+            storeSession()
+        }
+    }
+
+    private suspend fun storeSession() {
+        withContext(Dispatchers.IO) {
+            timer.sessionLength.value?.let { sessionDao.insert(Session(length = it.toInt())) }
+        }
     }
 
     private fun fromSecsToTimeString(seconds: Int) : String {
         return "%d:%02d:%02d".format(seconds/3600, seconds/60, seconds%60)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
+        timer.state.removeObserver(stateObserver)
     }
 
 }
