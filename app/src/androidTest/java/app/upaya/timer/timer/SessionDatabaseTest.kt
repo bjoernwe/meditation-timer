@@ -28,15 +28,19 @@ class SessionDatabaseTest {
     fun createDb() {
 
         // Initialize Room DB (in memory)
-        val context = InstrumentationRegistry.getInstrumentation().targetContext
-        db = Room.inMemoryDatabaseBuilder(context, SessionDatabase::class.java)
-                .allowMainThreadQueries()
-                .build()
+        db = initSessionDatabase()
         sessionDao = db.sessionDao
 
         // Add two sessions
         sessionDao.insert(Session(length = 1))
         sessionDao.insert(Session(length = 3))
+    }
+
+    private fun initSessionDatabase(): SessionDatabase {
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        return Room.inMemoryDatabaseBuilder(context, SessionDatabase::class.java)
+                .allowMainThreadQueries()
+                .build()
     }
 
     @After
