@@ -77,8 +77,8 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
     private fun onTimerStateChanged(newTimerState: TimerStates) {
         when (newTimerState) {
             TimerStates.FINISHED -> {
-                playBell()
                 showSessionRatingDialog()
+                playBell()
                 timerAnalyticsLogger?.logSessionFinished()
             }
             else -> { }
