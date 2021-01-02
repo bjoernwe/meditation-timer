@@ -22,7 +22,7 @@ import timber.log.Timber
 class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
 
     private var mediaPlayer: MediaPlayer? = null
-    private var timerAnalyticsLogger: TimerAnalyticsLogger? = null
+    private lateinit var timerAnalyticsLogger: TimerAnalyticsLogger
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
             TimerStates.FINISHED -> {
                 showSessionRatingDialog()
                 playBell()
-                timerAnalyticsLogger?.logSessionFinished()
+                timerAnalyticsLogger.logSessionFinished()
             }
             else -> { }
         }
