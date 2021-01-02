@@ -1,24 +1,28 @@
 package app.upaya.timer.data
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 
 
 @Dao
 interface SessionDao {
 
-    @Insert
-    suspend fun insert(session: Session)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    fun insert(session: Session)
+
+    //@Update
+    //suspend fun update(session: Session)
+
+    //@Query("SELECT * FROM sessions")
+    //suspend fun getAllSessions(): List<Session>
 
     @Query("SELECT COUNT(*) FROM sessions")
-    fun getSessionsNumber(): LiveData<Int>
+    fun getSessionCount(): LiveData<Int>
 
     @Query("SELECT AVG(length) FROM sessions")
-    fun getSessionsAvg(): LiveData<Float>
+    fun getSessionAvg(): LiveData<Float>
 
     @Query("SELECT MAX(length) FROM sessions")
-    fun getSessionsMax(): LiveData<Int>
+    fun getSessionMax(): LiveData<Int>
 
 }
