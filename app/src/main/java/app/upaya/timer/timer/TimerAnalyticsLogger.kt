@@ -13,7 +13,7 @@ class TimerAnalyticsLogger(activity: AppCompatActivity) {
 
     fun logSessionFinished() {
         firebaseAnalytics.logEvent("timer_session") {
-            timerViewModel.timer.sessionLength.value?.let { this.param("duration", it) }
+            timerViewModel.sessionLength.value?.let { this.param("duration", it) }
         }
     }
 

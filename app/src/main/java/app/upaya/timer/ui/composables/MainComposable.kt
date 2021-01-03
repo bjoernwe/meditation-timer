@@ -23,7 +23,7 @@ fun MainComposable(timerViewModel: TimerViewModel,
 {
 
     val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
-    val timerState = timerViewModel.timer.state.observeAsState(TimerStates.WAITING_FOR_START)
+    val timerState = timerViewModel.state.observeAsState(TimerStates.WAITING_FOR_START)
 
     TimerTheme {
 
@@ -40,7 +40,7 @@ fun MainComposable(timerViewModel: TimerViewModel,
 
                 TimerRing(
                         activated = timerViewModel.isRunning.observeAsState(false),
-                        text = timerViewModel.secondsLeftString.observeAsState(""),
+                        text = timerViewModel.secondsRemainingString.observeAsState(""),
                         onClick = onClick
                 )
 

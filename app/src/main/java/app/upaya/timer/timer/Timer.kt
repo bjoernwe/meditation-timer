@@ -1,75 +1,58 @@
 package app.upaya.timer.timer
 
-import android.content.Context
 import android.os.CountDownTimer
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import kotlin.math.round
 
 
-class Timer private constructor(initialSessionLength: Double) {
+class Timer(
+        private var sessionLength: Double,
+        private val onStart: () -> Unit = {},
+        private val onTick: (secondsRemaining: Double) -> Unit = {},
+        private val onFinish: () -> Unit = {}
+) {
 
-    private val _sessionLength = MutableLiveData(initialSessionLength)
-    private val _secondsLeft = MutableLiveData(0)
-    private val _state = MutableLiveData(TimerStates.WAITING_FOR_START)
-
-    val sessionLength: LiveData<Double> = _sessionLength
-    val secondsLeft: LiveData<Int> = _secondsLeft
-    val state: LiveData<TimerStates> = _state
+    @Volatile
+    private var countDownTimer: CountDownTimer? = null
 
     fun startCountdown() {
 
-        if (_state.value != TimerStates.WAITING_FOR_START) return
+        synchronized(this) {
 
-        _secondsLeft.value = sessionLength.value?.toInt() ?: 10
-        _state.value = TimerStates.RUNNING
+            if (countDownTimer != null) return
 
-        val timerDuration: Long = (secondsLeft.value ?: 0).toLong() * 1000
+            val timerDuration: Long = sessionLength.toLong() * 1000
 
-        object : CountDownTimer(timerDuration, 1000) {
+            countDownTimer = object : CountDownTimer(timerDuration, 1000) {
 
-            override fun onTick(millisRemaining: Long) {
-                _secondsLeft.value = round(millisRemaining / 1000.0).toInt()
-            }
+                override fun onTick(millisRemaining: Long) {
+                    onTick(millisRemaining / 1000.0)
+                }
 
-            override fun onFinish() {
-                _secondsLeft.value = 0
-                _state.value = TimerStates.FINISHED  // trigger bell & feedback dialog
-                _state.value = TimerStates.WAITING_FOR_START
-            }
+                override fun onFinish() {
+                    countDownTimer = null
+                    this@Timer.onFinish()
+                }
 
-        }.start()
+            }.start()
 
+            onStart()
+
+        }
+
+    }
+
+    fun getSessionLength(): Double {
+        return sessionLength
     }
 
     fun increaseSessionLength() {
-        _sessionLength.value = _sessionLength.value?.times(1.1)
+        sessionLength = sessionLength.times(1.1)
     }
 
     fun decreaseSessionLength() {
-        val newSessionLength = _sessionLength.value?.times(0.8) ?: return
+        val newSessionLength = sessionLength.times(0.8)
         if (newSessionLength >= 1.0) {
-            _sessionLength.value = newSessionLength
+            sessionLength = newSessionLength
         }
-    }
-
-    // Singleton
-    companion object {
-
-        @Volatile
-        private var INSTANCE: Timer? = null
-
-        fun getInstance(initialSessionLength: Double): Timer {
-            synchronized(this) {
-                var instance = INSTANCE
-                if (instance == null) {
-                    instance = Timer(initialSessionLength)
-                    INSTANCE = instance
-                }
-                return instance
-            }
-        }
-
     }
 
 }

@@ -47,8 +47,8 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
         }
 
         // Register event callbacks
-        timerViewModel.timer.state.observe(this, { onTimerStateChanged(it) })
-        timerViewModel.timer.sessionLength.observe(this, { onSessionLengthChanged(it) })
+        timerViewModel.state.observe(this, { onTimerStateChanged(it) })
+        timerViewModel.sessionLength.observe(this, { onSessionLengthChanged(it) })
         mediaPlayer?.setOnErrorListener(this)
 
         // Firebase Analytics
@@ -73,8 +73,8 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
     }
 
     private fun onCircleClicked(timerViewModel: TimerViewModel) {
-        if (timerViewModel.timer.state.value == TimerStates.WAITING_FOR_START) {
-            timerViewModel.timer.startCountdown()
+        if (timerViewModel.state.value == TimerStates.WAITING_FOR_START) {
+            timerViewModel.startCountdown()
             vibrate(50, 100)
         }
     }
