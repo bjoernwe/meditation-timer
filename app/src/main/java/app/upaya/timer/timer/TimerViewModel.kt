@@ -11,7 +11,7 @@ import kotlinx.coroutines.*
 class TimerViewModel(application: Application, initialSessionLength: Double) : AndroidViewModel(application) {
 
     // Timer
-    val timer = Timer(initialSessionLength)
+    val timer = Timer.getInstance(initialSessionLength)
 
     // Transformations
     val isRunning: LiveData<Boolean> = Transformations.map(timer.state) { it == TimerStates.RUNNING }

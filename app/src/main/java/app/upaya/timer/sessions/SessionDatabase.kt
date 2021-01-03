@@ -11,12 +11,12 @@ abstract class SessionDatabase : RoomDatabase() {
 
     abstract val sessionDao: SessionDao
 
+    // Singleton
     companion object {
 
         @Volatile
         private var INSTANCE: SessionDatabase? = null
 
-        // Singleton
         fun getInstance(context: Context): SessionDatabase {
             synchronized(this) {
                 var instance = INSTANCE
