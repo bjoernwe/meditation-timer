@@ -31,7 +31,7 @@ private val darkColorPalette = darkColors(
         surface = blueGrey800,
         background = blueGrey800Dark,
         onSurface = Color.White,
-        onBackground = mixColors(cyan900Light, blueGrey800),
+        onBackground = mixColors(cyan900, blueGrey800),
 )
 
 @Composable
