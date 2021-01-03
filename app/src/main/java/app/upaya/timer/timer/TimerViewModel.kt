@@ -1,24 +1,59 @@
 package app.upaya.timer.timer
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.*
+import app.upaya.timer.data.Session
+import app.upaya.timer.data.SessionDatabase
+import app.upaya.timer.ui.fromSecsToTimeString
+import kotlinx.coroutines.*
 
 
-class TimerViewModel(initialSessionLength: Double) : ViewModel() {
+class TimerViewModel(application: Application, initialSessionLength: Double) : AndroidViewModel(application) {
 
-    private val timer = MeditationTimer(initialSessionLength)
+    // Timer
+    val timer = MeditationTimer(initialSessionLength)
 
-    val sessionLength: LiveData<Double> = timer.sessionLength
-    val secondsLeft: LiveData<Int> = timer.secondsLeft
-    val state: LiveData<TimerStates> = timer.state
+    // Transformations
+    val isRunning: LiveData<Boolean> = Transformations.map(timer.state) { it == TimerStates.RUNNING }
+    val secondsLeftString: LiveData<String> = Transformations.map(timer.secondsLeft) { fromSecsToTimeString(it) }
 
-    fun startCountdown() {
-        timer.startCountdown()
+    // Sessions
+    private val sessionDao = SessionDatabase.getInstance(application).sessionDao
+    val sessionCount: LiveData<Int> = sessionDao.getSessionCount()
+    val sessionAvg: LiveData<Float> = sessionDao.getSessionAvg()
+
+    // Coroutines
+    private val viewModelJob = Job()
+    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+
+    // Event Handling
+    private var stateObserver: Observer<TimerStates> = Observer { onTimerStateChanged(it) }
+    init { timer.state.observeForever(stateObserver) }
+
+    private fun onTimerStateChanged(newState: TimerStates) {
+        when (newState) {
+            TimerStates.FINISHED -> {
+                logSessionFinished()
+            } else -> { }
+        }
     }
 
-    fun submitRating(rating: Float, maxRating: Int) {
-        val normalizedRating: Float = rating / maxRating.toFloat()
-        timer.submitRating(normalizedRating)
+    private fun logSessionFinished() {
+        uiScope.launch {
+            storeSession()
+        }
+    }
+
+    private suspend fun storeSession() {
+        withContext(Dispatchers.IO) {
+            timer.sessionLength.value?.let { sessionDao.insert(Session(length = it.toInt())) }
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
+        timer.state.removeObserver(stateObserver)
     }
 
 }
