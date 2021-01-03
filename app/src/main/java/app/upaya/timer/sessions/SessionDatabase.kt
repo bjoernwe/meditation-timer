@@ -16,6 +16,7 @@ abstract class SessionDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: SessionDatabase? = null
 
+        // Singleton
         fun getInstance(context: Context): SessionDatabase {
             synchronized(this) {
                 var instance = INSTANCE
