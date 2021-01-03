@@ -112,8 +112,10 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
     }
 
     override fun onError(mediaPlayer: MediaPlayer?, what: Int, extra: Int): Boolean {
-        Timber.e("MediaPlayer Error $what")
-        return false
+        val errorMessage = "MediaPlayer Error $what"
+        Timber.e(errorMessage)
+        FirebaseCrashlytics.getInstance().recordException(RuntimeException(errorMessage))
+        return true
     }
 
 }
