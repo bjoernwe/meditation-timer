@@ -17,6 +17,7 @@ import app.upaya.timer.timer.TimerStates
 import app.upaya.timer.timer.TimerViewModel
 import app.upaya.timer.timer.TimerViewModelFactory
 import app.upaya.timer.ui.composables.MainComposable
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import timber.log.Timber
 
 
