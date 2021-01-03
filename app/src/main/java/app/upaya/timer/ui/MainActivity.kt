@@ -12,6 +12,7 @@ import androidx.compose.ui.platform.setContent
 import androidx.core.content.edit
 import androidx.lifecycle.ViewModelProvider
 import app.upaya.timer.R
+import app.upaya.timer.sessions.SessionViewModel
 import app.upaya.timer.timer.TimerAnalyticsLogger
 import app.upaya.timer.timer.TimerStates
 import app.upaya.timer.timer.TimerViewModel
@@ -32,6 +33,7 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
         super.onCreate(savedInstanceState)
 
         // Obtain ViewModel from ViewModelProviders
+        val sessionViewModel = ViewModelProvider(this).get(SessionViewModel::class.java)
         val timerViewModelFactory = TimerViewModelFactory(application)
         val timerViewModel = ViewModelProvider(this, timerViewModelFactory).get(TimerViewModel::class.java)
 
@@ -39,6 +41,7 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
         setContent {
             MainComposable(
                     timerViewModel = timerViewModel,
+                    sessionViewModel = sessionViewModel,
                     onClick = { onCircleClicked(timerViewModel) }
             )
         }

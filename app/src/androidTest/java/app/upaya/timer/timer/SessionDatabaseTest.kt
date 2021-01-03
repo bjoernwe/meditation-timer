@@ -4,9 +4,9 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import app.upaya.timer.data.Session
-import app.upaya.timer.data.SessionDao
-import app.upaya.timer.data.SessionDatabase
+import app.upaya.timer.sessions.Session
+import app.upaya.timer.sessions.SessionDao
+import app.upaya.timer.sessions.SessionDatabase
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule

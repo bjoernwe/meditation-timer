@@ -1,4 +1,4 @@
-package app.upaya.timer.data
+package app.upaya.timer.sessions
 
 import android.content.Context
 import androidx.room.Database

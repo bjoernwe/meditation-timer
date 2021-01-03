@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import kotlin.math.round
 
 
-class MeditationTimer(initialSessionLength: Double = 10.0) {
+class Timer(initialSessionLength: Double = 10.0) {
 
     private val _sessionLength = MutableLiveData(initialSessionLength)
     private val _secondsLeft = MutableLiveData(0)
