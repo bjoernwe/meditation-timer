@@ -9,7 +9,7 @@ import kotlin.math.round
 class MeditationTimer(initialSessionLength: Double = 10.0) {
 
     private val _sessionLength = MutableLiveData(initialSessionLength)
-    private val _secondsLeft =  MutableLiveData(0)
+    private val _secondsLeft = MutableLiveData(0)
     private val _state = MutableLiveData(TimerStates.WAITING_FOR_START)
 
     val sessionLength: LiveData<Double> = _sessionLength

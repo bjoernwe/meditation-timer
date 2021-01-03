@@ -1,8 +1,7 @@
-package app.upaya.timer.ui
+package app.upaya.timer.ui.composables
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.offset
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,17 +17,17 @@ fun ShadowText(text: String, modifier: Modifier = Modifier) {
 
         text.let {
 
-            // Text
+            // Shadow
             Text(
                 text = it,
                 color = Color(0, 0, 0, 64),
                 modifier = modifier.offset(2.dp, 2.dp)
             )
 
-            // Shadow
+            // Text
             Text(
                 text = it,
-                color = MaterialTheme.colors.onBackground
+                color = Color.White
             )
 
         }

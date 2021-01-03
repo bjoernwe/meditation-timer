@@ -1,4 +1,4 @@
-package app.upaya.timer.ui
+package app.upaya.timer.ui.composables
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.Box
@@ -10,16 +10,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.ui.tooling.preview.Preview
 
 
 @Composable
-fun TimerRing(isRunning: State<Boolean>, secondsLeft: State<String>, onClick: () -> Unit) {
+fun TimerRing(activated: State<Boolean>, text: State<String>, onClick: () -> Unit) {
 
     // Ripple effect when clicking ring
     val rippleIndication = rememberRippleIndication(
-        //radius = 0.dp,
         bounded = false,
-        color = Color.Transparent
+        color = Color.Black
     )
 
     Box(contentAlignment = Alignment.Center,
@@ -28,24 +28,35 @@ fun TimerRing(isRunning: State<Boolean>, secondsLeft: State<String>, onClick: ()
             .fillMaxSize()
             .clickable(
                 onClick = onClick,
-                enabled = !isRunning.value,
+                enabled = !activated.value,
                 indication = rippleIndication,
             )
     ) {
 
         // Ring
         MaterialRing(
-            size = 200.dp,
-            thickness = 16.dp,
+            size = 180.dp,
+            thickness = 12.dp,
             depth = 3.dp,
-            color = if (isRunning.value) Color.White else teal200
+            color = if (activated.value) Color.White else MaterialTheme.colors.primary
         )
 
         // Text
-        if (isRunning.value) {
-            ShadowText(text = secondsLeft.value)
+        if (activated.value) {
+            ShadowText(text = text.value)
         }
 
     }
 
+}
+
+
+@Preview
+@Composable
+fun TimerRingPreview() {
+    TimerRing(
+            activated = mutableStateOf(false),
+            text = mutableStateOf("0:00:00"),
+            onClick = { }
+    )
 }
