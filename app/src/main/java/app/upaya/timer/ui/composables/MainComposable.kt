@@ -3,7 +3,6 @@ package app.upaya.timer.ui.composables
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.ConstraintLayout
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
@@ -19,9 +18,8 @@ import app.upaya.timer.timer.TimerViewModel
 @Composable
 fun MainComposable(timerViewModel: TimerViewModel, onClick: () -> Unit) {
 
-    val sessionLength = timerViewModel.sessionLengthString.observeAsState("")
     val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
-    val timerState = timerViewModel.state.observeAsState(TimerStates.WAITING_FOR_START)
+    val timerState = timerViewModel.timer.state.observeAsState(TimerStates.WAITING_FOR_START)
 
     TimerTheme {
 
@@ -30,14 +28,8 @@ fun MainComposable(timerViewModel: TimerViewModel, onClick: () -> Unit) {
                 scrimColor = Color(0, 0, 0, 128),
                 sheetBackgroundColor = MaterialTheme.colors.background,
                 sheetContent = {
-
-                    Text(
-                            text = "Current Session Length: ${sessionLength.value}",
-                            color = MaterialTheme.colors.onSurface,
-                            modifier = Modifier.padding(16.dp)
-                    )
-
-                }  // sheetContent
+                    SessionStats(timerViewModel = timerViewModel)
+                }
         ) {
 
             ConstraintLayout {
