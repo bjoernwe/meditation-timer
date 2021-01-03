@@ -1,14 +1,15 @@
 package app.upaya.timer.ui
 
+import android.content.Context
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
-import android.preference.PreferenceManager
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.ui.platform.setContent
+import androidx.core.content.edit
 import androidx.lifecycle.ViewModelProvider
 import app.upaya.timer.R
 import app.upaya.timer.timer.TimerAnalyticsLogger
@@ -22,7 +23,7 @@ import timber.log.Timber
 class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
 
     private var mediaPlayer: MediaPlayer? = null
-    private var timerAnalyticsLogger: TimerAnalyticsLogger? = null
+    private lateinit var timerAnalyticsLogger: TimerAnalyticsLogger
 
     @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,8 +43,8 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
         }
 
         // Register event callbacks
-        timerViewModel.state.observe(this, { onTimerStateChanged(it) })
-        timerViewModel.sessionLength.observe(this, { onSessionLengthChanged(it) })
+        timerViewModel.timer.state.observe(this, { onTimerStateChanged(it) })
+        timerViewModel.timer.sessionLength.observe(this, { onSessionLengthChanged(it) })
         mediaPlayer?.setOnErrorListener(this)
 
         // Firebase Analytics
@@ -68,8 +69,8 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
     }
 
     private fun onCircleClicked(timerViewModel: TimerViewModel) {
-        if (timerViewModel.state.value == TimerStates.WAITING_FOR_START) {
-            timerViewModel.startCountdown()
+        if (timerViewModel.timer.state.value == TimerStates.WAITING_FOR_START) {
+            timerViewModel.timer.startCountdown()
             vibrate(50, 100)
         }
     }
@@ -77,11 +78,11 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
     private fun onTimerStateChanged(newTimerState: TimerStates) {
         when (newTimerState) {
             TimerStates.FINISHED -> {
-                playBell()
                 showSessionRatingDialog()
-                timerAnalyticsLogger?.logSessionFinished()
+                playBell()
+                timerAnalyticsLogger.logSessionFinished()
             }
-            else -> {}
+            else -> { }
         }
     }
 
@@ -102,8 +103,8 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
     }
 
     private fun saveSessionLength(newSessionLength: Float) {
-        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        prefs.edit()?.putFloat(getString(R.string.pref_session_length), newSessionLength)?.apply()
+        val prefs = application.getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE)
+        prefs.edit { putFloat(getString(R.string.pref_session_length), newSessionLength) }
     }
 
     private fun showSessionRatingDialog() {

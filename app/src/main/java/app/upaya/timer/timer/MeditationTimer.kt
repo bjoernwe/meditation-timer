@@ -6,11 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import kotlin.math.round
 
 
-enum class TimerStates {
-    WAITING_FOR_START, RUNNING, FINISHED
-}
-
-
 class MeditationTimer(initialSessionLength: Double = 10.0) {
 
     private val _sessionLength = MutableLiveData(initialSessionLength)
@@ -46,13 +41,14 @@ class MeditationTimer(initialSessionLength: Double = 10.0) {
 
     }
 
-    fun submitRating(rating: Float) {
-        if (rating.isNaN())
-            return
-        if (rating >= .5) {
-            _sessionLength.value = _sessionLength.value?.times(1.1)
-        } else {
-            _sessionLength.value = _sessionLength.value?.times(0.8)
+    fun increaseSessionLength() {
+        _sessionLength.value = _sessionLength.value?.times(1.1)
+    }
+
+    fun decreaseSessionLength() {
+        val newSessionLength = _sessionLength.value?.times(0.8) ?: return
+        if (newSessionLength >= 1.0) {
+            _sessionLength.value = newSessionLength
         }
     }
 
