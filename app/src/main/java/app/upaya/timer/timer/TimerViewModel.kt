@@ -6,7 +6,6 @@ import app.upaya.timer.data.Session
 import app.upaya.timer.data.SessionDatabase
 import app.upaya.timer.ui.fromSecsToTimeString
 import kotlinx.coroutines.*
-import kotlin.math.round
 
 
 class TimerViewModel(application: Application, initialSessionLength: Double) : AndroidViewModel(application) {
@@ -19,13 +18,9 @@ class TimerViewModel(application: Application, initialSessionLength: Double) : A
     val secondsLeftString: LiveData<String> = Transformations.map(timer.secondsLeft) { fromSecsToTimeString(it) }
 
     // Sessions
-    private val sessionDatabase = SessionDatabase.getInstance(application)
-    val sessionCount: LiveData<Int> = sessionDatabase.sessionDao.getSessionCount()
-    val sessionAvg: LiveData<Float> = sessionDatabase.sessionDao.getSessionAvg()
-
-    // Room Database
-    private val db = SessionDatabase.getInstance(this.getApplication())
-    private val sessionDao = db.sessionDao
+    private val sessionDao = SessionDatabase.getInstance(application).sessionDao
+    val sessionCount: LiveData<Int> = sessionDao.getSessionCount()
+    val sessionAvg: LiveData<Float> = sessionDao.getSessionAvg()
 
     // Coroutines
     private val viewModelJob = Job()
