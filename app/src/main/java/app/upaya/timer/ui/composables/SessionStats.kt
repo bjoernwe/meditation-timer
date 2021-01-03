@@ -8,15 +8,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import app.upaya.timer.timer.TimerViewModel
+import app.upaya.timer.sessions.SessionViewModel
 import app.upaya.timer.ui.fromSecsToTimeString
 
 
 @Composable
-fun SessionStats(timerViewModel: TimerViewModel) {
+fun SessionStats(sessionViewModel: SessionViewModel) {
 
-    val sessionAvg = timerViewModel.sessionAvg.observeAsState(initial = 0f)
-    val sessionCount = timerViewModel.sessionCount.observeAsState(initial = 0)
+    val sessionAvg = sessionViewModel.sessionAvg.observeAsState(initial = 0f)
+    val sessionCount = sessionViewModel.sessionCount.observeAsState(initial = 0)
 
     Column(Modifier.padding(16.dp)) {
 

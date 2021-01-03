@@ -1,4 +1,4 @@
-package app.upaya.timer.data
+package app.upaya.timer.sessions
 
 import android.content.Context
 import androidx.room.Database
@@ -11,6 +11,7 @@ abstract class SessionDatabase : RoomDatabase() {
 
     abstract val sessionDao: SessionDao
 
+    // Singleton
     companion object {
 
         @Volatile

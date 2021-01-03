@@ -1,12 +1,13 @@
 package app.upaya.timer.timer
 
+import android.content.Context
 import android.os.CountDownTimer
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlin.math.round
 
 
-class MeditationTimer(initialSessionLength: Double = 10.0) {
+class Timer private constructor(initialSessionLength: Double) {
 
     private val _sessionLength = MutableLiveData(initialSessionLength)
     private val _secondsLeft = MutableLiveData(0)
@@ -25,7 +26,7 @@ class MeditationTimer(initialSessionLength: Double = 10.0) {
 
         val timerDuration: Long = (secondsLeft.value ?: 0).toLong() * 1000
 
-        object: CountDownTimer(timerDuration, 1000) {
+        object : CountDownTimer(timerDuration, 1000) {
 
             override fun onTick(millisRemaining: Long) {
                 _secondsLeft.value = round(millisRemaining / 1000.0).toInt()
@@ -50,6 +51,25 @@ class MeditationTimer(initialSessionLength: Double = 10.0) {
         if (newSessionLength >= 1.0) {
             _sessionLength.value = newSessionLength
         }
+    }
+
+    // Singleton
+    companion object {
+
+        @Volatile
+        private var INSTANCE: Timer? = null
+
+        fun getInstance(initialSessionLength: Double): Timer {
+            synchronized(this) {
+                var instance = INSTANCE
+                if (instance == null) {
+                    instance = Timer(initialSessionLength)
+                    INSTANCE = instance
+                }
+                return instance
+            }
+        }
+
     }
 
 }
