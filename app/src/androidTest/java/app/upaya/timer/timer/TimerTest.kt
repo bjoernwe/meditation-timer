@@ -6,10 +6,6 @@ import org.junit.Test
 class TimerTest {
 
     @Test
-    fun startCountdown() {
-    }
-
-    @Test
     fun getSessionLength() {
 
         // GIVEN a timer
