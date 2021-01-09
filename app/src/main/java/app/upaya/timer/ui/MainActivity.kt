@@ -1,6 +1,5 @@
 package app.upaya.timer.ui
 
-import android.content.Context
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.VibrationEffect
@@ -9,14 +8,10 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.ui.platform.setContent
-import androidx.core.content.edit
 import androidx.lifecycle.ViewModelProvider
 import app.upaya.timer.R
 import app.upaya.timer.sessions.SessionViewModel
-import app.upaya.timer.timer.TimerAnalyticsLogger
-import app.upaya.timer.timer.TimerStates
-import app.upaya.timer.timer.TimerViewModel
-import app.upaya.timer.timer.TimerViewModelFactory
+import app.upaya.timer.timer.*
 import app.upaya.timer.ui.composables.MainComposable
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import timber.log.Timber
@@ -26,6 +21,7 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
 
     private var mediaPlayer: MediaPlayer? = null
     private lateinit var timerAnalyticsLogger: TimerAnalyticsLogger
+    private lateinit var timerViewModel: TimerViewModel
 
     @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,21 +30,20 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
 
         // Obtain ViewModel from ViewModelProviders
         val sessionViewModel = ViewModelProvider(this).get(SessionViewModel::class.java)
-        val timerViewModelFactory = TimerViewModelFactory(application)
-        val timerViewModel = ViewModelProvider(this, timerViewModelFactory).get(TimerViewModel::class.java)
+        val timerViewModelFactory = TimerViewModelFactory(this)
+        timerViewModel = ViewModelProvider(this, timerViewModelFactory).get(TimerViewModel::class.java)
 
         // Emit Main Composable
         setContent {
             MainComposable(
                     timerViewModel = timerViewModel,
                     sessionViewModel = sessionViewModel,
-                    onClick = { onCircleClicked(timerViewModel) }
+                    onClick = ::onCircleClicked
             )
         }
 
         // Register event callbacks
         timerViewModel.state.observe(this, { onTimerStateChanged(it) })
-        timerViewModel.sessionLength.observe(this, { onSessionLengthChanged(it) })
         mediaPlayer?.setOnErrorListener(this)
 
         // Firebase Analytics
@@ -72,7 +67,7 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
         mediaPlayer = null
     }
 
-    private fun onCircleClicked(timerViewModel: TimerViewModel) {
+    private fun onCircleClicked() {
         if (timerViewModel.state.value == TimerStates.WAITING_FOR_START) {
             timerViewModel.startCountdown()
             vibrate(50, 100)
@@ -100,15 +95,6 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
         getSystemService(Vibrator::class.java).vibrate(
                 VibrationEffect.createOneShot(milliseconds, amplitude)
         )
-    }
-
-    private fun onSessionLengthChanged(newSessionLength: Double) {
-        saveSessionLength(newSessionLength.toFloat())
-    }
-
-    private fun saveSessionLength(newSessionLength: Float) {
-        val prefs = application.getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE)
-        prefs.edit { putFloat(getString(R.string.pref_session_length), newSessionLength) }
     }
 
     private fun showSessionRatingDialog() {

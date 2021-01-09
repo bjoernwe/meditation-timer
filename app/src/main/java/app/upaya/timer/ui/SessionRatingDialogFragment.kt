@@ -27,12 +27,12 @@ class SessionRatingDialogFragment : BottomSheetDialogFragment() {
         val timerViewModel = ViewModelProvider(requireActivity(), timerViewModelFactory).get(TimerViewModel::class.java)
 
         view.findViewById<ImageView>(R.id.ratingDownImageView).setOnClickListener {
-            timerViewModel.timer.increaseSessionLength()
+            timerViewModel.increaseSessionLength()
             this.dismiss()
         }
 
         view.findViewById<ImageView>(R.id.ratingUpImageView).setOnClickListener {
-            timerViewModel.timer.decreaseSessionLength()
+            timerViewModel.decreaseSessionLength()
             this.dismiss()
         }
 

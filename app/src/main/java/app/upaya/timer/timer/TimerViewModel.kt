@@ -1,18 +1,19 @@
 package app.upaya.timer.timer
 
-import android.app.Application
+import android.content.Context
 import androidx.lifecycle.*
 import app.upaya.timer.sessions.Session
 import app.upaya.timer.sessions.SessionRepository
-import app.upaya.timer.ui.fromSecsToTimeString
 import kotlinx.coroutines.*
 
 
-class TimerViewModel(application: Application, initialSessionLength: Double) : AndroidViewModel(application) {
+class TimerViewModel(context: Context) : ViewModel() {
+
+    private val timerRepository = TimerRepository(context)
 
     // Timer
-    val timer = Timer(
-            sessionLength = initialSessionLength,
+    private val timer = Timer(
+            sessionLength = timerRepository.loadSessionLength(),
             onStart = ::onTimerStart,
             onTick = ::onTimerTick,
             onFinish = ::onTimerFinish
@@ -22,22 +23,21 @@ class TimerViewModel(application: Application, initialSessionLength: Double) : A
     private val _secondsRemaining = MutableLiveData(0.0)
     private val _sessionLength = MutableLiveData(timer.getSessionLength())
     private val _state = MutableLiveData(TimerStates.WAITING_FOR_START)
-    private val secondsRemaining: LiveData<Double> = _secondsRemaining
+    val secondsRemaining: LiveData<Double> = _secondsRemaining
     val sessionLength: LiveData<Double> = _sessionLength
     val state: LiveData<TimerStates> = _state
 
     // Transformations
     val isRunning: LiveData<Boolean> = Transformations.map(state) { it == TimerStates.RUNNING }
-    val secondsRemainingString: LiveData<String> = Transformations.map(secondsRemaining) {
-        fromSecsToTimeString(it.toInt())
-    }
 
     // Event Handling
-    private var stateObserver: Observer<TimerStates> = Observer { onTimerStateChanged(it) }
+    // We use observeForever() because we don't want to have any LivecycleOwner in the ViewModel.
+    // The observer is removed in onCleared().
+    private var stateObserver: Observer<TimerStates> = Observer(::onTimerStateChanged)
     init { state.observeForever(stateObserver) }
 
     // Sessions
-    private val sessionRepository = SessionRepository(application)
+    private val sessionRepository = SessionRepository(context)
 
     // Timer events
     private fun onTimerStart() { _state.value = TimerStates.RUNNING }
@@ -52,25 +52,41 @@ class TimerViewModel(application: Application, initialSessionLength: Double) : A
     private fun onTimerStateChanged(newState: TimerStates) {
         when (newState) {
             TimerStates.FINISHED -> {
-                logFinishedSession()
+                storeFinishedSession()
             } else -> { }
         }
     }
 
-    private fun logFinishedSession() {
+    private fun storeFinishedSession() {
         sessionLength.value?.let {
             val session = Session(length = it.toInt())
             MainScope().launch { sessionRepository.storeSession(session) }
         }
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        state.removeObserver(stateObserver)
+    }
+
+    /**
+     * Pass-through from Timer
+     */
+
     fun startCountdown() {
         timer.startCountdown()
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        state.removeObserver(stateObserver)
+    fun increaseSessionLength() {
+        timer.increaseSessionLength()
+        val newSessionLength = timer.getSessionLength()
+        timerRepository.storeSessionLength(newSessionLength)
+    }
+
+    fun decreaseSessionLength() {
+        timer.decreaseSessionLength()
+        val newSessionLength = timer.getSessionLength()
+        timerRepository.storeSessionLength(newSessionLength)
     }
 
 }

@@ -9,9 +9,11 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Transformations
 import app.upaya.timer.sessions.SessionViewModel
 import app.upaya.timer.timer.TimerStates
 import app.upaya.timer.timer.TimerViewModel
+import app.upaya.timer.ui.fromSecsToTimeString
 
 
 @ExperimentalAnimationApi
@@ -40,7 +42,9 @@ fun MainComposable(timerViewModel: TimerViewModel,
 
                 TimerRing(
                         activated = timerViewModel.isRunning.observeAsState(false),
-                        text = timerViewModel.secondsRemainingString.observeAsState(""),
+                        text = Transformations.map(timerViewModel.secondsRemaining) {
+                            fromSecsToTimeString(it.toInt())
+                        }.observeAsState(""),
                         onClick = onClick
                 )
 
