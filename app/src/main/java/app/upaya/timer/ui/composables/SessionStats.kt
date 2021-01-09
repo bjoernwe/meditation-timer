@@ -25,10 +25,12 @@ fun SessionStats(sessionViewModel: SessionViewModel) {
                 color = MaterialTheme.colors.onSurface,
         )
 
-        Text(
-                text = "Avg. session length: ${fromSecsToTimeString(sessionAvg.value.toInt())}",
-                color = MaterialTheme.colors.onSurface,
-        )
+        sessionAvg.value?.let {
+            Text(
+                    text = "Avg. session length: ${fromSecsToTimeString(it.toInt())}",
+                    color = MaterialTheme.colors.onSurface,
+            )
+        }
 
     }
 
