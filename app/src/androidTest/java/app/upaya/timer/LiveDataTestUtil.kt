@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package app.upaya.timer.timer
+package app.upaya.timer
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
