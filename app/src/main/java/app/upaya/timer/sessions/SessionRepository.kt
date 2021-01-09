@@ -1,14 +1,14 @@
 package app.upaya.timer.sessions
 
-import android.app.Application
+import android.content.Context
 import androidx.lifecycle.LiveData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 
-class SessionRepository(application: Application) {
+class SessionRepository(context: Context) {
 
-    private val sessionDao = SessionDatabase.getInstance(application).sessionDao
+    private val sessionDao = SessionDatabase.getInstance(context).sessionDao
     val sessionCount: LiveData<Int> = sessionDao.getSessionCount()
     val sessionAvg: LiveData<Float> = sessionDao.getSessionAvg()
 
