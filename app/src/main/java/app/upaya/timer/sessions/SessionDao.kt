@@ -20,7 +20,7 @@ interface SessionDao {
     fun getSessionCount(): LiveData<Int>
 
     @Query("SELECT AVG(length) FROM sessions")
-    fun getSessionAvg(): LiveData<Float>
+    fun getSessionAvg(): LiveData<Float?>
 
     @Query("SELECT MAX(length) FROM sessions")
     fun getSessionMax(): LiveData<Int>

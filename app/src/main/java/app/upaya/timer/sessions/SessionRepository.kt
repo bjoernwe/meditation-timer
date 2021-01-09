@@ -10,7 +10,7 @@ class SessionRepository(application: Application) {
 
     private val sessionDao = SessionDatabase.getInstance(application).sessionDao
     val sessionCount: LiveData<Int> = sessionDao.getSessionCount()
-    val sessionAvg: LiveData<Float> = sessionDao.getSessionAvg()
+    val sessionAvg: LiveData<Float?> = sessionDao.getSessionAvg()
 
     suspend fun storeSession(session: Session) {
         withContext(Dispatchers.IO) {
