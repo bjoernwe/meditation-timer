@@ -22,15 +22,12 @@ class TimerViewModel(application: Application, initialSessionLength: Double) : A
     private val _secondsRemaining = MutableLiveData(0.0)
     private val _sessionLength = MutableLiveData(timer.getSessionLength())
     private val _state = MutableLiveData(TimerStates.WAITING_FOR_START)
-    private val secondsRemaining: LiveData<Double> = _secondsRemaining
+    val secondsRemaining: LiveData<Double> = _secondsRemaining
     val sessionLength: LiveData<Double> = _sessionLength
     val state: LiveData<TimerStates> = _state
 
     // Transformations
     val isRunning: LiveData<Boolean> = Transformations.map(state) { it == TimerStates.RUNNING }
-    val secondsRemainingString: LiveData<String> = Transformations.map(secondsRemaining) {
-        fromSecsToTimeString(it.toInt())
-    }
 
     // Event Handling
     private var stateObserver: Observer<TimerStates> = Observer { onTimerStateChanged(it) }
