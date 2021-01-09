@@ -24,6 +24,8 @@ class SessionDatabaseTest {
     private lateinit var db: SessionDatabase
     private lateinit var sessionDao: SessionDao
 
+    private val numberOfSessionDays = 100
+
     @Before
     fun createDb() {
 
@@ -31,9 +33,12 @@ class SessionDatabaseTest {
         db = initSessionDatabase()
         sessionDao = db.sessionDao
 
-        // Add two sessions
-        sessionDao.insert(Session(length = 1))
-        sessionDao.insert(Session(length = 3))
+        // Add sessions (two for the last N days)
+        for (i in 1..numberOfSessionDays) {
+            val endTime: Float = System.currentTimeMillis() / 1000.0f - i * (60 * 60 * 24)
+            sessionDao.insert(Session(endTime = endTime, length = 1))
+            sessionDao.insert(Session(endTime = endTime, length = 2))
+        }
     }
 
     private fun initSessionDatabase(): SessionDatabase {
@@ -52,36 +57,68 @@ class SessionDatabaseTest {
     @Test
     fun getSessionNumber() {
 
-        // GIVEN a DB with two sessions
+        // GIVEN a DB with sessions
         // WHEN the number of sessions is requested
         val sessionCount = sessionDao.getSessionCount()
 
         // THEN it matches the two added sessions
-        assert(sessionCount.getOrAwaitValue() == 2)
+        assert(sessionCount.getOrAwaitValue() == 2 * numberOfSessionDays)
 
     }
 
     @Test
     fun getAvgSessionLength() {
 
-        // GIVEN a DB with two sessions
+        // GIVEN a DB with sessions
         // WHEN the session average is requested
         val sessionAvg = sessionDao.getSessionAvg()
 
         // THEN it matches the session's average
-        assert(sessionAvg.getOrAwaitValue() == 2f)
+        assert(sessionAvg.getOrAwaitValue() == 1.5f)
 
     }
 
     @Test
     fun getMaxSessionLength() {
 
-        // GIVEN a DB with two sessions
+        // GIVEN a DB with sessions
         // WHEN the max session length is requested
         val sessionMax = sessionDao.getSessionMax()
 
         // THEN it matches the longer of the two sessions
-        assert(sessionMax.getOrAwaitValue() == 3)
+        assert(sessionMax.getOrAwaitValue() == 2)
+
+    }
+
+    @Test
+    fun getAvgLengthOfLastDays() {
+
+        // GIVEN a DB with sessions
+        // WHEN the history of session averages is requested
+        val limit = 10
+        val avgOfDays = sessionDao.getAvgLengthOfLastDays(limit)
+
+        // THEN there are the right number of days with the right average
+        assert(avgOfDays.getOrAwaitValue().size == limit)
+        for (result in avgOfDays.getOrAwaitValue()) {
+            assert(result.avg_length == 1.5f)
+        }
+
+    }
+
+    @Test
+    fun getAvgLengthOfLastWeeks() {
+
+        // GIVEN a DB with sessions
+        // WHEN the history of session averages is requested
+        val limit = 10
+        val avgOfWeeks = sessionDao.getAvgLengthOfLastWeeks(limit)
+
+        // THEN there are the right number of days with the right average
+        assert(avgOfWeeks.getOrAwaitValue().size == limit)
+        for (result in avgOfWeeks.getOrAwaitValue()) {
+            assert(result.avg_length == 1.5f)
+        }
 
     }
 

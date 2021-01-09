@@ -25,4 +25,14 @@ interface SessionDao {
     @Query("SELECT MAX(length) FROM sessions")
     fun getSessionMax(): LiveData<Int>
 
+    @Query("""SELECT AVG(length) AS avg_length, strftime('%Y-%m-%d', end_time, 'unixepoch') AS date 
+                    FROM sessions GROUP BY strftime('%Y-%m-%d', end_time, 'unixepoch') 
+                    ORDER BY end_time DESC LIMIT :limit""")
+    fun getAvgLengthOfLastDays(limit: Int = 10): LiveData<List<SessionAvgResult>>
+
+    @Query("""SELECT AVG(length) AS avg_length, strftime('%Y:%W', end_time, 'unixepoch') AS date 
+                    FROM sessions GROUP BY strftime('%Y:%W', end_time, 'unixepoch') 
+                    ORDER BY end_time DESC LIMIT :limit""")
+    fun getAvgLengthOfLastWeeks(limit: Int = 10): LiveData<List<SessionAvgResult>>
+
 }
