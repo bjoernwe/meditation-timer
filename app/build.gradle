@@ -94,6 +94,9 @@ dependencies {
     kapt "androidx.room:room-compiler:$roomVersion"
     implementation "androidx.room:room-ktx:$roomVersion"
 
+    // MPAndroidChart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
     // Testing
     testImplementation "junit:junit:$junitVersion"
     //testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinVersion"

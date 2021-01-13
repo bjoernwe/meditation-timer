@@ -43,25 +43,23 @@ class TimerViewModel(context: Context) : ViewModel() {
     private fun onTimerStart() { _state.value = TimerStates.RUNNING }
     private fun onTimerTick(secondsRemaining: Double) { _secondsRemaining.value = secondsRemaining }
 
-    private fun onTimerFinish() {
+    private fun onTimerFinish(sessionLength: Double) {
         _secondsRemaining.value = 0.0
         _state.value = TimerStates.FINISHED
+        storeFinishedSession(length = sessionLength.toInt())
         _state.value = TimerStates.WAITING_FOR_START
     }
 
     private fun onTimerStateChanged(newState: TimerStates) {
         when (newState) {
-            TimerStates.FINISHED -> {
-                storeFinishedSession()
-            } else -> { }
+            TimerStates.FINISHED -> { }
+            else -> { }
         }
     }
 
-    private fun storeFinishedSession() {
-        sessionLength.value?.let {
-            val session = Session(length = it.toInt())
-            MainScope().launch { sessionRepository.storeSession(session) }
-        }
+    private fun storeFinishedSession(length: Int) {
+        val session = Session(length = length)
+        MainScope().launch { sessionRepository.storeSession(session) }
     }
 
     override fun onCleared() {

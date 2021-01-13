@@ -9,8 +9,10 @@ import kotlinx.coroutines.withContext
 class SessionRepository(context: Context) {
 
     private val sessionDao = SessionDatabase.getInstance(context).sessionDao
-    val sessionCount: LiveData<Int> = sessionDao.getSessionCount()
-    val sessionAvg: LiveData<Float?> = sessionDao.getSessionAvg()
+    val avg: LiveData<Float?> = sessionDao.getAvg()
+    val avgOfLastDays: LiveData<List<SessionAvgResult>> = sessionDao.getAvgOfLastDays()
+    val count: LiveData<Int> = sessionDao.getCount()
+    val sessions: LiveData<List<Session>> = sessionDao.getSessions(100)
 
     suspend fun storeSession(session: Session) {
         withContext(Dispatchers.IO) {

@@ -7,7 +7,7 @@ class Timer(
         private var sessionLength: Double,
         private val onStart: () -> Unit = {},
         private val onTick: (secondsRemaining: Double) -> Unit = {},
-        private val onFinish: () -> Unit = {}
+        private val onFinish: (sessionLength: Double) -> Unit = {},
 ) {
 
     @Volatile
@@ -29,7 +29,7 @@ class Timer(
 
                 override fun onFinish() {
                     countDownTimer = null
-                    this@Timer.onFinish()
+                    this@Timer.onFinish(sessionLength)
                 }
 
             }.start()

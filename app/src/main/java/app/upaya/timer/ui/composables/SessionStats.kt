@@ -1,6 +1,8 @@
 package app.upaya.timer.ui.composables
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -17,10 +19,12 @@ import app.upaya.timer.ui.fromSecsToTimeString
 fun SessionStats() {
 
     val sessionViewModel: SessionViewModel = viewModel()
-    val sessionAvg = sessionViewModel.sessionAvg.observeAsState(initial = 0f)
-    val sessionCount = sessionViewModel.sessionCount.observeAsState(initial = 0)
+    val sessionAvg = sessionViewModel.avg.observeAsState(initial = 0f)
+    val sessionCount = sessionViewModel.count.observeAsState(initial = 0)
 
     Column(Modifier.padding(16.dp)) {
+
+        SessionChart(Modifier.fillMaxWidth().height(150.dp))
 
         Text(
                 text = "Number of sessions: ${sessionCount.value}",
