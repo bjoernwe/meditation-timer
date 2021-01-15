@@ -27,7 +27,7 @@ abstract class SessionDatabase : RoomDatabase() {
                             context.applicationContext,
                             SessionDatabase::class.java,
                             "session_database"
-                    ).build()
+                    ).addMigrations(MIGRATION_1_2).build()
                     INSTANCE = instance
                 }
                 return instance

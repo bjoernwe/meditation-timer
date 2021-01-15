@@ -107,10 +107,10 @@ dependencies {
     testImplementation "junit:junit:$junitVersion"
     //testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinVersion"
     testImplementation 'androidx.test:core:1.3.0'
-    testImplementation "androidx.room:room-testing:$roomVersion"
     //testImplementation 'org.mockito:mockito-core:2.19.0'
 
     androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
+    androidTestImplementation "androidx.room:room-testing:$roomVersion"
     androidTestImplementation "androidx.test:runner:$androidXTestVersion"
     androidTestImplementation "androidx.test.ext:junit:$runnerExtVersion"
     androidTestImplementation "androidx.test:rules:$androidXTestVersion"
