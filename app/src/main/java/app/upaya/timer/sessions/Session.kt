@@ -11,8 +11,8 @@ data class Session @JvmOverloads constructor(
     @PrimaryKey(autoGenerate = true)
     val sessionId: Long = 0L,
 
-    @ColumnInfo(name = "end_time")
-    val endTime: Float = System.currentTimeMillis() / 1000f,  // Unix epoch timestamp
+    @ColumnInfo(name = "end_time", index = true)
+    val endTime: Long = System.currentTimeMillis() / 1000L,  // Unix epoch timestamp
 
     @ColumnInfo
     val length: Int,
