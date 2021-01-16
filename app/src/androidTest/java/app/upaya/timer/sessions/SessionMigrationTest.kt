@@ -31,7 +31,7 @@ class SessionMigrationTest {
 
     @Test
     @Throws(IOException::class)
-    fun migrateAll() {
+    fun testAllMigrations() {
         // Create earliest version of the database.
         helper.createDatabase(TEST_DB, 1).apply {
             execSQL("INSERT INTO sessions VALUES (1, 123.45, 42)")
