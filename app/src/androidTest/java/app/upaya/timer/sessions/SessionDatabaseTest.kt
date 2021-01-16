@@ -33,7 +33,7 @@ class SessionDatabaseTest {
 
         // Add sessions (two for the last N days)
         for (i in 1..numberOfSessionDays) {
-            val endTime: Float = System.currentTimeMillis() / 1000.0f - i * (60 * 60 * 24)
+            val endTime: Long = System.currentTimeMillis() / 1000L - i * (60 * 60 * 24)
             sessionDao.insert(Session(endTime = endTime, length = 1))
             sessionDao.insert(Session(endTime = endTime, length = 2))
         }
