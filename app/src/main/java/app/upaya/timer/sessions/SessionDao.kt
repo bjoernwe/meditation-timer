@@ -25,9 +25,6 @@ interface SessionDao {
     @Query("SELECT * FROM SESSIONS ORDER BY end_time DESC LIMIT :limit")
     fun getSessions(limit: Int = 10): LiveData<List<Session>>
 
-    @Query("SELECT * FROM SESSIONS ORDER BY end_time DESC LIMIT :limit")
-    fun getSessions(limit: Int = 10): LiveData<List<Session>>
-
     @Query("""SELECT AVG(length) AS avg_length, strftime('%Y-%m-%d', end_time, 'unixepoch') AS date 
                     FROM sessions GROUP BY strftime('%Y-%m-%d', end_time, 'unixepoch') 
                     ORDER BY end_time DESC LIMIT :limit""")
