@@ -16,7 +16,8 @@ class TimerViewModel(context: Context) : ViewModel() {
             sessionLength = timerRepository.loadSessionLength(),
             onStart = ::onTimerStart,
             onTick = ::onTimerTick,
-            onFinish = ::onTimerFinish
+            onFinish = ::onTimerFinish,
+            onSessionLengthChanged = ::onSessionLengthChanged
     )
 
     // Timer LiveData
@@ -49,6 +50,11 @@ class TimerViewModel(context: Context) : ViewModel() {
         _state.value = TimerStates.WAITING_FOR_START
     }
 
+    private fun onSessionLengthChanged(newSessionLength: Double) {
+        _sessionLength.value = newSessionLength
+        timerRepository.storeSessionLength(newSessionLength)
+    }
+
     private fun onTimerStateChanged(newState: TimerStates) {
         when (newState) {
             TimerStates.FINISHED -> {
@@ -79,14 +85,10 @@ class TimerViewModel(context: Context) : ViewModel() {
 
     fun increaseSessionLength() {
         timer.increaseSessionLength()
-        val newSessionLength = timer.getSessionLength()
-        timerRepository.storeSessionLength(newSessionLength)
     }
 
     fun decreaseSessionLength() {
         timer.decreaseSessionLength()
-        val newSessionLength = timer.getSessionLength()
-        timerRepository.storeSessionLength(newSessionLength)
     }
 
 }
