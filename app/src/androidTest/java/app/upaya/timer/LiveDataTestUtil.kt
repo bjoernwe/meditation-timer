@@ -30,7 +30,6 @@ import java.util.concurrent.TimeoutException
  */
 fun <T> LiveData<T>.getOrAwaitValue(
         time: Long = 2,
-        timeUnit: TimeUnit = TimeUnit.SECONDS,
         afterObserve: () -> Unit = {}
 ): T {
     var data: T? = null
@@ -47,7 +46,7 @@ fun <T> LiveData<T>.getOrAwaitValue(
     afterObserve.invoke()
 
     // Don't wait indefinitely if the LiveData is not set.
-    if (!latch.await(time, timeUnit)) {
+    if (!latch.await(time, TimeUnit.SECONDS)) {
         this.removeObserver(observer)
         throw TimeoutException("LiveData value was never set.")
     }
@@ -55,6 +54,7 @@ fun <T> LiveData<T>.getOrAwaitValue(
     @Suppress("UNCHECKED_CAST")
     return data as T
 }
+
 
 /**
  * Observes a [LiveData] until the `block` is done executing.
