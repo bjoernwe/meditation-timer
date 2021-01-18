@@ -43,12 +43,14 @@ fun <T> LiveData<T>.getOrAwaitValue(
     }
     this.observeForever(observer)
 
-    afterObserve.invoke()
+    try {
+        afterObserve.invoke()
+        if (!latch.await(time, TimeUnit.SECONDS)) {
+            throw TimeoutException("LiveData value was never set.")
+        }
 
-    // Don't wait indefinitely if the LiveData is not set.
-    if (!latch.await(time, TimeUnit.SECONDS)) {
+    } finally {
         this.removeObserver(observer)
-        throw TimeoutException("LiveData value was never set.")
     }
 
     @Suppress("UNCHECKED_CAST")
