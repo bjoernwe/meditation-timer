@@ -7,7 +7,8 @@ class Timer(
         private var sessionLength: Double,
         private val onStart: () -> Unit = {},
         private val onTick: (secondsRemaining: Double) -> Unit = {},
-        private val onFinish: (sessionLength: Double) -> Unit = {},
+        private val onFinish: () -> Unit = {},
+        private val onSessionLengthChanged: (newSessionLength: Double) -> Unit = {}
 ) {
 
     @Volatile
@@ -29,7 +30,7 @@ class Timer(
 
                 override fun onFinish() {
                     countDownTimer = null
-                    this@Timer.onFinish(sessionLength)
+                    this@Timer.onFinish()
                 }
 
             }.start()
@@ -46,12 +47,14 @@ class Timer(
 
     fun increaseSessionLength() {
         sessionLength = sessionLength.times(1.1)
+        onSessionLengthChanged(sessionLength)
     }
 
     fun decreaseSessionLength() {
         val newSessionLength = sessionLength.times(0.8)
         if (newSessionLength >= 1.0) {
             sessionLength = newSessionLength
+            onSessionLengthChanged(sessionLength)
         }
     }
 
