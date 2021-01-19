@@ -1,14 +1,10 @@
 package app.upaya.timer.sessions
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 
 
-class SessionViewModel(application: Application): AndroidViewModel(application) {
-
-    private val sessionRepository = SessionRepository(application)
+class SessionViewModel(sessionRepository: SessionRepository): ViewModel() {
     val sessionCount: LiveData<Int> = sessionRepository.sessionCount
     val sessionAvg: LiveData<Float?> = sessionRepository.sessionAvg
-
 }

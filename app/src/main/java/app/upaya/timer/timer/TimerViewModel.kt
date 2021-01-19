@@ -1,15 +1,13 @@
 package app.upaya.timer.timer
 
-import android.content.Context
 import androidx.lifecycle.*
+import app.upaya.timer.sessions.ISessionRepository
 import app.upaya.timer.sessions.Session
-import app.upaya.timer.sessions.SessionRepository
 import kotlinx.coroutines.*
 
 
-class TimerViewModel(context: Context) : ViewModel() {
-
-    private val timerRepository = TimerRepository(context)
+class TimerViewModel(private val timerRepository: ITimerRepository,
+                     private val sessionRepository: ISessionRepository) : ViewModel() {
 
     // Timer
     private val timer = Timer(
@@ -36,9 +34,6 @@ class TimerViewModel(context: Context) : ViewModel() {
     // The observer is removed in onCleared().
     private var stateObserver: Observer<TimerStates> = Observer(::onTimerStateChanged)
     init { state.observeForever(stateObserver) }
-
-    // Sessions
-    private val sessionRepository = SessionRepository(context)
 
     // Timer events
     private fun onTimerStart() { _state.value = TimerStates.RUNNING }
