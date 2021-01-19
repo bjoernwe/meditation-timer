@@ -2,8 +2,9 @@ package app.upaya.timer.sessions
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.InstrumentationRegistry
+import app.upaya.timer.MeditationTimerApplication
 import app.upaya.timer.getOrAwaitValue
 import org.junit.After
 import org.junit.Before
@@ -14,7 +15,7 @@ import java.io.IOException
 
 
 @RunWith(AndroidJUnit4::class)
-class SessionDatabaseTest {
+class SessionDaoTest {
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()  // Make coroutines synchronous
@@ -40,7 +41,7 @@ class SessionDatabaseTest {
     }
 
     private fun initSessionDatabase(): SessionDatabase {
-        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        val context = ApplicationProvider.getApplicationContext<MeditationTimerApplication>()
         return Room.inMemoryDatabaseBuilder(context, SessionDatabase::class.java)
                 .allowMainThreadQueries()
                 .build()
