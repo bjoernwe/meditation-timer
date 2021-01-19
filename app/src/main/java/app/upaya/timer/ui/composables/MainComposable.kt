@@ -19,10 +19,7 @@ import app.upaya.timer.ui.fromSecsToTimeString
 @ExperimentalAnimationApi
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun MainComposable(timerViewModel: TimerViewModel,
-                   sessionViewModel: SessionViewModel,
-                   onClick: () -> Unit)
-{
+fun MainComposable(timerViewModel: TimerViewModel, onClick: () -> Unit)  {
 
     val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val timerState = timerViewModel.state.observeAsState(TimerStates.WAITING_FOR_START)
@@ -34,7 +31,7 @@ fun MainComposable(timerViewModel: TimerViewModel,
                 scrimColor = Color(0, 0, 0, 128),
                 sheetBackgroundColor = MaterialTheme.colors.background,
                 sheetContent = {
-                    SessionStats(sessionViewModel = sessionViewModel)
+                    SessionStats()
                 }
         ) {
 

@@ -10,7 +10,6 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.ui.platform.setContent
 import androidx.lifecycle.ViewModelProvider
 import app.upaya.timer.R
-import app.upaya.timer.sessions.SessionViewModel
 import app.upaya.timer.timer.*
 import app.upaya.timer.ui.composables.MainComposable
 import com.google.firebase.crashlytics.FirebaseCrashlytics
@@ -27,17 +26,12 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-
-        // Obtain ViewModel from ViewModelProviders
-        val sessionViewModel = ViewModelProvider(this).get(SessionViewModel::class.java)
-        val timerViewModelFactory = TimerViewModelFactory(this)
-        timerViewModel = ViewModelProvider(this, timerViewModelFactory).get(TimerViewModel::class.java)
+        timerViewModel = ViewModelProvider(this, TimerViewModelFactory(this)).get(TimerViewModel::class.java)
 
         // Emit Main Composable
         setContent {
             MainComposable(
                     timerViewModel = timerViewModel,
-                    sessionViewModel = sessionViewModel,
                     onClick = ::onCircleClicked
             )
         }
