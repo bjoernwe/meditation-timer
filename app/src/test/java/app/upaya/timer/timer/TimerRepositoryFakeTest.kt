@@ -1,22 +1,18 @@
 package app.upaya.timer.timer
 
-import android.content.Context
-import androidx.test.core.app.ApplicationProvider
 import org.junit.Before
 import org.junit.Test
 
 import org.junit.Assert.*
 
 
-class TimerRepositoryTest {
+class TimerRepositoryFakeTest {
 
-    private lateinit var context: Context
-    private lateinit var timerRepository: TimerRepository
+    private lateinit var timerRepository: ITimerRepository
 
     @Before
     fun setUp() {
-        context = ApplicationProvider.getApplicationContext()
-        timerRepository = TimerRepository(context)
+        timerRepository = TimerRepositoryFake()
     }
 
     @Test
