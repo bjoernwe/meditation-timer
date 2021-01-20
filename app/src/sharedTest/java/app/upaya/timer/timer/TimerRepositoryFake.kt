@@ -1,9 +1,7 @@
 package app.upaya.timer.timer
 
 
-class TimerRepositoryFake : ITimerRepository {
-
-    private var sessionLength = 10.0
+class TimerRepositoryFake(private var sessionLength: Double = 10.0) : ITimerRepository {
 
     override fun loadSessionLength(): Double {
         return sessionLength
