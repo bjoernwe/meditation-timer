@@ -24,6 +24,10 @@ class SessionDaoTest {
     private lateinit var sessionDao: SessionDao
 
     private val numberOfSessionDays = 100
+    private val numberOfSessionsPerDay = 2
+    private val numberOfSessionsTotal = numberOfSessionsPerDay * numberOfSessionDays
+    private val maxSessionLength = numberOfSessionsPerDay
+    private val sessionAvg = (1..numberOfSessionsPerDay).toList().average().toFloat()
 
     @Before
     fun createDb() {
@@ -35,8 +39,9 @@ class SessionDaoTest {
         // Add sessions (two for the last N days)
         for (i in 1..numberOfSessionDays) {
             val endTime: Long = System.currentTimeMillis() / 1000L - i * (60 * 60 * 24)
-            sessionDao.insert(Session(endTime = endTime, length = 1))
-            sessionDao.insert(Session(endTime = endTime, length = 2))
+            for (j in 1..numberOfSessionsPerDay) {
+                sessionDao.insert(Session(endTime = endTime, length = j))
+            }
         }
     }
 
@@ -61,7 +66,7 @@ class SessionDaoTest {
         val sessionCount = sessionDao.getSessionCount()
 
         // THEN it matches the two added sessions
-        assert(sessionCount.getOrAwaitValue() == 2 * numberOfSessionDays)
+        assert(sessionCount.getOrAwaitValue() == numberOfSessionsTotal)
 
     }
 
@@ -73,7 +78,7 @@ class SessionDaoTest {
         val sessionAvg = sessionDao.getSessionAvg()
 
         // THEN it matches the session's average
-        assert(sessionAvg.getOrAwaitValue() == 1.5f)
+        assert(sessionAvg.getOrAwaitValue() == this.sessionAvg)
 
     }
 
@@ -85,7 +90,7 @@ class SessionDaoTest {
         val sessionMax = sessionDao.getSessionMax()
 
         // THEN it matches the longer of the two sessions
-        assert(sessionMax.getOrAwaitValue() == 2)
+        assert(sessionMax.getOrAwaitValue() == maxSessionLength)
 
     }
 
@@ -100,7 +105,7 @@ class SessionDaoTest {
         // THEN there are the right number of days with the right average
         assert(avgOfDays.getOrAwaitValue().size == limit)
         for (result in avgOfDays.getOrAwaitValue()) {
-            assert(result.avg_length == 1.5f)
+            assert(result.avg_length == sessionAvg)
         }
 
     }
@@ -116,7 +121,7 @@ class SessionDaoTest {
         // THEN there are the right number of days with the right average
         assert(avgOfWeeks.getOrAwaitValue().size == limit)
         for (result in avgOfWeeks.getOrAwaitValue()) {
-            assert(result.avg_length == 1.5f)
+            assert(result.avg_length == sessionAvg)
         }
 
     }
