@@ -19,10 +19,10 @@ class TimerViewModel(private val timerRepository: ITimerRepository,
     )
 
     // Timer LiveData
-    private val _secondsRemaining = MutableLiveData(0.0)
+    private val _secondsRemaining = MutableLiveData(0)
     private val _sessionLength = MutableLiveData(timer.getSessionLength())
     private val _state = MutableLiveData(TimerStates.WAITING_FOR_START)
-    val secondsRemaining: LiveData<Double> = _secondsRemaining
+    val secondsRemaining: LiveData<Int> = _secondsRemaining
     val sessionLength: LiveData<Double> = _sessionLength
     val state: LiveData<TimerStates> = _state
 
@@ -39,12 +39,12 @@ class TimerViewModel(private val timerRepository: ITimerRepository,
      * Timer events / callbacks
      */
 
-    private fun onTimerStart() { _state.value = TimerStates.RUNNING }
+    private fun onTimerStart() { _state.postValue(TimerStates.RUNNING) }
 
-    private fun onTimerTick(secondsRemaining: Double) { _secondsRemaining.postValue(secondsRemaining) }
+    private fun onTimerTick(secondsRemaining: Int) { _secondsRemaining.postValue(secondsRemaining) }
 
     private fun onTimerFinish() {
-        _secondsRemaining.postValue(0.0)
+        _secondsRemaining.postValue(0)
         _state.postValue(TimerStates.FINISHED)
     }
 
