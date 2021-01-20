@@ -15,7 +15,7 @@ class SessionRepositoryFakeTest {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    private var sessionRepository = SessionRepositoryFake()
+    private val sessionRepository = SessionRepositoryFake()
 
     @Test
     fun sessionLiveDataStatistics() = runBlocking {
