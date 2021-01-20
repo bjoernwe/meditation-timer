@@ -35,14 +35,17 @@ class TimerViewModel(private val timerRepository: ITimerRepository,
     private var stateObserver: Observer<TimerStates> = Observer(::onTimerStateChanged)
     init { state.observeForever(stateObserver) }
 
-    // Timer events
+    /**
+     * Timer events / callbacks
+     */
+
     private fun onTimerStart() { _state.value = TimerStates.RUNNING }
-    private fun onTimerTick(secondsRemaining: Double) { _secondsRemaining.value = secondsRemaining }
+
+    private fun onTimerTick(secondsRemaining: Double) { _secondsRemaining.postValue(secondsRemaining) }
 
     private fun onTimerFinish() {
-        _secondsRemaining.value = 0.0
-        _state.value = TimerStates.FINISHED
-        _state.value = TimerStates.WAITING_FOR_START
+        _secondsRemaining.postValue(0.0)
+        _state.postValue(TimerStates.FINISHED)
     }
 
     private fun onSessionLengthChanged(newSessionLength: Double) {
@@ -50,9 +53,14 @@ class TimerViewModel(private val timerRepository: ITimerRepository,
         timerRepository.storeSessionLength(newSessionLength)
     }
 
+    /**
+     * Handle changes in TimerState
+     */
+
     private fun onTimerStateChanged(newState: TimerStates) {
         when (newState) {
             TimerStates.FINISHED -> {
+                _state.postValue(TimerStates.WAITING_FOR_START)  // FINISHED only serves as event
                 storeFinishedSession()
             } else -> { }
         }
@@ -65,25 +73,15 @@ class TimerViewModel(private val timerRepository: ITimerRepository,
         }
     }
 
+    // Pass-through to Timer
+    fun startCountdown() { timer.startCountdown() }
+    fun increaseSessionLength() { timer.increaseSessionLength() }
+    fun decreaseSessionLength() { timer.decreaseSessionLength() }
+
+    // ViewModel destructor
     override fun onCleared() {
         super.onCleared()
         state.removeObserver(stateObserver)
-    }
-
-    /**
-     * Pass-through from Timer
-     */
-
-    fun startCountdown() {
-        timer.startCountdown()
-    }
-
-    fun increaseSessionLength() {
-        timer.increaseSessionLength()
-    }
-
-    fun decreaseSessionLength() {
-        timer.decreaseSessionLength()
     }
 
 }
