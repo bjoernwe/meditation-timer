@@ -1,20 +1,21 @@
 package app.upaya.timer.sessions
 
-import android.content.Context
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 
-class SessionRepository(context: Context) {
+class SessionRepository(sessionDatabase: SessionDatabase) : ISessionRepository {
 
-    private val sessionDao = SessionDatabase.getInstance(context).sessionDao
+    private val sessionDao = sessionDatabase.sessionDao
+
     val avg: LiveData<Float?> = sessionDao.getAvg()
     val avgOfLastDays: LiveData<List<SessionAvgResult>> = sessionDao.getAvgOfLastDays()
-    val count: LiveData<Int> = sessionDao.getCount()
-    val sessions: LiveData<List<Session>> = sessionDao.getSessions(100)
+    override val sessionCount: LiveData<Int> = sessionDao.getSessionCount()
+    override val sessionAvg: LiveData<Float> = Transformations.map(sessionDao.getSessionAvg()) { avg -> avg ?: 0f }
 
-    suspend fun storeSession(session: Session) {
+    override suspend fun storeSession(session: Session) {
         withContext(Dispatchers.IO) {
             sessionDao.insert(session)
         }

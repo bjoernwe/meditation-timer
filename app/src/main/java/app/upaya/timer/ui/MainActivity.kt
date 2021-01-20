@@ -26,19 +26,19 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
+        timerViewModel = ViewModelProvider(this, TimerViewModelFactory(this)).get(TimerViewModel::class.java)
 
-        // Obtain ViewModel from ViewModelProviders
-        val timerViewModelFactory = TimerViewModelFactory(this)
-        timerViewModel = ViewModelProvider(this, timerViewModelFactory).get(TimerViewModel::class.java)
+        // Emit Main Composable
+        setContent {
+            MainComposable(
+                    timerViewModel = timerViewModel,
+                    onClick = ::onCircleClicked
+            )
+        }
 
         // Register event callbacks
         timerViewModel.state.observe(this, { onTimerStateChanged(it) })
         mediaPlayer?.setOnErrorListener(this)
-
-        // Emit Main Composable
-        setContent {
-            MainComposable(onClick = ::onCircleClicked)
-        }
 
         // Firebase Analytics
         timerAnalyticsLogger = TimerAnalyticsLogger(this)

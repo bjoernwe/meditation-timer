@@ -1,15 +1,13 @@
 package app.upaya.timer.timer
 
-import android.content.Context
 import androidx.lifecycle.*
+import app.upaya.timer.sessions.ISessionRepository
 import app.upaya.timer.sessions.Session
-import app.upaya.timer.sessions.SessionRepository
 import kotlinx.coroutines.*
 
 
-class TimerViewModel(context: Context) : ViewModel() {
-
-    private val timerRepository = TimerRepository(context)
+class TimerViewModel(private val timerRepository: ITimerRepository,
+                     private val sessionRepository: ISessionRepository) : ViewModel() {
 
     // Timer
     private val timer = Timer(
@@ -21,10 +19,10 @@ class TimerViewModel(context: Context) : ViewModel() {
     )
 
     // Timer LiveData
-    private val _secondsRemaining = MutableLiveData(0.0)
+    private val _secondsRemaining = MutableLiveData(0)
     private val _sessionLength = MutableLiveData(timer.getSessionLength())
     private val _state = MutableLiveData(TimerStates.WAITING_FOR_START)
-    val secondsRemaining: LiveData<Double> = _secondsRemaining
+    val secondsRemaining: LiveData<Int> = _secondsRemaining
     val sessionLength: LiveData<Double> = _sessionLength
     val state: LiveData<TimerStates> = _state
 
@@ -37,18 +35,17 @@ class TimerViewModel(context: Context) : ViewModel() {
     private var stateObserver: Observer<TimerStates> = Observer(::onTimerStateChanged)
     init { state.observeForever(stateObserver) }
 
-    // Sessions
-    private val sessionRepository = SessionRepository(context)
+    /**
+     * Timer events / callbacks
+     */
 
-    // Timer events
-    private fun onTimerStart() { _state.value = TimerStates.RUNNING }
-    private fun onTimerTick(secondsRemaining: Double) { _secondsRemaining.value = secondsRemaining }
+    private fun onTimerStart() { _state.postValue(TimerStates.RUNNING) }
 
-    private fun onTimerFinish(sessionLength: Double) {
-        _secondsRemaining.value = 0.0
-        _state.value = TimerStates.FINISHED
-        storeFinishedSession(length = sessionLength.toInt())
-        _state.value = TimerStates.WAITING_FOR_START
+    private fun onTimerTick(secondsRemaining: Int) { _secondsRemaining.postValue(secondsRemaining) }
+
+    private fun onTimerFinish() {
+        _secondsRemaining.postValue(0)
+        _state.postValue(TimerStates.FINISHED)
     }
 
     private fun onSessionLengthChanged(newSessionLength: Double) {
@@ -56,10 +53,16 @@ class TimerViewModel(context: Context) : ViewModel() {
         timerRepository.storeSessionLength(newSessionLength)
     }
 
+    /**
+     * Handle changes in TimerState
+     */
+
     private fun onTimerStateChanged(newState: TimerStates) {
         when (newState) {
-            TimerStates.FINISHED -> { }
-            else -> { }
+            TimerStates.FINISHED -> {
+                _state.postValue(TimerStates.WAITING_FOR_START)  // FINISHED only serves as event
+                storeFinishedSession()
+            } else -> { }
         }
     }
 
@@ -68,25 +71,15 @@ class TimerViewModel(context: Context) : ViewModel() {
         MainScope().launch { sessionRepository.storeSession(session) }
     }
 
+    // Pass-through to Timer
+    fun startCountdown() { timer.startCountdown() }
+    fun increaseSessionLength() { timer.increaseSessionLength() }
+    fun decreaseSessionLength() { timer.decreaseSessionLength() }
+
+    // ViewModel destructor
     override fun onCleared() {
         super.onCleared()
         state.removeObserver(stateObserver)
-    }
-
-    /**
-     * Pass-through from Timer
-     */
-
-    fun startCountdown() {
-        timer.startCountdown()
-    }
-
-    fun increaseSessionLength() {
-        timer.increaseSessionLength()
-    }
-
-    fun decreaseSessionLength() {
-        timer.decreaseSessionLength()
     }
 
 }

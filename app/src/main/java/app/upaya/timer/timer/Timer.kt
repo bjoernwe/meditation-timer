@@ -1,45 +1,47 @@
 package app.upaya.timer.timer
 
-import android.os.CountDownTimer
+import kotlin.concurrent.thread
+import kotlin.math.roundToInt
 
 
 class Timer(
         private var sessionLength: Double,
         private val onStart: () -> Unit = {},
-        private val onTick: (secondsRemaining: Double) -> Unit = {},
+        private val onTick: (secondsRemaining: Int) -> Unit = {},
         private val onFinish: () -> Unit = {},
         private val onSessionLengthChanged: (newSessionLength: Double) -> Unit = {}
 ) {
 
     @Volatile
-    private var countDownTimer: CountDownTimer? = null
+    private var countDownThread: Thread? = null
 
     fun startCountdown() {
 
         synchronized(this) {
 
-            if (countDownTimer != null) return
+            if (countDownThread != null) return
 
-            val timerDuration: Long = sessionLength.toLong() * 1000
+            countDownThread = thread(start = true, isDaemon = true) {
 
-            countDownTimer = object : CountDownTimer(timerDuration, 1000) {
+                val sessionLength = this.sessionLength.roundToInt()
 
-                override fun onTick(millisRemaining: Long) {
-                    onTick(millisRemaining / 1000.0)
+                onStart()
+                onTick(sessionLength)
+
+                for (i in 1..sessionLength) {
+                    Thread.sleep(1000)
+                    val secondsRemaining = sessionLength - i
+                    onTick(secondsRemaining)
                 }
 
-                override fun onFinish() {
-                    countDownTimer = null
-                    this@Timer.onFinish()
-                }
+                onFinish()
+                countDownThread = null
 
-            }.start()
+            }  // thread
 
-            onStart()
+        }  // synchronized
 
-        }
-
-    }
+    }  // startCountdown()
 
     fun getSessionLength(): Double {
         return sessionLength
@@ -56,6 +58,10 @@ class Timer(
             sessionLength = newSessionLength
             onSessionLengthChanged(sessionLength)
         }
+    }
+
+    fun isRunning(): Boolean {
+        return countDownThread != null
     }
 
 }

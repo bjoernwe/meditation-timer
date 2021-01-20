@@ -9,18 +9,20 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.AmbientContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.viewModel
 import app.upaya.timer.sessions.SessionViewModel
+import app.upaya.timer.sessions.SessionViewModelFactory
 import app.upaya.timer.ui.fromSecsToTimeString
 
 
 @Composable
 fun SessionStats() {
 
-    val sessionViewModel: SessionViewModel = viewModel()
-    val sessionAvg = sessionViewModel.avg.observeAsState(initial = 0f)
-    val sessionCount = sessionViewModel.count.observeAsState(initial = 0)
+    val sessionViewModel: SessionViewModel = viewModel(factory = SessionViewModelFactory(AmbientContext.current))
+    val sessionAvg = sessionViewModel.sessionAvg.observeAsState(initial = 0f)
+    val sessionCount = sessionViewModel.sessionCount.observeAsState(initial = 0)
 
     Column(Modifier.padding(16.dp)) {
 
