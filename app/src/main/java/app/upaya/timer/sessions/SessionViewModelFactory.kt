@@ -14,7 +14,7 @@ class SessionViewModelFactory(private val context: Context) : ViewModelProvider.
 
         if (modelClass.isAssignableFrom(SessionViewModel::class.java)) {
 
-            val sessionRepository = SessionRepository(SessionDatabase.getInstance(context))
+            val sessionRepository = SessionRepository(SessionDatabase.getInstance(context.applicationContext))
 
             @Suppress("UNCHECKED_CAST")
             return SessionViewModel(sessionRepository) as T

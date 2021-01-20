@@ -22,8 +22,7 @@ class SessionRatingDialogFragment : BottomSheetDialogFragment() {
 
         val view = inflater.inflate(R.layout.session_rating_bottom_sheet, container, false)
 
-        // Use application context for the same ViewModel as in the main activity
-        val timerViewModelFactory = TimerViewModelFactory(requireActivity().application)
+        val timerViewModelFactory = TimerViewModelFactory(requireActivity())
         val timerViewModel = ViewModelProvider(requireActivity(), timerViewModelFactory).get(TimerViewModel::class.java)
 
         view.findViewById<ImageView>(R.id.ratingDownImageView).setOnClickListener {
