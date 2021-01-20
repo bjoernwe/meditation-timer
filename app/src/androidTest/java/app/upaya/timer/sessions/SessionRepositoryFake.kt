@@ -12,7 +12,7 @@ class SessionRepositoryFake : ISessionRepository {
     override val sessionCount: LiveData<Int> = _sessionCount
 
     private val _sessionAvg = MutableLiveData(0f)
-    override val sessionAvg: LiveData<Float?> = _sessionAvg
+    override val sessionAvg: LiveData<Float> = _sessionAvg
 
     init {
         _sessions.observeForever { _sessionCount.value = it.size }
