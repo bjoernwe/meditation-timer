@@ -17,6 +17,7 @@ class SessionRepositoryFake : ISessionRepository {
 
     override suspend fun storeSession(session: Session) {
         _sessions.value!!.add(session)
+        _sessions.value = _sessions.value  // notify LiveData about change
     }
 
 }
