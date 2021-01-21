@@ -30,10 +30,7 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
 
         // Emit Main Composable
         setContent {
-            MainComposable(
-                    timerViewModel = timerViewModel,
-                    onClick = ::onCircleClicked
-            )
+            MainComposable(onClick = ::onCircleClicked)
         }
 
         // Register event callbacks

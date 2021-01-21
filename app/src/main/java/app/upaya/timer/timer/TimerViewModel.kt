@@ -66,9 +66,11 @@ class TimerViewModel(private val timerRepository: ITimerRepository,
         }
     }
 
-    private fun storeFinishedSession(length: Int) {
-        val session = Session(length = length)
-        MainScope().launch { sessionRepository.storeSession(session) }
+    private fun storeFinishedSession() {
+        sessionLength.value?.let {
+            val session = Session(length = it.toInt())
+            MainScope().launch { sessionRepository.storeSession(session) }
+        }
     }
 
     // Pass-through to Timer

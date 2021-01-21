@@ -4,7 +4,9 @@ import androidx.lifecycle.LiveData
 
 
 interface ISessionRepository {
-    val sessionCount: LiveData<Int>
     val sessionAvg: LiveData<Float>
+    //val sessionAvgOfLastDays: LiveData<List<SessionAvgResult>>
+    val sessionCount: LiveData<Int>
+    val sessions: LiveData<List<Session>>
     suspend fun storeSession(session: Session)
 }

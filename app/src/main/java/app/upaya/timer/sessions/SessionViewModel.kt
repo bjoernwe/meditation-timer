@@ -5,9 +5,8 @@ import androidx.lifecycle.ViewModel
 
 
 class SessionViewModel(sessionRepository: ISessionRepository): ViewModel() {
-    private val sessionRepository = SessionRepository(application)
-    val avg: LiveData<Float?> = sessionRepository.avg
-    val avgOfLastDays = sessionRepository.avgOfLastDays
-    val sessionCount: LiveData<Int> = sessionRepository.sessionCount
     val sessionAvg: LiveData<Float> = sessionRepository.sessionAvg
+    //val avgOfLastDays: LiveData<List<SessionAvgResult>> = sessionRepository.sessionAvgOfLastDays
+    val sessionCount: LiveData<Int> = sessionRepository.sessionCount
+    val sessions: LiveData<List<Session>> = sessionRepository.sessions
 }
