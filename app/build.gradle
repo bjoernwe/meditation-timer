@@ -110,8 +110,8 @@ dependencies {
     kapt "androidx.room:room-compiler:$roomVersion"
     implementation "androidx.room:room-ktx:$roomVersion"
 
-    // MPAndroidChart
-    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    // WilliamChart
+    implementation 'com.diogobernardino:williamchart:3.9.1'
 
     // Testing
     testImplementation "junit:junit:$junitVersion"
