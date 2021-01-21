@@ -9,8 +9,8 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.viewModel
 import androidx.lifecycle.Transformations
-import app.upaya.timer.sessions.SessionViewModel
 import app.upaya.timer.timer.TimerStates
 import app.upaya.timer.timer.TimerViewModel
 import app.upaya.timer.ui.fromSecsToTimeString
@@ -19,10 +19,10 @@ import app.upaya.timer.ui.fromSecsToTimeString
 @ExperimentalAnimationApi
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun MainComposable(timerViewModel: TimerViewModel, onClick: () -> Unit)  {
+fun MainComposable(onClick: () -> Unit) {
 
     val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
-    val timerState = timerViewModel.state.observeAsState(TimerStates.WAITING_FOR_START)
+    val timerViewModel: TimerViewModel = viewModel()
 
     TimerTheme {
 
@@ -30,9 +30,7 @@ fun MainComposable(timerViewModel: TimerViewModel, onClick: () -> Unit)  {
                 sheetState = sheetState,
                 scrimColor = Color(0, 0, 0, 128),
                 sheetBackgroundColor = MaterialTheme.colors.background,
-                sheetContent = {
-                    SessionStats()
-                }
+                sheetContent = { SessionStats() }
         ) {
 
             ConstraintLayout {
@@ -48,7 +46,7 @@ fun MainComposable(timerViewModel: TimerViewModel, onClick: () -> Unit)  {
                 val optionsButton = createRef()
 
                 AnimatedVisibility(
-                        visible = timerState.value == TimerStates.WAITING_FOR_START,
+                        visible = timerViewModel.state.value == TimerStates.WAITING_FOR_START,
                         modifier = Modifier
                                 .constrainAs(optionsButton) {
                                     top.linkTo(parent.top, margin = 16.dp)

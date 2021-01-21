@@ -63,7 +63,7 @@ class SessionDaoTest {
 
         // GIVEN a DB with sessions
         // WHEN the number of sessions is requested
-        val sessionCount = sessionDao.getSessionCount()
+        val sessionCount = sessionDao.getCount()
 
         // THEN it matches the two added sessions
         assert(sessionCount.getOrAwaitValue() == numberOfSessionsTotal)
@@ -75,7 +75,7 @@ class SessionDaoTest {
 
         // GIVEN a DB with sessions
         // WHEN the session average is requested
-        val sessionAvg = sessionDao.getSessionAvg()
+        val sessionAvg = sessionDao.getAvg()
 
         // THEN it matches the session's average
         assert(sessionAvg.getOrAwaitValue() == this.sessionAvg)
@@ -87,7 +87,7 @@ class SessionDaoTest {
 
         // GIVEN a DB with sessions
         // WHEN the max session length is requested
-        val sessionMax = sessionDao.getSessionMax()
+        val sessionMax = sessionDao.getMax()
 
         // THEN it matches the longer of the two sessions
         assert(sessionMax.getOrAwaitValue() == maxSessionLength)
@@ -100,7 +100,7 @@ class SessionDaoTest {
         // GIVEN a DB with sessions
         // WHEN the history of session averages is requested
         val limit = 10
-        val avgOfDays = sessionDao.getAvgLengthOfLastDays(limit)
+        val avgOfDays = sessionDao.getAvgOfLastDays(limit)
 
         // THEN there are the right number of days with the right average
         assert(avgOfDays.getOrAwaitValue().size == limit)
@@ -116,7 +116,7 @@ class SessionDaoTest {
         // GIVEN a DB with sessions
         // WHEN the history of session averages is requested
         val limit = 10
-        val avgOfWeeks = sessionDao.getAvgLengthOfLastWeeks(limit)
+        val avgOfWeeks = sessionDao.getAvgOfLastWeeks(limit)
 
         // THEN there are the right number of days with the right average
         assert(avgOfWeeks.getOrAwaitValue().size == limit)

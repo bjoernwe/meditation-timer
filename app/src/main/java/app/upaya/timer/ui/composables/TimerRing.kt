@@ -42,9 +42,9 @@ fun TimerRing(activated: State<Boolean>, text: State<String>, onClick: () -> Uni
         )
 
         // Text
-        if (activated.value) {
-            ShadowText(text = text.value)
-        }
+        //if (activated.value) {
+        //    ShadowText(text = text.value)
+        //}
 
     }
 
