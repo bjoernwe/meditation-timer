@@ -8,7 +8,7 @@ import androidx.room.*
 interface SessionDao {
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    fun insert(session: Session)
+    suspend fun insert(session: Session)
 
     //@Update
     //suspend fun update(session: Session)
