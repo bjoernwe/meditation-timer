@@ -1,7 +1,9 @@
-package app.upaya.timer.sessions
+package app.upaya.timer.sessions.room
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import app.upaya.timer.sessions.Session
+import app.upaya.timer.sessions.SessionAvgResult
 
 
 @Dao

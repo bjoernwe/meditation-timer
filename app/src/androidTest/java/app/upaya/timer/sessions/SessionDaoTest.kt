@@ -6,6 +6,9 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.upaya.timer.MeditationTimerApplication
 import app.upaya.timer.getOrAwaitValue
+import app.upaya.timer.sessions.room.SessionDao
+import app.upaya.timer.sessions.room.SessionDatabase
+import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -30,7 +33,7 @@ class SessionDaoTest {
     private val sessionAvg = (1..numberOfSessionsPerDay).toList().average().toFloat()
 
     @Before
-    fun createDb() {
+    fun createDb() = runBlocking {
 
         // Initialize Room DB (in memory)
         db = initSessionDatabase()

@@ -6,6 +6,8 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.upaya.timer.MeditationTimerApplication
 import app.upaya.timer.getOrAwaitValue
+import app.upaya.timer.sessions.room.SessionDao
+import app.upaya.timer.sessions.room.SessionDatabase
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
