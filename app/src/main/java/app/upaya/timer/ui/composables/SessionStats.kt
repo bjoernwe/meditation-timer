@@ -26,18 +26,25 @@ fun SessionStats() {
 
     Column(Modifier.padding(16.dp)) {
 
-        SessionChart(Modifier.fillMaxWidth().height(150.dp))
-
-        Text(
-                text = "Number of sessions: ${sessionCount.value}",
-                color = MaterialTheme.colors.onSurface,
+        SessionChart(
+                Modifier
+                        .fillMaxWidth()
+                        .height(150.dp)
+                        .padding(8.dp)
         )
 
-        sessionAvg.value?.let {
+        Column(Modifier.padding(8.dp)) {
+
             Text(
-                    text = "Avg. session length: ${fromSecsToTimeString(it.toInt())}",
+                    text = "Number of sessions: ${sessionCount.value}",
                     color = MaterialTheme.colors.onSurface,
             )
+
+            Text(
+                    text = "Avg. session length: ${fromSecsToTimeString(sessionAvg.value.toInt())}",
+                    color = MaterialTheme.colors.onSurface,
+            )
+
         }
 
     }
