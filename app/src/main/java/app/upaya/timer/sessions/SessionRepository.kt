@@ -13,6 +13,7 @@ class SessionRepository(sessionDatabase: SessionDatabase) : ISessionRepository {
     override val sessionAvg: LiveData<Float> = Transformations.map(sessionDao.getAvg()) { avg -> avg ?: 0f }
     //override val sessionAvgOfLastDays: LiveData<List<SessionAvgResult>> = sessionDao.getAvgOfLastDays()
     override val sessionCount: LiveData<Int> = sessionDao.getCount()
+    override val sessionTotal: LiveData<Int> = sessionDao.getTotalLength()
     override val sessions: LiveData<List<Session>> = sessionDao.getSessions()
 
     override suspend fun storeSession(session: Session) {

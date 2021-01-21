@@ -35,4 +35,7 @@ interface SessionDao {
                     ORDER BY end_time DESC LIMIT :limit""")
     fun getAvgOfLastWeeks(limit: Int = 10): LiveData<List<SessionAvgResult>>
 
+    @Query("""SELECT SUM(length) AS total_length FROM sessions""")
+    fun getTotalLength(): LiveData<Int>
+
 }

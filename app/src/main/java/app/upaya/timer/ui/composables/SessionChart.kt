@@ -1,6 +1,5 @@
 package app.upaya.timer.ui.composables
 
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
@@ -37,7 +36,7 @@ fun SessionChart(modifier: Modifier = Modifier) {
             }
     ) {
         if (sessionEntries != null) {
-            it.animate(sessionEntries)
+            it.show(sessionEntries)
         }
     }
 

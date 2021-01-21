@@ -21,8 +21,8 @@ import app.upaya.timer.ui.fromSecsToTimeString
 fun SessionStats() {
 
     val sessionViewModel: SessionViewModel = viewModel(factory = SessionViewModelFactory(AmbientContext.current))
-    val sessionAvg = sessionViewModel.sessionAvg.observeAsState(initial = 0f)
     val sessionCount = sessionViewModel.sessionCount.observeAsState(initial = 0)
+    val sessionTotal = sessionViewModel.sessionTotal.observeAsState(initial = 0)
 
     Column(Modifier.padding(16.dp)) {
 
@@ -36,12 +36,8 @@ fun SessionStats() {
         Column(Modifier.padding(8.dp)) {
 
             Text(
-                    text = "Number of sessions: ${sessionCount.value}",
-                    color = MaterialTheme.colors.onSurface,
-            )
-
-            Text(
-                    text = "Avg. session length: ${fromSecsToTimeString(sessionAvg.value.toInt())}",
+                    text = "${sessionCount.value} sessions "
+                            + "(${fromSecsToTimeString(sessionTotal.value)} total)",
                     color = MaterialTheme.colors.onSurface,
             )
 
