@@ -39,7 +39,7 @@ fun SessionStats() {
             )
         } else {
             Text(
-                    text = "not enough data",
+                    text = "not enough sessions yet",
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                             .height(150.dp)
