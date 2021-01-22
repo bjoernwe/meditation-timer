@@ -4,6 +4,7 @@ import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -44,6 +45,7 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
     override fun onStart() {
         super.onStart()
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
         applicationContext.resources.openRawResourceFd(R.raw.bell_347378).use {
             mediaPlayer = MediaPlayer()
             mediaPlayer?.setDataSource(it)
