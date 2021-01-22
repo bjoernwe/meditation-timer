@@ -54,7 +54,7 @@ class SessionMigrationTest {
 
         val sessions = db.sessionDao.getSessions().getOrAwaitValue()
         assert(sessions[0].sessionId == 1L)
-        assert(sessions[0].endTime == Date(123000L))
+        assert(sessions[0].endDate == Date(123000L))
         assert(sessions[0].length == 42)
     }
 

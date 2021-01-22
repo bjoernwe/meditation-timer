@@ -44,7 +44,7 @@ class SessionDaoTest {
         for (i in 1..numberOfSessionDays) {
             val endTime = SimpleDateFormat("yyyy:D").parse("2020:${i}")!!
             for (j in 1..numberOfSessionsPerDay) {
-                sessionDao.insert(Session(endTime = endTime, length = j))
+                sessionDao.insert(Session(endDate = endTime, length = j))
             }
         }
     }

@@ -9,13 +9,13 @@ import java.util.*
 @Entity(tableName = "sessions")
 data class Session @JvmOverloads constructor(
 
-    @PrimaryKey(autoGenerate = true)
-    val sessionId: Long = 0L,
+        @PrimaryKey(autoGenerate = true)
+        val sessionId: Long = 0L,
 
-    @ColumnInfo(name = "end_time", index = true)
-    val endTime: Date = Date(),
+        @ColumnInfo(name = "end_time", index = true)
+        val endDate: Date = Date(),
 
-    @ColumnInfo
-    val length: Int,
+        @ColumnInfo
+        val length: Int,
 
-)
+    )

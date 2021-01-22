@@ -56,14 +56,14 @@ class SessionRepositoryTest {
         assert(sessionRepository.sessionAvg.getOrAwaitValue() == 0f)
 
         // WHEN a session is added
-        sessionRepository.storeSession(Session(length = 2, endTime = Date(1000L)))
+        sessionRepository.storeSession(Session(length = 2, endDate = Date(1000L)))
 
         // THEN the corresponding LiveData is updated accordingly
         assert(sessionRepository.sessionCount.getOrAwaitValue() == 1)
         assert(sessionRepository.sessionAvg.getOrAwaitValue() == 2f)
 
         // AND WHEN another session is added
-        sessionRepository.storeSession(Session(length = 4, endTime = Date(2000L)))
+        sessionRepository.storeSession(Session(length = 4, endDate = Date(2000L)))
 
         // THEN the corresponding LiveData is updated accordingly
         assert(sessionRepository.sessionCount.getOrAwaitValue() == 2)
@@ -72,7 +72,7 @@ class SessionRepositoryTest {
         // AND the sessions are ordered descendingly for time
         val session0 = sessionRepository.sessions.getOrAwaitValue()[0]
         val session1 = sessionRepository.sessions.getOrAwaitValue()[1]
-        assert(session0.endTime > session1.endTime)
+        assert(session0.endDate > session1.endDate)
     }
 
 }
