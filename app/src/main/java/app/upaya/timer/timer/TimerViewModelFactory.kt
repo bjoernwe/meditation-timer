@@ -3,8 +3,8 @@ package app.upaya.timer.timer
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import app.upaya.timer.sessions.SessionDatabase
 import app.upaya.timer.sessions.SessionRepository
+import app.upaya.timer.sessions.room.SessionDatabase
 import java.lang.IllegalArgumentException
 
 

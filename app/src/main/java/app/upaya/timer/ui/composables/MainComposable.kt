@@ -46,7 +46,7 @@ fun MainComposable(onClick: () -> Unit) {
                 val optionsButton = createRef()
 
                 AnimatedVisibility(
-                        visible = timerViewModel.state.value == TimerStates.WAITING_FOR_START,
+                        visible = !timerViewModel.isRunning.observeAsState(false).value,
                         modifier = Modifier
                                 .constrainAs(optionsButton) {
                                     top.linkTo(parent.top, margin = 16.dp)

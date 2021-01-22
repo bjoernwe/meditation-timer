@@ -1,7 +1,9 @@
-package app.upaya.timer.sessions
+package app.upaya.timer.sessions.room
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import app.upaya.timer.sessions.Session
+import app.upaya.timer.sessions.SessionAvgResult
 
 
 @Dao
@@ -25,12 +27,12 @@ interface SessionDao {
     @Query("SELECT * FROM SESSIONS ORDER BY end_time DESC LIMIT :limit")
     fun getSessions(limit: Int = 25): LiveData<List<Session>>
 
-    @Query("""SELECT AVG(length) AS avg_length, strftime('%Y-%m-%d', end_time, 'unixepoch') AS date 
+    @Query("""SELECT AVG(length) AS avg_length, end_time AS date 
                     FROM sessions GROUP BY strftime('%Y-%m-%d', end_time, 'unixepoch') 
                     ORDER BY end_time DESC LIMIT :limit""")
     fun getAvgOfLastDays(limit: Int = 10): LiveData<List<SessionAvgResult>>
 
-    @Query("""SELECT AVG(length) AS avg_length, strftime('%Y:%W', end_time, 'unixepoch') AS date 
+    @Query("""SELECT AVG(length) AS avg_length, end_time AS date 
                     FROM sessions GROUP BY strftime('%Y:%W', end_time, 'unixepoch') 
                     ORDER BY end_time DESC LIMIT :limit""")
     fun getAvgOfLastWeeks(limit: Int = 10): LiveData<List<SessionAvgResult>>

@@ -6,12 +6,16 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.upaya.timer.MeditationTimerApplication
 import app.upaya.timer.getOrAwaitValue
+import app.upaya.timer.sessions.room.SessionDao
+import app.upaya.timer.sessions.room.SessionDatabase
+import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.IOException
+import java.text.SimpleDateFormat
 
 
 @RunWith(AndroidJUnit4::class)
@@ -30,7 +34,7 @@ class SessionDaoTest {
     private val sessionAvg = (1..numberOfSessionsPerDay).toList().average().toFloat()
 
     @Before
-    fun createDb() {
+    fun createDb() = runBlocking {
 
         // Initialize Room DB (in memory)
         db = initSessionDatabase()
@@ -38,16 +42,18 @@ class SessionDaoTest {
 
         // Add sessions (two for the last N days)
         for (i in 1..numberOfSessionDays) {
-            val endTime: Long = System.currentTimeMillis() / 1000L - i * (60 * 60 * 24)
+            val endDate = SimpleDateFormat("yyyy:D").parse("2020:${i}")!!
             for (j in 1..numberOfSessionsPerDay) {
-                sessionDao.insert(Session(endTime = endTime, length = j))
+                sessionDao.insert(Session(endDate = endDate, length = j))
             }
         }
     }
 
     private fun initSessionDatabase(): SessionDatabase {
-        val context = ApplicationProvider.getApplicationContext<MeditationTimerApplication>()
-        return Room.inMemoryDatabaseBuilder(context, SessionDatabase::class.java)
+        return Room.inMemoryDatabaseBuilder(
+                ApplicationProvider.getApplicationContext<MeditationTimerApplication>(),
+                SessionDatabase::class.java
+        )
                 .allowMainThreadQueries()
                 .build()
     }
