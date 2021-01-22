@@ -36,8 +36,10 @@ class SessionRepositoryTest {
     }
 
     private fun initSessionDatabase(): SessionDatabase {
-        val context = ApplicationProvider.getApplicationContext<MeditationTimerApplication>()
-        return Room.inMemoryDatabaseBuilder(context, SessionDatabase::class.java)
+        return Room.inMemoryDatabaseBuilder(
+                ApplicationProvider.getApplicationContext<MeditationTimerApplication>(),
+                SessionDatabase::class.java
+        )
                 .allowMainThreadQueries()
                 .build()
     }
@@ -52,22 +54,25 @@ class SessionRepositoryTest {
     fun sessionLiveDataStatistics() = runBlocking {
 
         // GIVEN an empty SessionRepository
-        assert(sessionRepository.sessionCount.getOrAwaitValue() == 0)
         assert(sessionRepository.sessionAvg.getOrAwaitValue() == 0f)
+        assert(sessionRepository.sessionCount.getOrAwaitValue() == 0)
+        assert(sessionRepository.sessionTotal.getOrAwaitValue() == 0)
 
         // WHEN a session is added
         sessionRepository.storeSession(Session(length = 2, endDate = Date(1000L)))
 
         // THEN the corresponding LiveData is updated accordingly
-        assert(sessionRepository.sessionCount.getOrAwaitValue() == 1)
         assert(sessionRepository.sessionAvg.getOrAwaitValue() == 2f)
+        assert(sessionRepository.sessionCount.getOrAwaitValue() == 1)
+        assert(sessionRepository.sessionTotal.getOrAwaitValue() == 2)
 
         // AND WHEN another session is added
         sessionRepository.storeSession(Session(length = 4, endDate = Date(2000L)))
 
         // THEN the corresponding LiveData is updated accordingly
-        assert(sessionRepository.sessionCount.getOrAwaitValue() == 2)
         assert(sessionRepository.sessionAvg.getOrAwaitValue() == 3f)
+        assert(sessionRepository.sessionCount.getOrAwaitValue() == 2)
+        assert(sessionRepository.sessionTotal.getOrAwaitValue() == 6)
 
         // AND the sessions are ordered descendingly for time
         val session0 = sessionRepository.sessions.getOrAwaitValue()[0]
