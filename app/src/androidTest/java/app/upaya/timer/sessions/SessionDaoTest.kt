@@ -42,9 +42,9 @@ class SessionDaoTest {
 
         // Add sessions (two for the last N days)
         for (i in 1..numberOfSessionDays) {
-            val endTime = SimpleDateFormat("yyyy:D").parse("2020:${i}")!!
+            val endDate = SimpleDateFormat("yyyy:D").parse("2020:${i}")!!
             for (j in 1..numberOfSessionsPerDay) {
-                sessionDao.insert(Session(endDate = endTime, length = j))
+                sessionDao.insert(Session(endDate = endDate, length = j))
             }
         }
     }
