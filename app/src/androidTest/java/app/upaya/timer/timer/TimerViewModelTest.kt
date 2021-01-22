@@ -24,7 +24,7 @@ class TimerViewModelTest {
         // GIVEN a TimerViewModel with TimerRepository
         val timerRepository = TimerRepositoryFake(1.0)
         val timerViewModel = TimerViewModel(timerRepository, sessionRepository)
-        assert(timerViewModel.isRunning.getOrAwaitValue() == false)
+        assert(!timerViewModel.isRunning.getOrAwaitValue())
         assert(timerViewModel.state.getOrAwaitValue() == TimerStates.WAITING_FOR_START)
 
         // WHEN the timer is started
@@ -32,11 +32,13 @@ class TimerViewModelTest {
 
         // THEN its state and LiveData change accordingly
         while (!timerViewModel.isRunning.getOrAwaitValue()) Thread.sleep(100)
+        assert(timerViewModel.isRunning.getOrAwaitValue())
         assert(timerViewModel.state.getOrAwaitValue() == TimerStates.RUNNING)
         assert(timerViewModel.secondsRemaining.getOrAwaitValue() == 1)
 
         // AND its state and LiveData change accordingly when the timer finishes
         while (timerViewModel.isRunning.getOrAwaitValue()) Thread.sleep(100)
+        assert(!timerViewModel.isRunning.getOrAwaitValue())
         assert(timerViewModel.state.getOrAwaitValue() == TimerStates.WAITING_FOR_START)
         assert(timerViewModel.secondsRemaining.getOrAwaitValue() == 0)
     }
