@@ -7,6 +7,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.*
 
 
 @RunWith(AndroidJUnit4::class)
@@ -25,14 +26,14 @@ class SessionRepositoryFakeTest {
         assert(sessionRepository.sessionAvg.getOrAwaitValue() == 0f)
 
         // WHEN a session is added
-        sessionRepository.storeSession(Session(length = 2, endTime = 42))
+        sessionRepository.storeSession(Session(length = 2, endTime = Date(1000L)))
 
         // THEN the corresponding LiveData is updated accordingly
         assert(sessionRepository.sessionCount.getOrAwaitValue() == 1)
         assert(sessionRepository.sessionAvg.getOrAwaitValue() == 2f)
 
         // AND WHEN another session is added
-        sessionRepository.storeSession(Session(length = 4, endTime = 43))
+        sessionRepository.storeSession(Session(length = 4, endTime = Date(2000L)))
 
         // THEN the corresponding LiveData is updated accordingly
         assert(sessionRepository.sessionCount.getOrAwaitValue() == 2)

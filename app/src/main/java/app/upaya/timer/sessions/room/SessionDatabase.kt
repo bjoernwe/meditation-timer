@@ -4,12 +4,14 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import app.upaya.timer.sessions.Session
 
 
 @Database(entities = [Session::class], version = 2, exportSchema = true)
+@TypeConverters(Converters::class)
 abstract class SessionDatabase : RoomDatabase() {
 
     abstract val sessionDao: SessionDao
@@ -28,7 +30,9 @@ abstract class SessionDatabase : RoomDatabase() {
                             context.applicationContext,
                             SessionDatabase::class.java,
                             "session_database"
-                    ).addMigrations(MIGRATION_1_2).build()
+                    )
+                            .addMigrations(MIGRATION_1_2)
+                            .build()
                     INSTANCE = instance
                 }
                 return instance

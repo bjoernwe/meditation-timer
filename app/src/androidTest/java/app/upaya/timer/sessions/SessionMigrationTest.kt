@@ -13,6 +13,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.IOException
+import java.util.*
 
 
 @RunWith(AndroidJUnit4::class)
@@ -36,14 +37,14 @@ class SessionMigrationTest {
     fun testAllMigrations() {
         // Create earliest version of the database.
         helper.createDatabase(TEST_DB, 1).apply {
-            execSQL("INSERT INTO sessions VALUES (1, 123.45, 42)")
+            execSQL("INSERT INTO sessions VALUES (1, 123, 42)")
             close()
         }
 
         // Open latest version of the database. Room will validate the schema
         // once all migrations execute.
         val db = Room.databaseBuilder(
-                InstrumentationRegistry.getInstrumentation().getTargetContext(),
+                InstrumentationRegistry.getInstrumentation().targetContext,
                 SessionDatabase::class.java,
                 TEST_DB
         ).addMigrations(*ALL_MIGRATIONS).build().apply {
@@ -53,7 +54,7 @@ class SessionMigrationTest {
 
         val sessions = db.sessionDao.getSessions().getOrAwaitValue()
         assert(sessions[0].sessionId == 1L)
-        assert(sessions[0].endTime == 123L)
+        assert(sessions[0].endTime == Date(123000L))
         assert(sessions[0].length == 42)
     }
 
