@@ -5,8 +5,8 @@ import java.util.*
 
 
 interface ISessionRepository {
+    val sessionAggregateOfLastDays: LiveData<List<SessionAggregate>>
     val sessionAvg: LiveData<Float>
-    //val sessionAvgOfLastDays: LiveData<List<SessionAvgResult>>
     val sessionCount: LiveData<Int>
     val sessionTotal: LiveData<Int>
     val sessions: LiveData<List<Session>>

@@ -19,7 +19,7 @@ fun TimerRing(activated: State<Boolean>, text: State<String>, onClick: () -> Uni
     // Ripple effect when clicking ring
     val rippleIndication = rememberRippleIndication(
         bounded = false,
-        color = Color.Black
+        color = MaterialTheme.colors.primary
     )
 
     Box(contentAlignment = Alignment.Center,
@@ -35,7 +35,7 @@ fun TimerRing(activated: State<Boolean>, text: State<String>, onClick: () -> Uni
 
         // Ring
         MaterialRing(
-            size = 180.dp,
+            size = 200.dp,
             thickness = 12.dp,
             depth = 3.dp,
             color = if (activated.value) Color.White else MaterialTheme.colors.primary
