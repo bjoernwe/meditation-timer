@@ -57,7 +57,6 @@ class TimerTest {
         val initialSessionLength = 2.0
         val timer = Timer(
                 sessionLength = initialSessionLength,
-                onStart = { callbacks.add("start") },
                 onTick = { secondsRemaining -> callbacks.add("tick $secondsRemaining") },
                 onFinish = { callbacks.add("finish") }
         )
@@ -68,12 +67,11 @@ class TimerTest {
         while (timer.isRunning()) Thread.sleep(100)
 
         // THEN all callbacks have been called
-        assert(callbacks.size == 5)
-        assert(callbacks[0] == "start")
-        assert(callbacks[1] == "tick 2")
-        assert(callbacks[2] == "tick 1")
-        assert(callbacks[3] == "tick 0")
-        assert(callbacks[4] == "finish")
+        assert(callbacks.size == 4)
+        assert(callbacks[0] == "tick 2")
+        assert(callbacks[1] == "tick 1")
+        assert(callbacks[2] == "tick 0")
+        assert(callbacks[3] == "finish")
     }
 
 }

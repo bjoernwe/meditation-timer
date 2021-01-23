@@ -6,7 +6,6 @@ import kotlin.math.roundToInt
 
 class Timer(
         private var sessionLength: Double,
-        private val onStart: () -> Unit = {},
         private val onTick: (secondsRemaining: Int) -> Unit = {},
         private val onFinish: () -> Unit = {},
         private val onSessionLengthChanged: (newSessionLength: Double) -> Unit = {}
@@ -25,7 +24,6 @@ class Timer(
 
                 val sessionLength = this.sessionLength.roundToInt()
 
-                onStart()
                 onTick(sessionLength)
 
                 for (i in 1..sessionLength) {

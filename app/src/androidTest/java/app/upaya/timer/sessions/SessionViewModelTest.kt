@@ -26,14 +26,14 @@ class SessionViewModelTest {
         assert(sessionViewModel.sessionAvg.getOrAwaitValue() == 0f)
 
         // WHEN a session is added
-        sessionRepository.storeSession(Session(length = 2))
+        sessionRepository.storeSession(length = 2.0)
 
         // THEN the corresponding LiveData is updated accordingly
         assert(sessionViewModel.sessionCount.getOrAwaitValue() == 1)
         assert(sessionViewModel.sessionAvg.getOrAwaitValue() == 2f)
 
         // AND WHEN another session is added
-        sessionRepository.storeSession(Session(length = 4))
+        sessionRepository.storeSession(length = 4.0)
 
         // THEN the corresponding LiveData is updated accordingly
         assert(sessionViewModel.sessionCount.getOrAwaitValue() == 2)

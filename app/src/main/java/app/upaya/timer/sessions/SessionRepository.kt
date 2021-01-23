@@ -5,6 +5,7 @@ import androidx.lifecycle.Transformations
 import app.upaya.timer.sessions.room.SessionDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.util.*
 
 
 class SessionRepository(sessionDatabase: SessionDatabase) : ISessionRepository {
@@ -17,9 +18,9 @@ class SessionRepository(sessionDatabase: SessionDatabase) : ISessionRepository {
     override val sessionTotal: LiveData<Int> = Transformations.map(sessionDao.getTotalLength()) { total -> total ?: 0 }
     override val sessions: LiveData<List<Session>> = sessionDao.getSessions()
 
-    override suspend fun storeSession(session: Session) {
+    override suspend fun storeSession(length: Double, endDate: Date) {
         withContext(Dispatchers.IO) {
-            sessionDao.insert(session)
+            sessionDao.insert(Session(length = length.toInt(), endDate = endDate))
         }
     }
 

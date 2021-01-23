@@ -2,7 +2,6 @@ package app.upaya.timer.timer
 
 import androidx.lifecycle.*
 import app.upaya.timer.sessions.ISessionRepository
-import app.upaya.timer.sessions.Session
 import kotlinx.coroutines.*
 
 
@@ -12,7 +11,6 @@ class TimerViewModel(private val timerRepository: ITimerRepository,
     // Timer
     private val timer = Timer(
             sessionLength = timerRepository.loadSessionLength(),
-            onStart = ::onTimerStart,
             onTick = ::onTimerTick,
             onFinish = ::onTimerFinish,
             onSessionLengthChanged = ::onSessionLengthChanged
@@ -39,8 +37,6 @@ class TimerViewModel(private val timerRepository: ITimerRepository,
      * Timer events / callbacks
      */
 
-    private fun onTimerStart() { _state.postValue(TimerStates.RUNNING) }
-
     private fun onTimerTick(secondsRemaining: Int) { _secondsRemaining.postValue(secondsRemaining) }
 
     private fun onTimerFinish() {
@@ -60,7 +56,6 @@ class TimerViewModel(private val timerRepository: ITimerRepository,
     private fun onTimerStateChanged(newState: TimerStates) {
         when (newState) {
             TimerStates.FINISHED -> {
-                _state.postValue(TimerStates.WAITING_FOR_START)  // FINISHED only serves as event
                 storeFinishedSession()
             } else -> { }
         }
@@ -68,15 +63,29 @@ class TimerViewModel(private val timerRepository: ITimerRepository,
 
     private fun storeFinishedSession() {
         sessionLength.value?.let {
-            val session = Session(length = it.toInt())
-            MainScope().launch { sessionRepository.storeSession(session) }
+            MainScope().launch { sessionRepository.storeSession(it) }
         }
     }
 
     // Pass-through to Timer
-    fun startCountdown() { timer.startCountdown() }
-    fun increaseSessionLength() { timer.increaseSessionLength() }
-    fun decreaseSessionLength() { timer.decreaseSessionLength() }
+    fun startCountdown() {
+        _state.postValue(TimerStates.RUNNING)
+        timer.startCountdown()
+    }
+
+    fun increaseSessionLength() {
+        timer.increaseSessionLength()
+        _state.postValue(TimerStates.WAITING_FOR_START)
+    }
+
+    fun decreaseSessionLength() {
+        timer.decreaseSessionLength()
+        _state.postValue(TimerStates.WAITING_FOR_START)
+    }
+
+    fun keepSessionLength() {
+        _state.postValue(TimerStates.WAITING_FOR_START)
+    }
 
     // ViewModel destructor
     override fun onCleared() {

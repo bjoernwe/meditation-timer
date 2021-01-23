@@ -59,7 +59,7 @@ class SessionRepositoryTest {
         assert(sessionRepository.sessionTotal.getOrAwaitValue() == 0)
 
         // WHEN a session is added
-        sessionRepository.storeSession(Session(length = 2, endDate = Date(1000L)))
+        sessionRepository.storeSession(length = 2.0, endDate = Date(1000L))
 
         // THEN the corresponding LiveData is updated accordingly
         assert(sessionRepository.sessionAvg.getOrAwaitValue() == 2f)
@@ -67,7 +67,7 @@ class SessionRepositoryTest {
         assert(sessionRepository.sessionTotal.getOrAwaitValue() == 2)
 
         // AND WHEN another session is added
-        sessionRepository.storeSession(Session(length = 4, endDate = Date(2000L)))
+        sessionRepository.storeSession(length = 4.0, endDate = Date(2000L))
 
         // THEN the corresponding LiveData is updated accordingly
         assert(sessionRepository.sessionAvg.getOrAwaitValue() == 3f)

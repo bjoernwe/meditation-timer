@@ -19,7 +19,7 @@ class TimerViewModelTest {
     private val sessionRepository = SessionRepositoryFake()
 
     @Test
-    fun startCountdown() {
+    fun startCountdownTimerStates() {
 
         // GIVEN a TimerViewModel with TimerRepository
         val timerRepository = TimerRepositoryFake(1.0)
@@ -30,16 +30,34 @@ class TimerViewModelTest {
         // WHEN the timer is started
         timerViewModel.startCountdown()
 
-        // THEN its state and LiveData change accordingly
+        // THEN its state changes accordingly
         while (!timerViewModel.isRunning.getOrAwaitValue()) Thread.sleep(100)
-        assert(timerViewModel.isRunning.getOrAwaitValue())
         assert(timerViewModel.state.getOrAwaitValue() == TimerStates.RUNNING)
+
+        // AND its state changes accordingly when the timer finishes
+        while (timerViewModel.isRunning.getOrAwaitValue()) Thread.sleep(100)
+        assert(timerViewModel.state.getOrAwaitValue() == TimerStates.FINISHED)
+    }
+
+    @Test
+    fun startCountdownSecondsRemaining() {
+
+        // GIVEN a TimerViewModel with TimerRepository
+        val timerRepository = TimerRepositoryFake(2.0)
+        val timerViewModel = TimerViewModel(timerRepository, sessionRepository)
+        assert(timerViewModel.secondsRemaining.getOrAwaitValue() == 0)
+
+        // WHEN the timer is started
+        timerViewModel.startCountdown()
+
+        // THEN its LiveData changes accordingly
+        while (timerViewModel.secondsRemaining.getOrAwaitValue() == 0) Thread.sleep(100)
+        assert(timerViewModel.secondsRemaining.getOrAwaitValue() == 2)
+        while (timerViewModel.secondsRemaining.getOrAwaitValue() == 2) Thread.sleep(100)
         assert(timerViewModel.secondsRemaining.getOrAwaitValue() == 1)
 
-        // AND its state and LiveData change accordingly when the timer finishes
-        while (timerViewModel.isRunning.getOrAwaitValue()) Thread.sleep(100)
-        assert(!timerViewModel.isRunning.getOrAwaitValue())
-        assert(timerViewModel.state.getOrAwaitValue() == TimerStates.WAITING_FOR_START)
+        // AND its LiveData changes accordingly when the timer finishes
+        while (timerViewModel.secondsRemaining.getOrAwaitValue() == 1) Thread.sleep(100)
         assert(timerViewModel.secondsRemaining.getOrAwaitValue() == 0)
     }
 
