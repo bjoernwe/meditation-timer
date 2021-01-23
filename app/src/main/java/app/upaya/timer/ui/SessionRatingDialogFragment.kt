@@ -1,5 +1,6 @@
 package app.upaya.timer.ui
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class SessionRatingDialogFragment : BottomSheetDialogFragment() {
 
+    private lateinit var timerViewModel: TimerViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -23,7 +26,7 @@ class SessionRatingDialogFragment : BottomSheetDialogFragment() {
         val view = inflater.inflate(R.layout.session_rating_bottom_sheet, container, false)
 
         val timerViewModelFactory = TimerViewModelFactory(requireActivity())
-        val timerViewModel = ViewModelProvider(requireActivity(), timerViewModelFactory).get(TimerViewModel::class.java)
+        timerViewModel = ViewModelProvider(requireActivity(), timerViewModelFactory).get(TimerViewModel::class.java)
 
         view.findViewById<ImageView>(R.id.ratingDownImageView).setOnClickListener {
             timerViewModel.increaseSessionLength()
@@ -36,6 +39,11 @@ class SessionRatingDialogFragment : BottomSheetDialogFragment() {
         }
 
         return view
+    }
+
+    override fun onCancel(dialog: DialogInterface) {
+        super.onCancel(dialog)
+        timerViewModel.keepSessionLength()
     }
 
 }

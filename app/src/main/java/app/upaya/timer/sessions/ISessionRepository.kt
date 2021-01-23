@@ -9,5 +9,5 @@ interface ISessionRepository {
     val sessionCount: LiveData<Int>
     val sessionTotal: LiveData<Int>
     val sessions: LiveData<List<Session>>
-    suspend fun storeSession(session: Session)
+    suspend fun storeSession(length: Double)
 }

@@ -17,9 +17,9 @@ class SessionRepository(sessionDatabase: SessionDatabase) : ISessionRepository {
     override val sessionTotal: LiveData<Int> = Transformations.map(sessionDao.getTotalLength()) { total -> total ?: 0 }
     override val sessions: LiveData<List<Session>> = sessionDao.getSessions()
 
-    override suspend fun storeSession(session: Session) {
+    override suspend fun storeSession(length: Double) {
         withContext(Dispatchers.IO) {
-            sessionDao.insert(session)
+            sessionDao.insert(Session(length = length.toInt()))
         }
     }
 
