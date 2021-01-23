@@ -39,7 +39,7 @@ class TimerViewModelTest {
         // AND its state and LiveData change accordingly when the timer finishes
         while (timerViewModel.isRunning.getOrAwaitValue()) Thread.sleep(100)
         assert(!timerViewModel.isRunning.getOrAwaitValue())
-        assert(timerViewModel.state.getOrAwaitValue() == TimerStates.WAITING_FOR_START)
+        assert(timerViewModel.state.getOrAwaitValue() == TimerStates.FINISHED)
         assert(timerViewModel.secondsRemaining.getOrAwaitValue() == 0)
     }
 
