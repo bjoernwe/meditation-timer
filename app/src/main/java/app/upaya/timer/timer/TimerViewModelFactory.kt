@@ -15,8 +15,8 @@ class TimerViewModelFactory(private val context: Context) : ViewModelProvider.Fa
 
         if (modelClass.isAssignableFrom(TimerViewModel::class.java)) {
 
-            val timerRepository = TimerRepository(context.applicationContext)
-            val sessionRepository = SessionRepository(SessionDatabase.getInstance(context.applicationContext))
+            val timerRepository = TimerRepository(context)
+            val sessionRepository = SessionRepository(SessionDatabase.getInstance(context))
 
             @Suppress("UNCHECKED_CAST")
             return TimerViewModel(timerRepository, sessionRepository) as T
