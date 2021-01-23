@@ -11,7 +11,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.viewModel
 import androidx.lifecycle.Transformations
-import app.upaya.timer.timer.TimerStates
 import app.upaya.timer.timer.TimerViewModel
 import app.upaya.timer.ui.fromSecsToTimeString
 
