@@ -3,7 +3,7 @@ package app.upaya.timer.sessions.room
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import app.upaya.timer.sessions.Session
-import app.upaya.timer.sessions.SessionAvgResult
+import app.upaya.timer.sessions.SessionAggregate
 
 
 @Dao
@@ -27,17 +27,17 @@ interface SessionDao {
     @Query("SELECT * FROM SESSIONS ORDER BY end_time DESC LIMIT :limit")
     fun getSessions(limit: Int = 25): LiveData<List<Session>>
 
-    @Query("""SELECT AVG(length) AS avg_length, end_time AS date 
-                    FROM sessions GROUP BY strftime('%Y-%m-%d', end_time, 'unixepoch') 
-                    ORDER BY end_time DESC LIMIT :limit""")
-    fun getAvgOfLastDays(limit: Int = 10): LiveData<List<SessionAvgResult>>
-
-    @Query("""SELECT AVG(length) AS avg_length, end_time AS date 
-                    FROM sessions GROUP BY strftime('%Y:%W', end_time, 'unixepoch') 
-                    ORDER BY end_time DESC LIMIT :limit""")
-    fun getAvgOfLastWeeks(limit: Int = 10): LiveData<List<SessionAvgResult>>
-
     @Query("""SELECT SUM(length) AS total_length FROM sessions""")
     fun getTotalLength(): LiveData<Int>
+
+    @Query("""SELECT COUNT(*) AS session_count, AVG(length) AS avg_length, end_time AS date 
+                    FROM sessions GROUP BY strftime('%Y-%m-%d', end_time, 'unixepoch') 
+                    ORDER BY end_time DESC LIMIT :limit""")
+    fun getAggregateOfLastDays(limit: Int = 10): LiveData<List<SessionAggregate>>
+
+    @Query("""SELECT COUNT(*) AS session_count, AVG(length) AS avg_length, end_time AS date 
+                    FROM sessions GROUP BY strftime('%Y:%W', end_time, 'unixepoch') 
+                    ORDER BY end_time DESC LIMIT :limit""")
+    fun getAggregateOfLastWeeks(limit: Int = 10): LiveData<List<SessionAggregate>>
 
 }
