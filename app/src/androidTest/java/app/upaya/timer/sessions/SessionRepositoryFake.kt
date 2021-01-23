@@ -3,6 +3,8 @@ package app.upaya.timer.sessions
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class SessionRepositoryFake : ISessionRepository {
@@ -19,8 +21,8 @@ class SessionRepositoryFake : ISessionRepository {
         it.takeLast(25)
     }
 
-    override suspend fun storeSession(session: Session) {
-        _sessions.value!!.add(0, session)
+    override suspend fun storeSession(length: Double, endDate: Date) {
+        _sessions.value!!.add(0, Session(length = length.toInt(), endDate = endDate))
         _sessions.value = _sessions.value  // notify LiveData about change
     }
 
