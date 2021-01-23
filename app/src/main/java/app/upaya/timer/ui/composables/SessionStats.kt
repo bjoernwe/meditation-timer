@@ -6,6 +6,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.AmbientContext
 import androidx.compose.ui.text.style.TextAlign
@@ -33,9 +34,10 @@ fun SessionStats() {
             SessionChart(
                     Modifier
                             .fillMaxWidth()
+                            .align(Alignment.CenterHorizontally)
                             .height(150.dp)
                             .padding(8.dp)
-                            .padding(top = 16.dp, bottom = 16.dp)
+                            .padding(top = 16.dp)
             )
         } else {
             Text(
