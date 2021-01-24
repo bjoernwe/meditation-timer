@@ -22,25 +22,28 @@ class SessionRepositoryFakeTest {
     fun sessionLiveDataStatistics() = runBlocking {
 
         // GIVEN an empty SessionRepository
-        assert(sessionRepository.sessionAvg.getOrAwaitValue() == 0f)
-        assert(sessionRepository.sessionCount.getOrAwaitValue() == 0)
-        assert(sessionRepository.sessionTotal.getOrAwaitValue() == 0)
+        var sessionAggregate = sessionRepository.sessionAggregateOfAll.getOrAwaitValue()
+        assert(sessionAggregate.avg_length == 0f)
+        assert(sessionAggregate.session_count == 0)
+        assert(sessionAggregate.total_length == 0)
 
         // WHEN a session is added
         sessionRepository.storeSession(length = 2.0, endDate = Date(1000L))
 
         // THEN the corresponding LiveData is updated accordingly
-        assert(sessionRepository.sessionAvg.getOrAwaitValue() == 2f)
-        assert(sessionRepository.sessionCount.getOrAwaitValue() == 1)
-        assert(sessionRepository.sessionTotal.getOrAwaitValue() == 2)
+        sessionAggregate = sessionRepository.sessionAggregateOfAll.getOrAwaitValue()
+        assert(sessionAggregate.avg_length == 2f)
+        assert(sessionAggregate.session_count == 1)
+        assert(sessionAggregate.total_length == 2)
 
         // AND WHEN another session is added
         sessionRepository.storeSession(length = 4.0, endDate = Date(2000L))
 
         // THEN the corresponding LiveData is updated accordingly
-        assert(sessionRepository.sessionAvg.getOrAwaitValue() == 3f)
-        assert(sessionRepository.sessionCount.getOrAwaitValue() == 2)
-        assert(sessionRepository.sessionTotal.getOrAwaitValue() == 6)
+        sessionAggregate = sessionRepository.sessionAggregateOfAll.getOrAwaitValue()
+        assert(sessionAggregate.avg_length == 3f)
+        assert(sessionAggregate.session_count == 2)
+        assert(sessionAggregate.total_length == 6)
 
         // AND the sessions are ordered descendingly for time
         val session0 = sessionRepository.sessions.getOrAwaitValue()[0]

@@ -12,11 +12,13 @@ import androidx.compose.ui.platform.AmbientContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.viewModel
+import app.upaya.timer.sessions.SessionAggregate
 import app.upaya.timer.sessions.SessionViewModel
 import app.upaya.timer.sessions.SessionViewModelFactory
 import app.upaya.timer.timer.TimerViewModel
 import app.upaya.timer.timer.TimerViewModelFactory
 import app.upaya.timer.ui.fromSecsToTimeString
+import java.util.*
 
 
 @Composable
@@ -24,14 +26,13 @@ fun SessionStats() {
 
     val sessionViewModel: SessionViewModel = viewModel(factory = SessionViewModelFactory(AmbientContext.current))
     val timerViewModel: TimerViewModel = viewModel(factory = TimerViewModelFactory(AmbientContext.current))
-    val sessionAggregates = sessionViewModel.sessionAggOfLastDays.observeAsState(listOf())
-    val sessionCount = sessionViewModel.sessionCount.observeAsState(initial = 0)
+    val sessionAggOfLastDays = sessionViewModel.sessionAggOfLastDays.observeAsState(listOf())
+    val sessionAggOfAll = sessionViewModel.sessionAggOfAll.observeAsState(SessionAggregate(0, 0f, 0, Date()))
     val sessionLength = timerViewModel.sessionLength.observeAsState(initial = 0.0)
-    val sessionTotal = sessionViewModel.sessionTotal.observeAsState(initial = 0)
 
     Column(Modifier.padding(16.dp)) {
 
-        if (sessionAggregates.value.size >= 3) {
+        if (sessionAggOfLastDays.value.size >= 3) {
             SessionChart(
                     Modifier
                             .fillMaxWidth()
@@ -56,8 +57,8 @@ fun SessionStats() {
             Divider(Modifier.padding(bottom = 24.dp))
 
             Text(
-                    text = "${sessionCount.value} sessions "
-                            + "(${fromSecsToTimeString(sessionTotal.value)} total)",
+                    text = "${sessionAggOfAll.value.session_count} sessions "
+                            + "(${fromSecsToTimeString(sessionAggOfAll.value.total_length)} total)",
                     color = MaterialTheme.colors.onSurface,
             )
 

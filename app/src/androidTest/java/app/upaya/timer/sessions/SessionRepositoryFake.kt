@@ -12,25 +12,16 @@ class SessionRepositoryFake : ISessionRepository {
 
     private val _sessions = MutableLiveData<MutableList<Session>>(ArrayList())
 
-    override val sessionCount: LiveData<Int> = Transformations.map(_sessions) { it.size }
-    override val sessionTotal: LiveData<Int> = Transformations.map(_sessions) { it.fold(0) { acc, s -> acc + s.length } }
     override val sessions: LiveData<List<Session>> = Transformations.map(_sessions) { it.takeLast(14) }
 
-    override val sessionAvg = Transformations.map(_sessions) {
-        val avg = it.map { s -> s.length }.average().toFloat()
-        if (avg.isNaN()) return@map 0f else return@map avg
+    override val sessionAggregateOfAll: LiveData<SessionAggregate> = Transformations.map(_sessions) { sessions ->
+        sessions.aggregate()
     }
 
     override val sessionAggregateOfLastDays: LiveData<List<SessionAggregate>> = Transformations.map(_sessions) { sessions ->
-        val dateSessionMap = sessions.groupBy { SimpleDateFormat("y-M-d").format(it.endDate) }
-        val sessionAggregates = dateSessionMap.map {
-            SessionAggregate(
-                    session_count = it.value.size,
-                    avg_length = it.value.map { session -> session.length }.average().toFloat(),
-                    date = it.value[0].endDate
-            )
-        }.sortedByDescending { aggregate -> aggregate.date }
-        sessionAggregates
+        sessions.groupBy { SimpleDateFormat("y-M-d").format(it.endDate) }
+                .map { it.value.aggregate() }
+                .sortedByDescending { aggregate -> aggregate.date }
     }
 
     override suspend fun storeSession(length: Double, endDate: Date) {
