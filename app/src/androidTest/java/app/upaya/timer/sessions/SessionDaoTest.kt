@@ -73,9 +73,9 @@ class SessionDaoTest {
         val sessionAggregate = sessionDao.getAggregateOfAll()
 
         // THEN it matches
-        assert(sessionAggregate.getOrAwaitValue().session_count == numberOfSessionsTotal)
-        assert(sessionAggregate.getOrAwaitValue().avg_length == this.sessionAvg)
-        assert(sessionAggregate.getOrAwaitValue().total_length == this.sessionTotal)
+        assert(sessionAggregate.getOrAwaitValue().sessionCount == numberOfSessionsTotal)
+        assert(sessionAggregate.getOrAwaitValue().avgLength == this.sessionAvg)
+        assert(sessionAggregate.getOrAwaitValue().totalLength == this.sessionTotal)
     }
 
     @Test
@@ -89,8 +89,8 @@ class SessionDaoTest {
         // THEN there are the right number of days with the right average
         assert(avgOfDays.getOrAwaitValue().size == limit)
         for (result in avgOfDays.getOrAwaitValue()) {
-            assert(result.avg_length == sessionAvg)
-            assert(result.session_count == numberOfSessionsPerDay)
+            assert(result.avgLength == sessionAvg)
+            assert(result.sessionCount == numberOfSessionsPerDay)
         }
 
     }

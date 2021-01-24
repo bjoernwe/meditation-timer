@@ -23,27 +23,27 @@ class SessionViewModelTest {
 
         // GIVEN a SessionViewModel with an empty SessionRepository
         var sessionAggregate = sessionViewModel.sessionAggOfAll.getOrAwaitValue()
-        assert(sessionAggregate.session_count == 0)
-        assert(sessionAggregate.avg_length == 0f)
-        assert(sessionAggregate.total_length == 0)
+        assert(sessionAggregate.sessionCount == 0)
+        assert(sessionAggregate.avgLength == 0f)
+        assert(sessionAggregate.totalLength == 0)
 
         // WHEN a session is added
         sessionRepository.storeSession(length = 2.0)
 
         // THEN the corresponding LiveData is updated accordingly
         sessionAggregate = sessionViewModel.sessionAggOfAll.getOrAwaitValue()
-        assert(sessionAggregate.session_count == 1)
-        assert(sessionAggregate.avg_length == 2f)
-        assert(sessionAggregate.total_length == 2)
+        assert(sessionAggregate.sessionCount == 1)
+        assert(sessionAggregate.avgLength == 2f)
+        assert(sessionAggregate.totalLength == 2)
 
         // AND WHEN another session is added
         sessionRepository.storeSession(length = 4.0)
 
         // THEN the corresponding LiveData is updated accordingly
         sessionAggregate = sessionViewModel.sessionAggOfAll.getOrAwaitValue()
-        assert(sessionAggregate.session_count == 2)
-        assert(sessionAggregate.avg_length == 3f)
-        assert(sessionAggregate.total_length == 6)
+        assert(sessionAggregate.sessionCount == 2)
+        assert(sessionAggregate.avgLength == 3f)
+        assert(sessionAggregate.totalLength == 6)
     }
 
 }

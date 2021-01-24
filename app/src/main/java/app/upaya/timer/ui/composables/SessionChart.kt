@@ -18,7 +18,7 @@ fun SessionChart(modifier: Modifier = Modifier) {
     val sessionAggregates = sessionViewModel.sessionAggOfLastDays.observeAsState()
 
     val sessionEntries = sessionAggregates.value?.reversed()?.mapIndexed { index, aggregate ->
-        index.toString() to aggregate.session_count.toFloat()
+        index.toString() to aggregate.sessionCount.toFloat()
     }
 
     val primaryColor = MaterialTheme.colors.primary

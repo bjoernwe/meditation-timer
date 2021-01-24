@@ -14,16 +14,8 @@ class SessionRepository(sessionDatabase: SessionDatabase) : ISessionRepository {
 
     private val numberOfAggregatedDays = 14
 
-    private val _sessionAggregateOfAll = sessionDao.getAggregateOfAll()
-    override val sessionAggregateOfAll = Transformations.map(_sessionAggregateOfAll) {
-        it.toSessionAggregate()
-    }
-
-    private val _sessionAggregateOfLastDays = sessionDao.getAggregateOfLastDays(numberOfAggregatedDays)
-    override val sessionAggregateOfLastDays = Transformations.map(_sessionAggregateOfLastDays) {
-        it.map { aggregate -> aggregate.toSessionAggregate() }
-    }
-
+    override val sessionAggregateOfAll = sessionDao.getAggregateOfAll()
+    override val sessionAggregateOfLastDays = sessionDao.getAggregateOfLastDays(numberOfAggregatedDays)
     override val sessions: LiveData<List<Session>> = sessionDao.getSessions()
 
     override suspend fun storeSession(length: Double, endDate: Date) {

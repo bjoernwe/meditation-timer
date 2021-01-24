@@ -57,8 +57,8 @@ fun SessionStats() {
             Divider(Modifier.padding(bottom = 24.dp))
 
             Text(
-                    text = "${sessionAggOfAll.value.session_count} sessions "
-                            + "(${fromSecsToTimeString(sessionAggOfAll.value.total_length)} total)",
+                    text = "${sessionAggOfAll.value.sessionCount} sessions "
+                            + "(${fromSecsToTimeString(sessionAggOfAll.value.totalLength)} total)",
                     color = MaterialTheme.colors.onSurface,
             )
 
