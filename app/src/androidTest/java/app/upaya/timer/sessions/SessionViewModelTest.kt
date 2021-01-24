@@ -22,22 +22,28 @@ class SessionViewModelTest {
     fun sessionLiveDataStatistics() = runBlocking {
 
         // GIVEN a SessionViewModel with an empty SessionRepository
-        assert(sessionViewModel.sessionCount.getOrAwaitValue() == 0)
-        assert(sessionViewModel.sessionAvg.getOrAwaitValue() == 0f)
+        var sessionAggregate = sessionViewModel.sessionAggOfAll.getOrAwaitValue()
+        assert(sessionAggregate.sessionCount == 0)
+        assert(sessionAggregate.avgLength == 0f)
+        assert(sessionAggregate.totalLength == 0)
 
         // WHEN a session is added
         sessionRepository.storeSession(length = 2.0)
 
         // THEN the corresponding LiveData is updated accordingly
-        assert(sessionViewModel.sessionCount.getOrAwaitValue() == 1)
-        assert(sessionViewModel.sessionAvg.getOrAwaitValue() == 2f)
+        sessionAggregate = sessionViewModel.sessionAggOfAll.getOrAwaitValue()
+        assert(sessionAggregate.sessionCount == 1)
+        assert(sessionAggregate.avgLength == 2f)
+        assert(sessionAggregate.totalLength == 2)
 
         // AND WHEN another session is added
         sessionRepository.storeSession(length = 4.0)
 
         // THEN the corresponding LiveData is updated accordingly
-        assert(sessionViewModel.sessionCount.getOrAwaitValue() == 2)
-        assert(sessionViewModel.sessionAvg.getOrAwaitValue() == 3f)
+        sessionAggregate = sessionViewModel.sessionAggOfAll.getOrAwaitValue()
+        assert(sessionAggregate.sessionCount == 2)
+        assert(sessionAggregate.avgLength == 3f)
+        assert(sessionAggregate.totalLength == 6)
     }
 
 }
