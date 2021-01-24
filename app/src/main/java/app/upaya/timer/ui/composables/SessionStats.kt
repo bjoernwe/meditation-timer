@@ -24,13 +24,14 @@ fun SessionStats() {
 
     val sessionViewModel: SessionViewModel = viewModel(factory = SessionViewModelFactory(AmbientContext.current))
     val timerViewModel: TimerViewModel = viewModel(factory = TimerViewModelFactory(AmbientContext.current))
+    val sessionAggregates = sessionViewModel.sessionAggOfLastDays.observeAsState(listOf())
     val sessionCount = sessionViewModel.sessionCount.observeAsState(initial = 0)
     val sessionLength = timerViewModel.sessionLength.observeAsState(initial = 0.0)
     val sessionTotal = sessionViewModel.sessionTotal.observeAsState(initial = 0)
 
     Column(Modifier.padding(16.dp)) {
 
-        if (sessionCount.value >= 3) {
+        if (sessionAggregates.value.size >= 3) {
             SessionChart(
                     Modifier
                             .fillMaxWidth()
@@ -41,7 +42,7 @@ fun SessionStats() {
             )
         } else {
             Text(
-                    text = "not enough sessions yet",
+                    text = "not enough session days yet",
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                             .height(150.dp)
