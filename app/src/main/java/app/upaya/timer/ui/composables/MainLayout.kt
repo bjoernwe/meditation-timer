@@ -10,20 +10,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.viewModel
-import androidx.lifecycle.Transformations
 import app.upaya.timer.timer.TimerViewModel
-import app.upaya.timer.ui.fromSecsToTimeString
 
 
 @ExperimentalAnimationApi
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun MainComposable(onClick: () -> Unit) {
-
-    val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
-    val timerViewModel: TimerViewModel = viewModel()
+fun MainLayout(onClick: () -> Unit) {
 
     TimerTheme {
+
+        val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
+        val timerViewModel: TimerViewModel = viewModel()
 
         ModalBottomSheetLayout(
                 sheetState = sheetState,
@@ -36,9 +34,6 @@ fun MainComposable(onClick: () -> Unit) {
 
                 TimerRing(
                         activated = timerViewModel.isRunning.observeAsState(false),
-                        text = Transformations.map(timerViewModel.secondsRemaining) {
-                            fromSecsToTimeString(it.toInt())
-                        }.observeAsState(""),
                         onClick = onClick
                 )
 
@@ -52,7 +47,7 @@ fun MainComposable(onClick: () -> Unit) {
                                     end.linkTo(parent.end, margin = 16.dp)
                                 },
                 ) {
-                    StatsButton(onClick = { sheetState.show() } )
+                    StatsButton(onClick = { if (!sheetState.isVisible) sheetState.show() } )
                 }
 
             }  // ConstraintLayout
