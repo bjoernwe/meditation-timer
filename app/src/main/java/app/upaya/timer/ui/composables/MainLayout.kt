@@ -40,7 +40,7 @@ fun MainLayout(onClick: () -> Unit) {
                 val optionsButton = createRef()
 
                 AnimatedVisibility(
-                        visible = !timerViewModel.isRunning.observeAsState(false).value,
+                        visible = timerViewModel.isWaiting.observeAsState(false).value,
                         modifier = Modifier
                                 .constrainAs(optionsButton) {
                                     top.linkTo(parent.top, margin = 16.dp)
