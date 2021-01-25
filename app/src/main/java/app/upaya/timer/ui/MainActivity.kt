@@ -11,7 +11,7 @@ import androidx.compose.ui.platform.setContent
 import androidx.lifecycle.ViewModelProvider
 import app.upaya.timer.R
 import app.upaya.timer.timer.*
-import app.upaya.timer.ui.composables.MainComposable
+import app.upaya.timer.ui.composables.MainLayout
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import timber.log.Timber
 
@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
 
         // Emit Main Composable
         setContent {
-            MainComposable(onClick = ::onCircleClicked)
+            MainLayout(onClick = ::onCircleClicked)
         }
 
         // Register event callbacks
@@ -68,7 +68,6 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
     private fun onTimerStateChanged(newTimerState: TimerStates) {
         when (newTimerState) {
             TimerStates.FINISHED -> {
-                showSessionRatingDialog()
                 playBell()
                 timerAnalyticsLogger.logSessionFinished()
             }
@@ -86,10 +85,6 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
         getSystemService(Vibrator::class.java).vibrate(
                 VibrationEffect.createOneShot(milliseconds, amplitude)
         )
-    }
-
-    private fun showSessionRatingDialog() {
-        SessionRatingDialogFragment().apply { show(supportFragmentManager, tag) }
     }
 
     override fun onError(mediaPlayer: MediaPlayer?, what: Int, extra: Int): Boolean {

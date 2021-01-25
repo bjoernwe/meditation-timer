@@ -34,7 +34,8 @@ fun SessionStats() {
 
         if (sessionAggOfLastDays.value.size >= 3) {
             SessionChart(
-                    Modifier
+                    sessionAggregates = sessionAggOfLastDays,
+                    modifier = Modifier
                             .fillMaxWidth()
                             .align(Alignment.CenterHorizontally)
                             .height(150.dp)

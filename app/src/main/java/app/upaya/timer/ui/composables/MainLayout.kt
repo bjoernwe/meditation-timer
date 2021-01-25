@@ -10,49 +10,59 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.viewModel
-import androidx.lifecycle.Transformations
+import app.upaya.timer.timer.TimerStates
 import app.upaya.timer.timer.TimerViewModel
-import app.upaya.timer.ui.fromSecsToTimeString
 
 
 @ExperimentalAnimationApi
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun MainComposable(onClick: () -> Unit) {
-
-    val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
-    val timerViewModel: TimerViewModel = viewModel()
+fun MainLayout(onClick: () -> Unit) {
 
     TimerTheme {
+
+        val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
+        val timerViewModel: TimerViewModel = viewModel()
+        val timerState = timerViewModel.state.observeAsState()
+
+        // Allow dismissal of rating dialog. Work-around since SheetState's confirmStateChange
+        // doesn't seem to be working.
+        if (timerState.value == TimerStates.FINISHED && !sheetState.isVisible) timerViewModel.keepSessionLength()
 
         ModalBottomSheetLayout(
                 sheetState = sheetState,
                 scrimColor = Color(0, 0, 0, 128),
                 sheetBackgroundColor = MaterialTheme.colors.background,
-                sheetContent = { SessionStats() }
+                sheetContent = {
+                    when (timerState.value) {
+                        TimerStates.WAITING_FOR_START -> SessionStats()
+                        TimerStates.FINISHED -> SessionRatingDialog(
+                                onClickDown = { sheetState.hide { timerViewModel.increaseSessionLength() } },
+                                onClickUp = { sheetState.hide { timerViewModel.decreaseSessionLength() } }
+                        )
+                        else -> { }
+                    }
+                }
         ) {
 
             ConstraintLayout {
 
                 TimerRing(
                         activated = timerViewModel.isRunning.observeAsState(false),
-                        text = Transformations.map(timerViewModel.secondsRemaining) {
-                            fromSecsToTimeString(it.toInt())
-                        }.observeAsState(""),
                         onClick = onClick
                 )
 
                 val optionsButton = createRef()
 
                 AnimatedVisibility(
-                        visible = !timerViewModel.isRunning.observeAsState(false).value,
+                        visible = timerViewModel.isWaiting.observeAsState(false).value,
                         modifier = Modifier
                                 .constrainAs(optionsButton) {
                                     top.linkTo(parent.top, margin = 16.dp)
                                     end.linkTo(parent.end, margin = 16.dp)
                                 },
                 ) {
-                    StatsButton(onClick = { sheetState.show() } )
+                    StatsButton(onClick = { if (!sheetState.isVisible) sheetState.show() } )
                 }
 
             }  // ConstraintLayout
