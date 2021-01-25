@@ -24,7 +24,7 @@ fun SessionChart(sessionAggregates: State<List<SessionAggregate>>, modifier: Mod
             viewBlock = {
                 BarChartView(it).apply {
                     this.labelsSize = 0f
-                    this.barRadius = 8f
+                    this.barRadius = 6f
                     this.spacing = 24f
                     this.barsColor = primaryColor.toArgb()
                 }
