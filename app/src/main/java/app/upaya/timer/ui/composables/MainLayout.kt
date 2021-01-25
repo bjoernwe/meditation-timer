@@ -21,8 +21,8 @@ fun MainLayout(onClick: () -> Unit) {
 
     TimerTheme {
 
-        val timerViewModel: TimerViewModel = viewModel()
         val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
+        val timerViewModel: TimerViewModel = viewModel()
         val timerState = timerViewModel.state.observeAsState()
 
         // Allow dismissal of rating dialog. Work-around since SheetState's confirmStateChange
