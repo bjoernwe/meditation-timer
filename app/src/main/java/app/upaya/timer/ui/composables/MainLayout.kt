@@ -25,9 +25,7 @@ fun MainLayout(onClick: () -> Unit) {
         val timerViewModel: TimerViewModel = viewModel()
         val timerState = timerViewModel.state.observeAsState()
 
-        // Allow dismissal of rating dialog. Work-around since SheetState's confirmStateChange
-        // doesn't seem to be working.
-        if (timerState.value == TimerStates.FINISHED && !sheetState.isVisible) timerViewModel.keepSessionLength()
+        if (timerState.value == TimerStates.FINISHED) if (!sheetState.isVisible) sheetState.show()
 
         ModalBottomSheetLayout(
                 sheetState = sheetState,
@@ -36,11 +34,10 @@ fun MainLayout(onClick: () -> Unit) {
                 sheetContent = {
                     when (timerState.value) {
                         TimerStates.WAITING_FOR_START -> SessionStats()
-                        TimerStates.FINISHED -> SessionRatingDialog(
+                        else -> SessionRatingDialog(
                                 onClickDown = { sheetState.hide { timerViewModel.increaseSessionLength() } },
                                 onClickUp = { sheetState.hide { timerViewModel.decreaseSessionLength() } }
                         )
-                        else -> { }
                     }
                 }
         ) {
