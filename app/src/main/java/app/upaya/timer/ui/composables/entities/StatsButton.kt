@@ -1,4 +1,4 @@
-package app.upaya.timer.ui.composables
+package app.upaya.timer.ui.composables.entities
 
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons

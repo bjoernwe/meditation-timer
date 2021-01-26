@@ -1,4 +1,4 @@
-package app.upaya.timer.ui.composables
+package app.upaya.timer.ui.composables.entities
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
+import app.upaya.timer.ui.composables.TimerTheme
 
 
 @Preview
