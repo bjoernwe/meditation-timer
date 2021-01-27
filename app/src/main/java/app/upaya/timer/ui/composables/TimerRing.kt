@@ -37,7 +37,7 @@ fun TimerRing(activated: State<Boolean>, onClick: () -> Unit) {
 
         // Ring
         MaterialRing(
-                size = 200.dp,
+                size = 180.dp,
                 thickness = 12.dp,
                 depth = 3.dp,
                 color = if (activated.value) Color.White else MaterialTheme.colors.primary
