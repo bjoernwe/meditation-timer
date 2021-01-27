@@ -28,10 +28,16 @@ fun MaterialRingPreview() {
 
 
 @Composable
-fun MaterialRing(size: Dp, thickness: Dp, depth: Dp = 1.dp, color: Color = MaterialTheme.colors.primary) {
+fun MaterialRing(
+        modifier: Modifier = Modifier,
+        size: Dp,
+        thickness: Dp,
+        depth: Dp = 1.dp,
+        color: Color = MaterialTheme.colors.primary
+) {
 
     Box(contentAlignment = Alignment.Center,
-        modifier = Modifier.background(MaterialTheme.colors.background)) {
+        modifier = modifier.background(MaterialTheme.colors.background)) {
 
         Canvas(Modifier.preferredSize(size).padding(7.dp)) {
 
