@@ -1,28 +1,35 @@
 package app.upaya.timer.ui.composables.sheets
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Science
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
-import app.upaya.timer.ui.composables.blueGrey800Dark
+import app.upaya.timer.ui.composables.blueGrey800Light
 
 
 @Composable
 fun SessionHintsCard(modifier: Modifier = Modifier) {
 
-    Card(
-            backgroundColor = blueGrey800Dark,
-            border = BorderStroke(1.dp, MaterialTheme.colors.onBackground),
-            modifier = modifier
+    Row(
+            modifier = modifier,
+            verticalAlignment = Alignment.Top,
     ) {
+
+        Icon(
+                Icons.Default.Science,
+                tint = blueGrey800Light,
+                modifier = Modifier.padding(8.dp)
+        )
 
         Text(
                 text = "Notice your breath wherever you can sense it.",
                 color = MaterialTheme.colors.onSurface,
-                modifier = Modifier.padding(20.dp, 14.dp, 20.dp, 16.dp)
+                modifier = Modifier.fillMaxWidth().padding(8.dp)
         )
 
     }
