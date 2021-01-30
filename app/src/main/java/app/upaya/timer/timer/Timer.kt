@@ -6,15 +6,16 @@ import kotlin.math.roundToInt
 
 class Timer(
         private var sessionLength: Double,
-        private val onTick: (secondsRemaining: Int) -> Unit = {},
-        private val onFinish: () -> Unit = {},
         private val onSessionLengthChanged: (newSessionLength: Double) -> Unit = {}
 ) {
 
     @Volatile
     private var countDownThread: Thread? = null
 
-    fun startCountdown() {
+    fun startCountdown(
+            onFinish: () -> Unit = {},
+            onTick: (secondsRemaining: Int) -> Unit = {},
+    ) {
 
         synchronized(this) {
 

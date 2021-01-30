@@ -25,18 +25,18 @@ class TimerViewModelTest {
         val timerRepository = TimerRepositoryFake(1.0)
         val timerViewModel = TimerViewModel(timerRepository, sessionRepository)
         assert(!timerViewModel.isRunning.getOrAwaitValue())
-        assert(timerViewModel.state.getOrAwaitValue() == TimerStates.WAITING_FOR_START)
+        assert(timerViewModel.state.getOrAwaitValue() is Idle)
 
         // WHEN the timer is started
-        timerViewModel.startCountdown()
+        (timerViewModel.state.getOrAwaitValue() as Idle).startCountdown()
 
         // THEN its state changes accordingly
         while (!timerViewModel.isRunning.getOrAwaitValue()) Thread.sleep(100)
-        assert(timerViewModel.state.getOrAwaitValue() == TimerStates.RUNNING)
+        assert(timerViewModel.state.getOrAwaitValue() is Running)
 
         // AND its state changes accordingly when the timer finishes
         while (timerViewModel.isRunning.getOrAwaitValue()) Thread.sleep(100)
-        assert(timerViewModel.state.getOrAwaitValue() == TimerStates.FINISHED)
+        assert(timerViewModel.state.getOrAwaitValue() is Finished)
     }
 
     @Test
@@ -48,7 +48,7 @@ class TimerViewModelTest {
         assert(timerViewModel.secondsRemaining.getOrAwaitValue() == 0)
 
         // WHEN the timer is started
-        timerViewModel.startCountdown()
+        (timerViewModel.state.getOrAwaitValue() as Idle).startCountdown()
 
         // THEN its LiveData changes accordingly
         while (timerViewModel.secondsRemaining.getOrAwaitValue() == 0) Thread.sleep(100)
@@ -65,14 +65,16 @@ class TimerViewModelTest {
     fun increaseSessionLength() {
 
         // GIVEN a TimerViewModel with TimerRepository
-        val initialSessionLength = 2.0
+        val initialSessionLength = 1.0
         val timerRepository = TimerRepositoryFake(initialSessionLength)
         val timerViewModel = TimerViewModel(timerRepository, sessionRepository)
         assert(timerViewModel.sessionLength.getOrAwaitValue() == initialSessionLength)
         Assert.assertEquals(timerRepository.loadSessionLength(), initialSessionLength, 0.001)
 
-        // WHEN the session length is increased
-        timerViewModel.increaseSessionLength()
+        // WHEN the session length is increased for the finished timer
+        (timerViewModel.state.getOrAwaitValue() as Idle).startCountdown()
+        while (timerViewModel.state.getOrAwaitValue() is Running) Thread.sleep(100)
+        (timerViewModel.state.getOrAwaitValue() as Finished).increaseSessionLength()
 
         // THEN its LiveData is increased
         assert(timerViewModel.sessionLength.getOrAwaitValue() > initialSessionLength)
@@ -91,8 +93,10 @@ class TimerViewModelTest {
         assert(timerViewModel.sessionLength.getOrAwaitValue() == initialSessionLength)
         Assert.assertEquals(timerRepository.loadSessionLength(), initialSessionLength, 0.001)
 
-        // WHEN the session length is increased
-        timerViewModel.decreaseSessionLength()
+        // WHEN the session length is decreased for the finished timer
+        (timerViewModel.state.getOrAwaitValue() as Idle).startCountdown()
+        while (timerViewModel.state.getOrAwaitValue() is Running) Thread.sleep(100)
+        (timerViewModel.state.getOrAwaitValue() as Finished).decreaseSessionLength()
 
         // THEN its LiveData is decreased
         assert(timerViewModel.sessionLength.getOrAwaitValue() < initialSessionLength)

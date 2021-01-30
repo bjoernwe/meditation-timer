@@ -55,15 +55,15 @@ class TimerTest {
         // GIVEN a timer
         val callbacks = mutableListOf<String>()
         val initialSessionLength = 2.0
-        val timer = Timer(
-                sessionLength = initialSessionLength,
-                onTick = { secondsRemaining -> callbacks.add("tick $secondsRemaining") },
-                onFinish = { callbacks.add("finish") }
-        )
+        val timer = Timer(initialSessionLength)
 
         // WHEN the timer is started and run until the end
-        timer.startCountdown()
-        timer.startCountdown()  // should be ignored
+        repeat(2) {  // (second call should be ignored)
+            timer.startCountdown(
+                    onTick = { secondsRemaining -> callbacks.add("tick $secondsRemaining") },
+                    onFinish = { callbacks.add("finish") }
+            )
+        }
         while (timer.isRunning()) Thread.sleep(100)
 
         // THEN all callbacks have been called
