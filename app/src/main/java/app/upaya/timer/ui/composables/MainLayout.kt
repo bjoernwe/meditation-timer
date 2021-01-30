@@ -39,8 +39,8 @@ fun MainLayout(onClick: () -> Unit) {
                         is Idle -> SessionStats()
                         is Running -> Text("There is nothing to see here!")
                         is Finished -> SessionRatingDialog(
-                                onClickDown = { sheetState.hide { (timerState as Finished).increaseSessionLength() } },
-                                onClickUp = { sheetState.hide { (timerState as Finished).decreaseSessionLength() } }
+                                onClickDown = { sheetState.hide { (timerState as? Finished)?.increaseSessionLength() } },
+                                onClickUp = { sheetState.hide { (timerState as? Finished)?.decreaseSessionLength() } }
                         )
                     }
                 }
