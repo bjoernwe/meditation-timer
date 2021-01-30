@@ -61,7 +61,7 @@ fun MainLayout(onClick: () -> Unit) {
                 val (hintCard, statsButton) = createRefs()
 
                 AnimatedVisibility(
-                        visible = timerViewModel.idIdle.observeAsState(false).value,
+                        visible = timerViewModel.isIdle.observeAsState(false).value,
                         modifier = Modifier
                                 .constrainAs(statsButton)
                                 {
@@ -73,7 +73,7 @@ fun MainLayout(onClick: () -> Unit) {
                 }
 
                 AnimatedVisibility(
-                        visible = timerViewModel.isWaiting.observeAsState(false).value,
+                        visible = timerViewModel.isIdle.observeAsState(false).value,
                         enter = fadeIn(),
                         modifier =  Modifier
                                 .constrainAs(hintCard)
