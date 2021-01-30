@@ -19,7 +19,6 @@ import timber.log.Timber
 class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
 
     private var mediaPlayer: MediaPlayer? = null
-    private lateinit var timerAnalyticsLogger: TimerAnalyticsLogger
     private lateinit var timerViewModel: TimerViewModel
 
     @ExperimentalAnimationApi
@@ -36,9 +35,6 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
         // Register event callbacks
         timerViewModel.state.observe(this, { onTimerStateChanged(it) })
         mediaPlayer?.setOnErrorListener(this)
-
-        // Firebase Analytics
-        timerAnalyticsLogger = TimerAnalyticsLogger(this)
     }
 
     override fun onStart() {
@@ -67,10 +63,7 @@ class MainActivity : AppCompatActivity(), MediaPlayer.OnErrorListener {
 
     private fun onTimerStateChanged(newTimerState: TimerState) {
         when (newTimerState) {
-            is Finished -> {
-                playBell()
-                timerAnalyticsLogger.logSessionFinished()
-            }
+            is Finished -> { playBell() }
             else -> { }
         }
     }
