@@ -1,8 +1,6 @@
 package app.upaya.timer.ui.composables
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.fadeIn
+import androidx.compose.animation.*
 import androidx.compose.foundation.layout.ConstraintLayout
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -74,7 +72,7 @@ fun MainLayout(onClick: () -> Unit) {
 
                 AnimatedVisibility(
                         visible = timerViewModel.isIdle.observeAsState(false).value,
-                        enter = fadeIn(),
+                        enter = fadeIn() + slideInVertically({it/2}),
                         modifier =  Modifier
                                 .constrainAs(hintCard)
                                 {
