@@ -1,8 +1,9 @@
 package app.upaya.timer.ui.composables
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.*
 import androidx.compose.foundation.layout.ConstraintLayout
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -15,6 +16,8 @@ import app.upaya.timer.timer.Finished
 import app.upaya.timer.timer.Idle
 import app.upaya.timer.timer.Running
 import app.upaya.timer.timer.TimerViewModel
+import app.upaya.timer.ui.composables.entities.StatsButton
+import app.upaya.timer.ui.composables.sheets.SessionHintsCard
 
 
 @ExperimentalAnimationApi
@@ -53,17 +56,34 @@ fun MainLayout(onClick: () -> Unit) {
                         onClick = onClick
                 )
 
-                val optionsButton = createRef()
+                val (hintCard, statsButton) = createRefs()
 
                 AnimatedVisibility(
-                        visible = timerViewModel.idIdle.observeAsState(false).value,
+                        visible = timerViewModel.isIdle.observeAsState(false).value,
                         modifier = Modifier
-                                .constrainAs(optionsButton) {
+                                .constrainAs(statsButton)
+                                {
                                     top.linkTo(parent.top, margin = 16.dp)
                                     end.linkTo(parent.end, margin = 16.dp)
                                 },
                 ) {
-                    StatsButton(onClick = { if (!sheetState.isVisible) sheetState.show() } )
+                    StatsButton(onClick = { if (!sheetState.isVisible) sheetState.show() })
+                }
+
+                AnimatedVisibility(
+                        visible = timerViewModel.isIdle.observeAsState(false).value,
+                        enter = fadeIn() + slideInVertically({it/2}),
+                        modifier =  Modifier
+                                .constrainAs(hintCard)
+                                {
+                                    start.linkTo(parent.start)
+                                    end.linkTo(parent.end)
+                                    bottom.linkTo(parent.bottom)
+                                }
+                                .padding(24.dp)
+                                .fillMaxWidth()
+                ) {
+                    SessionHintsCard()
                 }
 
             }  // ConstraintLayout

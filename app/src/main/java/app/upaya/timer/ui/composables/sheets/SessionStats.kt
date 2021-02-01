@@ -17,6 +17,7 @@ import app.upaya.timer.sessions.SessionViewModel
 import app.upaya.timer.sessions.SessionViewModelFactory
 import app.upaya.timer.timer.TimerViewModel
 import app.upaya.timer.timer.TimerViewModelFactory
+import app.upaya.timer.ui.composables.entities.SessionChart
 import app.upaya.timer.ui.fromSecsToTimeString
 import java.util.*
 

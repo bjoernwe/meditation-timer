@@ -31,7 +31,7 @@ class TimerViewModel(private val timerRepository: ITimerRepository,
 
     // Transformations
     val isRunning: LiveData<Boolean> = Transformations.map(state) { it is Running }
-    val idIdle: LiveData<Boolean> = Transformations.map(state) { it is Idle }
+    val isIdle: LiveData<Boolean> = Transformations.map(state) { it is Idle }
 
     // Event Handling
     // We use observeForever() because we don't want to have any LivecycleOwner in the ViewModel.

@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
+import app.upaya.timer.ui.composables.entities.MaterialRing
 
 
 @ExperimentalMaterialApi
@@ -36,7 +37,7 @@ fun TimerRing(activated: State<Boolean>, onClick: () -> Unit) {
 
         // Ring
         MaterialRing(
-                size = 200.dp,
+                size = 180.dp,
                 thickness = 12.dp,
                 depth = 3.dp,
                 color = if (activated.value) Color.White else MaterialTheme.colors.primary

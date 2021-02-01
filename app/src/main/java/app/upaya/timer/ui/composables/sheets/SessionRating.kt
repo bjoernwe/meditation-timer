@@ -33,7 +33,7 @@ fun SessionRatingDialog(onClickDown: () -> Unit, onClickUp: () -> Unit) {
 
         Row(
                 horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier.fillMaxWidth(.8f),
+                modifier = Modifier.fillMaxWidth(),
         ) {
 
             IconButton(onClick = onClickDown) {
