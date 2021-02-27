@@ -1,21 +1,21 @@
-package app.upaya.timer.timer
+package app.upaya.timer.session
 
 import org.junit.Test
 
 
-class TimerTest {
+class SessionHandlerTest {
 
     @Test
     fun getSessionLength() {
 
         // GIVEN a timer
         val initialSessionLength = 10.0
-        val timer = Timer(initialSessionLength)
+        val timer = SessionHandler(initialSessionLength)
 
         // WHEN its session length is requested
         // THEN it is the same as the initial one
-        println(timer.getSessionLength())
-        assert(timer.getSessionLength() == initialSessionLength)
+        println(timer.getLength())
+        assert(timer.getLength() == initialSessionLength)
 
     }
 
@@ -24,13 +24,13 @@ class TimerTest {
 
         // GIVEN a timer
         val initialSessionLength = 10.0
-        val timer = Timer(initialSessionLength)
+        val timer = SessionHandler(initialSessionLength)
 
         // WHEN its session length is increased
-        timer.increaseSessionLength()
+        timer.increaseLength()
 
         // THEN it is longer than before
-        assert(timer.getSessionLength() > initialSessionLength)
+        assert(timer.getLength() > initialSessionLength)
 
     }
 
@@ -39,13 +39,13 @@ class TimerTest {
 
         // GIVEN a timer
         val initialSessionLength = 10.0
-        val timer = Timer(initialSessionLength)
+        val timer = SessionHandler(initialSessionLength)
 
         // WHEN its session length is decreased
-        timer.decreaseSessionLength()
+        timer.decreaseLength()
 
         // THEN it is longer than before
-        assert(timer.getSessionLength() < initialSessionLength)
+        assert(timer.getLength() < initialSessionLength)
 
     }
 
@@ -55,11 +55,11 @@ class TimerTest {
         // GIVEN a timer
         val callbacks = mutableListOf<String>()
         val initialSessionLength = 2.0
-        val timer = Timer(initialSessionLength)
+        val timer = SessionHandler(initialSessionLength)
 
         // WHEN the timer is started and run until the end
         repeat(2) {  // (second call should be ignored)
-            timer.startCountdown(
+            timer.start(
                     onTick = { secondsRemaining -> callbacks.add("tick $secondsRemaining") },
                     onFinish = { callbacks.add("finish") }
             )

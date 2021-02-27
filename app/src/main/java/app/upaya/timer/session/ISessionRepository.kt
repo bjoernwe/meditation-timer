@@ -1,7 +1,7 @@
-package app.upaya.timer.timer
+package app.upaya.timer.session
 
 
-interface ITimerRepository {
+interface ISessionRepository {
     fun loadSessionLength(): Double
     fun storeSessionLength(sessionLength: Double)
 }

@@ -20,7 +20,7 @@ import java.text.SimpleDateFormat
 
 
 @RunWith(AndroidJUnit4::class)
-class SessionEntryDaoTest {
+class SessionHandlerEntryDaoTest {
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()  // Make coroutines synchronous

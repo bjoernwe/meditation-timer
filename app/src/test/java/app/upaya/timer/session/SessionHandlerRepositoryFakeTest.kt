@@ -1,4 +1,4 @@
-package app.upaya.timer.timer
+package app.upaya.timer.session
 
 import org.junit.Before
 import org.junit.Test
@@ -6,13 +6,13 @@ import org.junit.Test
 import org.junit.Assert.*
 
 
-class TimerRepositoryFakeTest {
+class SessionHandlerRepositoryFakeTest {
 
-    private lateinit var timerRepository: ITimerRepository
+    private lateinit var sessionRepository: ISessionRepository
 
     @Before
     fun setUp() {
-        timerRepository = TimerRepositoryFake()
+        sessionRepository = SessionRepositoryFake()
     }
 
     @Test
@@ -20,10 +20,10 @@ class TimerRepositoryFakeTest {
 
         // GIVEN a session length stored through TimerRepository
         val sessionLength = 3.1
-        timerRepository.storeSessionLength(sessionLength)
+        sessionRepository.storeSessionLength(sessionLength)
 
         // WHEN the session length is loaded again
-        val loadedSessionLength = timerRepository.loadSessionLength()
+        val loadedSessionLength = sessionRepository.loadSessionLength()
 
         // THEN it is the as before
         assertEquals(sessionLength, loadedSessionLength, 0.001)

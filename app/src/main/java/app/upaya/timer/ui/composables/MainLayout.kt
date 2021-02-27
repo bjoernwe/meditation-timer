@@ -12,10 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.viewModel
-import app.upaya.timer.timer.Finished
-import app.upaya.timer.timer.Idle
-import app.upaya.timer.timer.Running
-import app.upaya.timer.timer.TimerViewModel
+import app.upaya.timer.session.Finished
+import app.upaya.timer.session.Idle
+import app.upaya.timer.session.Running
+import app.upaya.timer.session.SessionViewModel
 import app.upaya.timer.ui.composables.entities.StatsButton
 import app.upaya.timer.ui.composables.sheets.SessionHintsCard
 
@@ -28,8 +28,8 @@ fun MainLayout(onClick: () -> Unit) {
     TimerTheme {
 
         val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
-        val timerViewModel: TimerViewModel = viewModel()
-        val timerState by timerViewModel.state.observeAsState()
+        val sessionViewModel: SessionViewModel = viewModel()
+        val timerState by sessionViewModel.state.observeAsState()
 
         if (timerState is Finished && !sheetState.isVisible) sheetState.show()
 
@@ -52,14 +52,14 @@ fun MainLayout(onClick: () -> Unit) {
             ConstraintLayout {
 
                 TimerRing(
-                        activated = timerViewModel.isRunning.observeAsState(false),
+                        activated = sessionViewModel.isRunning.observeAsState(false),
                         onClick = onClick
                 )
 
                 val (hintCard, statsButton) = createRefs()
 
                 AnimatedVisibility(
-                        visible = timerViewModel.isIdle.observeAsState(false).value,
+                        visible = sessionViewModel.isIdle.observeAsState(false).value,
                         modifier = Modifier
                                 .constrainAs(statsButton)
                                 {
@@ -71,7 +71,7 @@ fun MainLayout(onClick: () -> Unit) {
                 }
 
                 AnimatedVisibility(
-                        visible = timerViewModel.isIdle.observeAsState(false).value,
+                        visible = sessionViewModel.isIdle.observeAsState(false).value,
                         enter = fadeIn() + slideInVertically({it/2}),
                         modifier =  Modifier
                                 .constrainAs(hintCard)

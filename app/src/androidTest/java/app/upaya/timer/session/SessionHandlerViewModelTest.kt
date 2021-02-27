@@ -1,4 +1,4 @@
-package app.upaya.timer.timer
+package app.upaya.timer.session
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -11,7 +11,7 @@ import org.junit.runner.RunWith
 
 
 @RunWith(AndroidJUnit4::class)
-class TimerViewModelTest {
+class SessionHandlerViewModelTest {
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()  // Make coroutines synchronous
@@ -22,13 +22,13 @@ class TimerViewModelTest {
     fun startCountdownTimerStates() {
 
         // GIVEN a TimerViewModel with TimerRepository
-        val timerRepository = TimerRepositoryFake(1.0)
-        val timerViewModel = TimerViewModel(timerRepository, sessionRepository)
+        val timerRepository = SessionRepositoryFake(1.0)
+        val timerViewModel = SessionViewModel(timerRepository, sessionRepository)
         assert(!timerViewModel.isRunning.getOrAwaitValue())
         assert(timerViewModel.state.getOrAwaitValue() is Idle)
 
         // WHEN the timer is started
-        (timerViewModel.state.getOrAwaitValue() as Idle).startCountdown()
+        (timerViewModel.state.getOrAwaitValue() as Idle).startSession()
 
         // THEN its state changes accordingly
         while (!timerViewModel.isRunning.getOrAwaitValue()) Thread.sleep(100)
@@ -43,12 +43,12 @@ class TimerViewModelTest {
     fun startCountdownSecondsRemaining() {
 
         // GIVEN a TimerViewModel with TimerRepository
-        val timerRepository = TimerRepositoryFake(2.0)
-        val timerViewModel = TimerViewModel(timerRepository, sessionRepository)
+        val timerRepository = SessionRepositoryFake(2.0)
+        val timerViewModel = SessionViewModel(timerRepository, sessionRepository)
         assert(timerViewModel.secondsRemaining.getOrAwaitValue() == 0)
 
         // WHEN the timer is started
-        (timerViewModel.state.getOrAwaitValue() as Idle).startCountdown()
+        (timerViewModel.state.getOrAwaitValue() as Idle).startSession()
 
         // THEN its LiveData changes accordingly
         while (timerViewModel.secondsRemaining.getOrAwaitValue() == 0) Thread.sleep(100)
@@ -66,13 +66,13 @@ class TimerViewModelTest {
 
         // GIVEN a TimerViewModel with TimerRepository
         val initialSessionLength = 1.0
-        val timerRepository = TimerRepositoryFake(initialSessionLength)
-        val timerViewModel = TimerViewModel(timerRepository, sessionRepository)
+        val timerRepository = SessionRepositoryFake(initialSessionLength)
+        val timerViewModel = SessionViewModel(timerRepository, sessionRepository)
         assert(timerViewModel.sessionLength.getOrAwaitValue() == initialSessionLength)
         Assert.assertEquals(timerRepository.loadSessionLength(), initialSessionLength, 0.001)
 
         // WHEN the session length is increased for the finished timer
-        (timerViewModel.state.getOrAwaitValue() as Idle).startCountdown()
+        (timerViewModel.state.getOrAwaitValue() as Idle).startSession()
         while (timerViewModel.state.getOrAwaitValue() is Running) Thread.sleep(100)
         (timerViewModel.state.getOrAwaitValue() as Finished).increaseSessionLength()
 
@@ -88,13 +88,13 @@ class TimerViewModelTest {
 
         // GIVEN a TimerViewModel with TimerRepository
         val initialSessionLength = 2.0
-        val timerRepository = TimerRepositoryFake(initialSessionLength)
-        val timerViewModel = TimerViewModel(timerRepository, sessionRepository)
+        val timerRepository = SessionRepositoryFake(initialSessionLength)
+        val timerViewModel = SessionViewModel(timerRepository, sessionRepository)
         assert(timerViewModel.sessionLength.getOrAwaitValue() == initialSessionLength)
         Assert.assertEquals(timerRepository.loadSessionLength(), initialSessionLength, 0.001)
 
         // WHEN the session length is decreased for the finished timer
-        (timerViewModel.state.getOrAwaitValue() as Idle).startCountdown()
+        (timerViewModel.state.getOrAwaitValue() as Idle).startSession()
         while (timerViewModel.state.getOrAwaitValue() is Running) Thread.sleep(100)
         (timerViewModel.state.getOrAwaitValue() as Finished).decreaseSessionLength()
 

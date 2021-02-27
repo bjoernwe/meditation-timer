@@ -1,4 +1,4 @@
-package app.upaya.timer.timer
+package app.upaya.timer.session
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
@@ -9,17 +9,20 @@ import java.lang.IllegalArgumentException
 
 
 /* This factory allows passing arguments to the TimerViewModel*/
-class TimerViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
+class SessionViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
 
-        if (modelClass.isAssignableFrom(TimerViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(SessionViewModel::class.java)) {
 
-            val timerRepository = TimerRepository(context)
-            val sessionRepository = SessionHistoryRepository(SessionEntryDatabase.getInstance(context))
+            val sessionRepository = SessionRepository(context)
+            val sessionHistoryRepository = SessionHistoryRepository(SessionEntryDatabase.getInstance(context))
 
             @Suppress("UNCHECKED_CAST")
-            return TimerViewModel(timerRepository, sessionRepository) as T
+            return SessionViewModel(
+                sessionRepository = sessionRepository,
+                sessionHistoryRepository = sessionHistoryRepository
+            ) as T
 
         } else {
             throw IllegalArgumentException("Unknown ViewModel class $modelClass")

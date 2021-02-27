@@ -1,10 +1,10 @@
-package app.upaya.timer.timer
+package app.upaya.timer.session
 
 import android.content.Context
 import app.upaya.timer.R
 
 
-class TimerRepository(context: Context) : ITimerRepository {
+class SessionRepository(context: Context) : ISessionRepository {
 
     private val prefSessionLengthId = context.getString(R.string.pref_session_length)
     private val prefs = with (context.applicationContext) {

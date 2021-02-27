@@ -19,7 +19,7 @@ import java.util.*
 
 
 @RunWith(AndroidJUnit4::class)
-class SessionHistoryRepositoryTest {
+class SessionHandlerHistoryRepositoryTest {
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()

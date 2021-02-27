@@ -6,21 +6,21 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.ui.platform.setContent
 import androidx.lifecycle.ViewModelProvider
-import app.upaya.timer.timer.*
+import app.upaya.timer.session.*
 import app.upaya.timer.ui.composables.MainLayout
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var bell: Bell
-    private lateinit var timerViewModel: TimerViewModel
+    private lateinit var sessionViewModel: SessionViewModel
 
     @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
 
-        timerViewModel = ViewModelProvider(this, TimerViewModelFactory(this)).get(TimerViewModel::class.java)
+        sessionViewModel = ViewModelProvider(this, SessionViewModelFactory(this)).get(SessionViewModel::class.java)
 
         bell = Bell(
                 context = applicationContext,
@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Register event callbacks
-        timerViewModel.state.observe(this, { onTimerStateChanged(it) })
+        sessionViewModel.state.observe(this, { onTimerStateChanged(it) })
     }
 
     override fun onStart() {
@@ -49,14 +49,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onCircleClicked() {
-        if (timerViewModel.state.value is Idle) {
-            (timerViewModel.state.value as? Idle)?.startCountdown()
+        if (sessionViewModel.state.value is Idle) {
+            (sessionViewModel.state.value as? Idle)?.startSession()
             bell.vibrate(50, 100)
         }
     }
 
-    private fun onTimerStateChanged(newTimerState: TimerState) {
-        when (newTimerState) {
+    private fun onTimerStateChanged(newSessionState: SessionState) {
+        when (newSessionState) {
             is Idle -> {}
             is Running -> { bell.reset() }
             is Finished -> { bell.play() }

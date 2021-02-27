@@ -1,10 +1,10 @@
-package app.upaya.timer.timer
+package app.upaya.timer.session
 
 import kotlin.concurrent.thread
 import kotlin.math.roundToInt
 
 
-class Timer(
+class SessionHandler(
         private var sessionLength: Double,
         private val onSessionLengthChanged: (newSessionLength: Double) -> Unit = {}
 ) {
@@ -12,7 +12,7 @@ class Timer(
     @Volatile
     private var countDownThread: Thread? = null
 
-    fun startCountdown(
+    fun start(
             onFinish: () -> Unit = {},
             onTick: (secondsRemaining: Int) -> Unit = {},
     ) {
@@ -42,16 +42,16 @@ class Timer(
 
     }  // startCountdown()
 
-    fun getSessionLength(): Double {
+    fun getLength(): Double {
         return sessionLength
     }
 
-    fun increaseSessionLength() {
+    fun increaseLength() {
         sessionLength = sessionLength.times(1.1)
         onSessionLengthChanged(sessionLength)
     }
 
-    fun decreaseSessionLength() {
+    fun decreaseLength() {
         val newSessionLength = sessionLength.times(0.8)
         if (newSessionLength >= 1.0) {
             sessionLength = newSessionLength

@@ -15,8 +15,8 @@ import androidx.compose.ui.viewinterop.viewModel
 import app.upaya.timer.session_history.SessionAggregate
 import app.upaya.timer.session_history.SessionHistoryViewModel
 import app.upaya.timer.session_history.SessionHistoryViewModelFactory
-import app.upaya.timer.timer.TimerViewModel
-import app.upaya.timer.timer.TimerViewModelFactory
+import app.upaya.timer.session.SessionViewModel
+import app.upaya.timer.session.SessionViewModelFactory
 import app.upaya.timer.ui.composables.entities.SessionChart
 import app.upaya.timer.ui.fromSecsToTimeString
 import java.util.*
@@ -26,10 +26,10 @@ import java.util.*
 fun SessionStats() {
 
     val sessionHistoryViewModel: SessionHistoryViewModel = viewModel(factory = SessionHistoryViewModelFactory(AmbientContext.current))
-    val timerViewModel: TimerViewModel = viewModel(factory = TimerViewModelFactory(AmbientContext.current))
+    val sessionViewModel: SessionViewModel = viewModel(factory = SessionViewModelFactory(AmbientContext.current))
     val sessionAggOfLastDays = sessionHistoryViewModel.sessionAggOfLastDays.observeAsState(listOf())
     val sessionAggOfAll = sessionHistoryViewModel.sessionAggOfAll.observeAsState(SessionAggregate(0, 0f, 0, Date()))
-    val sessionLength = timerViewModel.sessionLength.observeAsState(initial = 0.0)
+    val sessionLength = sessionViewModel.sessionLength.observeAsState(initial = 0.0)
 
     Column(Modifier.padding(16.dp)) {
 
