@@ -40,28 +40,6 @@ class SessionHandlerViewModelTest {
     }
 
     @Test
-    fun startCountdownSecondsRemaining() {
-
-        // GIVEN a TimerViewModel with TimerRepository
-        val timerRepository = SessionRepositoryFake(2.0)
-        val timerViewModel = SessionViewModel(timerRepository, sessionRepository)
-        assert(timerViewModel.secondsRemaining.getOrAwaitValue() == 0)
-
-        // WHEN the timer is started
-        (timerViewModel.state.getOrAwaitValue() as Idle).startSession()
-
-        // THEN its LiveData changes accordingly
-        while (timerViewModel.secondsRemaining.getOrAwaitValue() == 0) Thread.sleep(100)
-        assert(timerViewModel.secondsRemaining.getOrAwaitValue() == 2)
-        while (timerViewModel.secondsRemaining.getOrAwaitValue() == 2) Thread.sleep(100)
-        assert(timerViewModel.secondsRemaining.getOrAwaitValue() == 1)
-
-        // AND its LiveData changes accordingly when the timer finishes
-        while (timerViewModel.secondsRemaining.getOrAwaitValue() == 1) Thread.sleep(100)
-        assert(timerViewModel.secondsRemaining.getOrAwaitValue() == 0)
-    }
-
-    @Test
     fun increaseSessionLength() {
 
         // GIVEN a TimerViewModel with TimerRepository

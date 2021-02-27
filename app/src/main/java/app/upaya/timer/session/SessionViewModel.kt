@@ -8,25 +8,19 @@ import kotlinx.coroutines.*
 class SessionViewModel(private val sessionRepository: ISessionRepository,
                        private val sessionHistoryRepository: ISessionHistoryRepository) : ViewModel() {
 
-    // Session
-    private val session = SessionHandler(
-            sessionLength = sessionRepository.loadSessionLength(),
-            onSessionLengthChanged = ::onSessionLengthChanged
+    // Session Handler
+    private val sessionHandler = SessionHandler(
+        sessionLength = sessionRepository.loadSessionLength(),
+        onSessionLengthChanged = ::onSessionLengthChanged
     )
 
     /**
-     * Timer LiveData
+     * Session LiveData
      */
 
-    private val _secondsRemaining = MutableLiveData(0)
-    val secondsRemaining: LiveData<Int> = _secondsRemaining
+    val state: LiveData<SessionState> = SessionState.create(sessionHandler = sessionHandler)
 
-    private val _state: MutableLiveData<SessionState?> = MutableLiveData()
-    val state: LiveData<SessionState> = Transformations.map(_state) { it }
-
-    init { _state.postValue(Idle(session, _state, _secondsRemaining)) }
-
-    private val _sessionLength = MutableLiveData(session.getLength())
+    private val _sessionLength = MutableLiveData(sessionHandler.getLength())
     val sessionLength: LiveData<Double> = _sessionLength
 
     // Transformations
