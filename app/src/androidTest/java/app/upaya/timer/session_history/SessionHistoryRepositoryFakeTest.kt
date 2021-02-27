@@ -1,4 +1,4 @@
-package app.upaya.timer.sessions
+package app.upaya.timer.session_history
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -11,12 +11,12 @@ import java.util.*
 
 
 @RunWith(AndroidJUnit4::class)
-class SessionRepositoryFakeTest {
+class SessionHistoryRepositoryFakeTest {
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    private val sessionRepository = SessionRepositoryFake()
+    private val sessionRepository = SessionHistoryRepositoryFake()
 
     @Test
     fun sessionLiveDataStatistics() = runBlocking {

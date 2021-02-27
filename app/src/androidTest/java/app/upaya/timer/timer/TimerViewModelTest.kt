@@ -3,7 +3,7 @@ package app.upaya.timer.timer
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.upaya.timer.getOrAwaitValue
-import app.upaya.timer.sessions.SessionRepositoryFake
+import app.upaya.timer.session_history.SessionHistoryRepositoryFake
 import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
@@ -16,7 +16,7 @@ class TimerViewModelTest {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()  // Make coroutines synchronous
 
-    private val sessionRepository = SessionRepositoryFake()
+    private val sessionRepository = SessionHistoryRepositoryFake()
 
     @Test
     fun startCountdownTimerStates() {

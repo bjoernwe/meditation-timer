@@ -1,4 +1,4 @@
-package app.upaya.timer.sessions.room
+package app.upaya.timer.session_history.room_entries
 
 import androidx.room.TypeConverter
 import java.util.*

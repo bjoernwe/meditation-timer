@@ -1,12 +1,12 @@
 package app.upaya.timer.timer
 
 import androidx.lifecycle.*
-import app.upaya.timer.sessions.ISessionRepository
+import app.upaya.timer.session_history.ISessionHistoryRepository
 import kotlinx.coroutines.*
 
 
 class TimerViewModel(private val timerRepository: ITimerRepository,
-                     private val sessionRepository: ISessionRepository) : ViewModel() {
+                     private val sessionHistoryRepository: ISessionHistoryRepository) : ViewModel() {
 
     // Timer
     private val timer = Timer(
@@ -58,7 +58,7 @@ class TimerViewModel(private val timerRepository: ITimerRepository,
 
     private fun storeFinishedSession() {
         sessionLength.value?.let {
-            MainScope().launch { sessionRepository.storeSession(it) }
+            MainScope().launch { sessionHistoryRepository.storeSession(it) }
         }
     }
 

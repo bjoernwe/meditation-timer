@@ -3,8 +3,8 @@ package app.upaya.timer.timer
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import app.upaya.timer.sessions.SessionRepository
-import app.upaya.timer.sessions.room.SessionDatabase
+import app.upaya.timer.session_history.SessionHistoryRepository
+import app.upaya.timer.session_history.room_entries.SessionEntryDatabase
 import java.lang.IllegalArgumentException
 
 
@@ -16,7 +16,7 @@ class TimerViewModelFactory(private val context: Context) : ViewModelProvider.Fa
         if (modelClass.isAssignableFrom(TimerViewModel::class.java)) {
 
             val timerRepository = TimerRepository(context)
-            val sessionRepository = SessionRepository(SessionDatabase.getInstance(context))
+            val sessionRepository = SessionHistoryRepository(SessionEntryDatabase.getInstance(context))
 
             @Suppress("UNCHECKED_CAST")
             return TimerViewModel(timerRepository, sessionRepository) as T

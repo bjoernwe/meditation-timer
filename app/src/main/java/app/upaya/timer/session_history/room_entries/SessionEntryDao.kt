@@ -1,19 +1,18 @@
-package app.upaya.timer.sessions.room
+package app.upaya.timer.session_history.room_entries
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import app.upaya.timer.sessions.Session
-import app.upaya.timer.sessions.SessionAggregate
+import app.upaya.timer.session_history.SessionAggregate
 
 
 @Dao
-interface SessionDao {
+interface SessionEntryDao {
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    suspend fun insert(session: Session)
+    suspend fun insert(sessionEntry: SessionEntry)
 
     @Query("SELECT * FROM SESSIONS ORDER BY end_time DESC LIMIT :limit")
-    fun getSessions(limit: Int = 25): LiveData<List<Session>>
+    fun getSessions(limit: Int = 25): LiveData<List<SessionEntry>>
 
     @Query("""SELECT COUNT(*) AS sessionCount, AVG(length) AS avgLength, 
                     TOTAL(length) AS totalLength, AVG(end_time) AS date FROM sessions""")
