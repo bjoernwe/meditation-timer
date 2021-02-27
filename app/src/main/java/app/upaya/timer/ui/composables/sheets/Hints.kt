@@ -7,8 +7,10 @@ import androidx.compose.material.icons.filled.Science
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
+import app.upaya.timer.R
 import app.upaya.timer.ui.composables.blueGrey800Light
 
 
@@ -27,9 +29,11 @@ fun SessionHintsCard(modifier: Modifier = Modifier) {
         )
 
         Text(
-                text = "Notice your breath wherever you can sense it.",
+                text = stringArrayResource(R.array.hints).random(),
                 color = MaterialTheme.colors.onSurface,
-                modifier = Modifier.fillMaxWidth().padding(8.dp)
+                modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
         )
 
     }
