@@ -20,8 +20,8 @@ class MainActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
 
+        // late init
         timerViewModel = ViewModelProvider(this, TimerViewModelFactory(this)).get(TimerViewModel::class.java)
-
         bell = Bell(
                 context = applicationContext,
                 hasPlayed = (savedInstanceState ?: Bundle()).getBoolean(Bell.HAS_PLAYED_KEY)
