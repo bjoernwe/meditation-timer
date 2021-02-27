@@ -72,7 +72,7 @@ fun MainLayout(onClick: () -> Unit) {
 
                 AnimatedVisibility(
                         visible = timerViewModel.isIdle.observeAsState(false).value,
-                        enter = fadeIn() + slideInVertically({it/2}),
+                        enter = fadeIn(),
                         modifier =  Modifier
                                 .constrainAs(hintCard)
                                 {
