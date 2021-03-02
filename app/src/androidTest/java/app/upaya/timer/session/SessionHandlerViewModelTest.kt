@@ -22,7 +22,7 @@ class SessionHandlerViewModelTest {
     fun startCountdownTimerStates() {
 
         // GIVEN a TimerViewModel with TimerRepository
-        val timerRepository = SessionRepositoryFake(1.0)
+        val timerRepository = SessionLengthRepositoryFake(1.0)
         val timerViewModel = SessionViewModel(timerRepository, sessionRepository)
         assert(!timerViewModel.isRunning.getOrAwaitValue())
         assert(timerViewModel.state.getOrAwaitValue() is Idle)
@@ -44,7 +44,7 @@ class SessionHandlerViewModelTest {
 
         // GIVEN a TimerViewModel with TimerRepository
         val initialSessionLength = 1.0
-        val timerRepository = SessionRepositoryFake(initialSessionLength)
+        val timerRepository = SessionLengthRepositoryFake(initialSessionLength)
         val timerViewModel = SessionViewModel(timerRepository, sessionRepository)
         assert(timerViewModel.sessionLength.getOrAwaitValue() == initialSessionLength)
         Assert.assertEquals(timerRepository.loadSessionLength(), initialSessionLength, 0.001)
@@ -66,7 +66,7 @@ class SessionHandlerViewModelTest {
 
         // GIVEN a TimerViewModel with TimerRepository
         val initialSessionLength = 2.0
-        val timerRepository = SessionRepositoryFake(initialSessionLength)
+        val timerRepository = SessionLengthRepositoryFake(initialSessionLength)
         val timerViewModel = SessionViewModel(timerRepository, sessionRepository)
         assert(timerViewModel.sessionLength.getOrAwaitValue() == initialSessionLength)
         Assert.assertEquals(timerRepository.loadSessionLength(), initialSessionLength, 0.001)

@@ -29,7 +29,7 @@ fun SessionStats() {
     val sessionViewModel: SessionViewModel = viewModel(factory = SessionViewModelFactory(AmbientContext.current))
     val sessionAggOfLastDays = sessionHistoryViewModel.sessionAggOfLastDays.observeAsState(listOf())
     val sessionAggOfAll = sessionHistoryViewModel.sessionAggOfAll.observeAsState(SessionAggregate(0, 0f, 0, Date()))
-    val sessionLength = sessionViewModel.sessionLength.observeAsState(initial = 0.0)
+    //val sessionLength = sessionViewModel.sessionLength.observeAsState(initial = 0.0)
 
     Column(Modifier.padding(16.dp)) {
 
@@ -64,10 +64,10 @@ fun SessionStats() {
                     color = MaterialTheme.colors.onSurface,
             )
 
-            Text(
-                    text = "Current session length: ${sessionLength.value.toInt()}",
-                    color = MaterialTheme.colors.onSurface,
-            )
+            //Text(
+            //        text = "Current session length: ${sessionLength.value.toInt()}",
+            //        color = MaterialTheme.colors.onSurface,
+            //)
 
         }
 

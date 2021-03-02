@@ -3,7 +3,7 @@ package app.upaya.timer.session_history
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import app.upaya.timer.session_history.room_entries.SessionEntry
+import app.upaya.timer.session.SessionDetails
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -11,9 +11,9 @@ import kotlin.collections.ArrayList
 
 class SessionHistoryRepositoryFake : ISessionHistoryRepository {
 
-    private val _sessions = MutableLiveData<MutableList<SessionEntry>>(ArrayList())
+    private val _sessions = MutableLiveData<MutableList<SessionDetails>>(ArrayList())
 
-    override val sessions: LiveData<List<SessionEntry>> = Transformations.map(_sessions) { it.takeLast(14) }
+    override val sessions: LiveData<List<SessionDetails>> = Transformations.map(_sessions) { it.takeLast(14) }
 
     override val sessionAggregateOfAll: LiveData<SessionAggregate> = Transformations.map(_sessions) { sessions ->
         sessions.aggregate()
@@ -26,7 +26,7 @@ class SessionHistoryRepositoryFake : ISessionHistoryRepository {
     }
 
     override suspend fun storeSession(length: Double, endDate: Date) {
-        _sessions.value!!.add(0, SessionEntry(length = length.toInt(), endDate = endDate))
+        _sessions.value!!.add(0, SessionDetails(length = length.toInt(), endDate = endDate))
         _sessions.value = _sessions.value  // notify LiveData about change
     }
 

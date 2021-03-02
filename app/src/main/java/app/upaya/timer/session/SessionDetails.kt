@@ -1,4 +1,4 @@
-package app.upaya.timer.session_history.room_entries
+package app.upaya.timer.session
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -7,7 +7,7 @@ import java.util.*
 
 
 @Entity(tableName = "sessions")
-data class SessionEntry @JvmOverloads constructor(
+data class SessionDetails @JvmOverloads constructor(
 
         @PrimaryKey(autoGenerate = true)
         val sessionId: Long = 0L,

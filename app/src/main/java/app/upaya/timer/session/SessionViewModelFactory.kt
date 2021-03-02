@@ -3,8 +3,7 @@ package app.upaya.timer.session
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import app.upaya.timer.session_history.SessionHistoryRepository
-import app.upaya.timer.session_history.room_entries.SessionEntryDatabase
+import app.upaya.timer.session_length.SessionLengthRepository
 import java.lang.IllegalArgumentException
 
 
@@ -15,13 +14,13 @@ class SessionViewModelFactory(private val context: Context) : ViewModelProvider.
 
         if (modelClass.isAssignableFrom(SessionViewModel::class.java)) {
 
-            val sessionRepository = SessionRepository(context)
-            val sessionHistoryRepository = SessionHistoryRepository(SessionEntryDatabase.getInstance(context))
+            val sessionLengthRepository = SessionLengthRepository(context)
+            val initialSessionLength = sessionLengthRepository.loadSessionLength()
+            val sessionHandler = SessionHandler(initialSessionLength = initialSessionLength)
 
             @Suppress("UNCHECKED_CAST")
             return SessionViewModel(
-                sessionRepository = sessionRepository,
-                sessionHistoryRepository = sessionHistoryRepository
+                sessionHandler = sessionHandler,
             ) as T
 
         } else {

@@ -1,10 +1,10 @@
 package app.upaya.timer.session_history
 
-import app.upaya.timer.session_history.room_entries.SessionEntry
+import app.upaya.timer.session.SessionDetails
 import java.util.*
 
 
-fun List<SessionEntry>.aggregate() : SessionAggregate {
+fun List<SessionDetails>.aggregate() : SessionAggregate {
     if (this.isEmpty())
         return SessionAggregate(
             sessionCount = 0,

@@ -1,24 +1,21 @@
 package app.upaya.timer.session
 
-import android.content.Context
-import app.upaya.timer.R
+import androidx.lifecycle.LiveData
+import app.upaya.timer.session.room.SessionEntryDatabase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.util.*
 
 
-class SessionRepository(context: Context) : ISessionRepository {
+class SessionRepository(sessionEntryDatabase: SessionEntryDatabase) : ISessionRepository {
 
-    private val prefSessionLengthId = context.getString(R.string.pref_session_length)
-    private val prefs = with (context.applicationContext) {
-        getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE)
-    }
+    private val sessionDao = sessionEntryDatabase.sessionEntryDao
 
-    override fun loadSessionLength(): Double {
-        return prefs.getFloat(prefSessionLengthId, 10.0F).toDouble()
-    }
+    override val sessions: LiveData<List<SessionDetails>> = sessionDao.getSessions()
 
-    override fun storeSessionLength(sessionLength: Double) {
-        with (prefs.edit()) {
-            putFloat(prefSessionLengthId, sessionLength.toFloat())
-            apply()
+    override suspend fun storeSession(length: Double, endDate: Date) {
+        withContext(Dispatchers.IO) {
+            sessionDao.insert(SessionDetails(length = length.toInt(), endDate = endDate))
         }
     }
 

@@ -2,6 +2,7 @@ package app.upaya.timer.session
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
+import app.upaya.timer.session_length.SessionLengthRepository
 import org.junit.Before
 import org.junit.Test
 
@@ -11,12 +12,12 @@ import org.junit.Assert.*
 class SessionHandlerRepositoryTest {
 
     private lateinit var context: Context
-    private lateinit var sessionRepository: SessionRepository
+    private lateinit var sessionRepository: SessionLengthRepository
 
     @Before
     fun setUp() {
         context = ApplicationProvider.getApplicationContext()
-        sessionRepository = SessionRepository(context)
+        sessionRepository = SessionLengthRepository(context)
     }
 
     @Test

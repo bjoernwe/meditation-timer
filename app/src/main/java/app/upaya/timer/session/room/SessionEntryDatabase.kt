@@ -1,17 +1,20 @@
-package app.upaya.timer.session_history.room_entries
+package app.upaya.timer.session.room
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import app.upaya.timer.session.SessionDetails
+import app.upaya.timer.session_history.room.SessionHistoryDao
 
 
-@Database(entities = [SessionEntry::class], version = 2, exportSchema = true)
+@Database(entities = [SessionDetails::class], version = 2, exportSchema = true)
 @TypeConverters(Converters::class)
 abstract class SessionEntryDatabase : RoomDatabase() {
 
     abstract val sessionEntryDao: SessionEntryDao
+    abstract val sessionHistoryDao: SessionHistoryDao
 
     // Singleton
     companion object {

@@ -12,10 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.viewModel
-import app.upaya.timer.session.Finished
-import app.upaya.timer.session.Idle
-import app.upaya.timer.session.Running
-import app.upaya.timer.session.SessionViewModel
+import app.upaya.timer.session.*
 import app.upaya.timer.ui.composables.entities.StatsButton
 import app.upaya.timer.ui.composables.sheets.SessionHintsCard
 
@@ -23,7 +20,7 @@ import app.upaya.timer.ui.composables.sheets.SessionHintsCard
 @ExperimentalAnimationApi
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun MainLayout(onClick: () -> Unit) {
+fun MainLayout(onClick: () -> Unit, onRatingClick: (Double) -> Unit) {
 
     TimerTheme {
 
@@ -42,8 +39,16 @@ fun MainLayout(onClick: () -> Unit) {
                         is Idle -> SessionStats()
                         is Running -> Text("There is nothing to see here!")
                         is Finished -> SessionRatingDialog(
-                                onClickDown = { sheetState.hide { (timerState as? Finished)?.increaseSessionLength() } },
-                                onClickUp = { sheetState.hide { (timerState as? Finished)?.decreaseSessionLength() } }
+                                onClickDown = { sheetState.hide {
+                                    (timerState as? Finished)?.rateSession(SessionRating.DOWN)
+                                        ?.let { newSessionLength -> onRatingClick(newSessionLength) }
+                                } },
+                                onClickUp = {
+                                    sheetState.hide {
+                                        (timerState as? Finished)?.rateSession(SessionRating.UP)
+                                            ?.let { newSessionLength -> onRatingClick(newSessionLength) }
+                                    }
+                                }
                         )
                     }
                 }

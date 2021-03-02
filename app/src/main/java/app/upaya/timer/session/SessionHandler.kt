@@ -1,66 +1,43 @@
 package app.upaya.timer.session
 
-import kotlin.concurrent.thread
-import kotlin.math.roundToInt
 
+class SessionHandler(initialSessionLength: Double = 10.0) {
 
-class SessionHandler(
-        private var sessionLength: Double,
-        private val onSessionLengthChanged: (newSessionLength: Double) -> Unit = {}
-) {
+    private lateinit var currentSession: SessionDetails
+    var sessionLength: Double = initialSessionLength
+        private set
 
-    @Volatile
-    private var countDownThread: Thread? = null
-
-    fun start(
-            onFinish: () -> Unit = {},
-            onTick: (secondsRemaining: Int) -> Unit = {},
-    ) {
-
-        synchronized(this) {
-
-            if (countDownThread != null) return
-
-            countDownThread = thread(start = true, isDaemon = true) {
-
-                val sessionLength = this.sessionLength.roundToInt()
-
-                onTick(sessionLength)
-
-                for (i in 1..sessionLength) {
-                    Thread.sleep(1000)
-                    val secondsRemaining = sessionLength - i
-                    onTick(secondsRemaining)
-                }
-
-                onFinish()
-                countDownThread = null
-
-            }  // thread
-
-        }  // synchronized
-
-    }  // startCountdown()
-
-    fun getLength(): Double {
-        return sessionLength
+    fun onSessionIdling() {
+        //currentSession = SessionDetails(length = 0)
+        //sessionRepository.storeSession(currentSession)
     }
 
-    fun increaseLength() {
-        sessionLength = sessionLength.times(1.1)
-        onSessionLengthChanged(sessionLength)
+    fun onSessionStarted() {
+        //currentSession.startDate = Date()
+        //sessionRepository.storeSession(currentSession)
     }
 
-    fun decreaseLength() {
-        val newSessionLength = sessionLength.times(0.8)
-        if (newSessionLength >= 1.0) {
-            sessionLength = newSessionLength
-            onSessionLengthChanged(sessionLength)
+    fun onSessionFinished() {
+        //currentSession.endDate = Date()
+        //sessionRepository.storeSession(currentSession)
+    }
+
+    fun onRatingSubmitted(rating: SessionRating): Double {
+        return when (rating) {
+            SessionRating.UP -> { decreaseSessionLength() }
+            SessionRating.DOWN -> { increaseSessionLength() }
         }
     }
 
-    fun isRunning(): Boolean {
-        return countDownThread != null
+    private fun decreaseSessionLength() : Double {
+        val newSessionLength = sessionLength.times(0.8)
+        if (newSessionLength >= 1.0) { sessionLength = newSessionLength }
+        return newSessionLength
+    }
+
+    private fun increaseSessionLength() : Double {
+        sessionLength = sessionLength.times(1.1)
+        return sessionLength
     }
 
 }

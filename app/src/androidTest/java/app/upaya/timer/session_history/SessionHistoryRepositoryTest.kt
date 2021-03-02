@@ -7,7 +7,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.upaya.timer.MeditationTimerApplication
 import app.upaya.timer.getOrAwaitValue
 import app.upaya.timer.session_history.room_entries.SessionEntryDao
-import app.upaya.timer.session_history.room_entries.SessionEntryDatabase
+import app.upaya.timer.session.room.SessionEntryDatabase
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
@@ -19,7 +19,7 @@ import java.util.*
 
 
 @RunWith(AndroidJUnit4::class)
-class SessionHandlerHistoryRepositoryTest {
+class SessionHistoryRepositoryTest {
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()

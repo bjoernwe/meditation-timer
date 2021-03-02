@@ -5,10 +5,9 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.upaya.timer.MeditationTimerApplication
-import app.upaya.timer.getOrAwaitValue
 import app.upaya.timer.session_history.room_entries.SessionEntryDao
-import app.upaya.timer.session_history.room_entries.SessionEntryDatabase
-import app.upaya.timer.session_history.room_entries.SessionEntry
+import app.upaya.timer.session.room.SessionEntryDatabase
+import app.upaya.timer.session.SessionDetails
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
@@ -20,7 +19,7 @@ import java.text.SimpleDateFormat
 
 
 @RunWith(AndroidJUnit4::class)
-class SessionHandlerEntryDaoTest {
+class SessionDetailsDaoTest {
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()  // Make coroutines synchronous
@@ -46,7 +45,7 @@ class SessionHandlerEntryDaoTest {
         for (i in 1..numberOfSessionDays) {
             val endDate = SimpleDateFormat("yyyy:D").parse("2020:${i}")!!
             for (j in 1..numberOfSessionsPerDay) {
-                sessionEntryDao.insert(SessionEntry(endDate = endDate, length = j))
+                sessionEntryDao.insert(SessionDetails(endDate = endDate, length = j))
             }
         }
     }
