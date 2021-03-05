@@ -7,7 +7,7 @@ import org.junit.Test
 import org.junit.Assert.*
 
 
-class SessionTimerRepositoryFakeTest {
+class SessionLengthRepositoryFakeTest {
 
     private lateinit var sessionLengthRepository: ISessionLengthRepository
 

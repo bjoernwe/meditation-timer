@@ -9,7 +9,7 @@ import org.junit.Test
 import org.junit.Assert.*
 
 
-class SessionHandlerRepositoryTest {
+class SessionLengthRepositoryTest {
 
     private lateinit var context: Context
     private lateinit var sessionRepository: SessionLengthRepository
