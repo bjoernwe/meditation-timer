@@ -5,6 +5,6 @@ import java.util.*
 
 
 interface ISessionRepository {
-    val sessions: LiveData<List<SessionDetails>>
+    val sessions: LiveData<List<SessionLog>>
     suspend fun storeSession(length: Double, endDate: Date = Date())
 }

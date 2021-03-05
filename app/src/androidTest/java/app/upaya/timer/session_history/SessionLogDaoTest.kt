@@ -5,9 +5,9 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.upaya.timer.MeditationTimerApplication
-import app.upaya.timer.session_history.room_entries.SessionEntryDao
-import app.upaya.timer.session.room.SessionEntryDatabase
-import app.upaya.timer.session.SessionDetails
+import app.upaya.timer.session.room.SessionLogDatabase
+import app.upaya.timer.session.SessionLog
+import app.upaya.timer.session.room.SessionLogDao
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
@@ -19,13 +19,13 @@ import java.text.SimpleDateFormat
 
 
 @RunWith(AndroidJUnit4::class)
-class SessionDetailsDaoTest {
+class SessionLogDaoTest {
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()  // Make coroutines synchronous
 
-    private lateinit var db: SessionEntryDatabase
-    private lateinit var sessionEntryDao: SessionEntryDao
+    private lateinit var db: SessionLogDatabase
+    private lateinit var sessionLogDao: SessionLogDao
 
     private val sessionLengthsPerDay = listOf(1, 2)
     private val numberOfSessionDays = 100
@@ -39,21 +39,21 @@ class SessionDetailsDaoTest {
 
         // Initialize Room DB (in memory)
         db = initSessionDatabase()
-        sessionEntryDao = db.sessionEntryDao
+        sessionLogDao = db.sessionLogDao
 
         // Add sessions (two for the last N days)
         for (i in 1..numberOfSessionDays) {
             val endDate = SimpleDateFormat("yyyy:D").parse("2020:${i}")!!
             for (j in 1..numberOfSessionsPerDay) {
-                sessionEntryDao.insert(SessionDetails(endDate = endDate, length = j))
+                sessionLogDao.insert(SessionLog(endDate = endDate, length = j))
             }
         }
     }
 
-    private fun initSessionDatabase(): SessionEntryDatabase {
+    private fun initSessionDatabase(): SessionLogDatabase {
         return Room.inMemoryDatabaseBuilder(
                 ApplicationProvider.getApplicationContext<MeditationTimerApplication>(),
-                SessionEntryDatabase::class.java
+                SessionLogDatabase::class.java
         )
                 .allowMainThreadQueries()
                 .build()
@@ -70,7 +70,7 @@ class SessionDetailsDaoTest {
 
         // GIVEN a DB with sessions
         // WHEN an aggregate of all sessions is requested
-        val sessionAggregate = sessionEntryDao.getAggregateOfAll()
+        val sessionAggregate = sessionLogDao.getAggregateOfAll()
 
         // THEN it matches
         assert(sessionAggregate.getOrAwaitValue().sessionCount == numberOfSessionsTotal)
@@ -84,7 +84,7 @@ class SessionDetailsDaoTest {
         // GIVEN a DB with sessions
         // WHEN the history of session averages is requested
         val limit = 10
-        val avgOfDays = sessionEntryDao.getAggregateOfLastDays(limit)
+        val avgOfDays = sessionLogDao.getAggregateOfLastDays(limit)
 
         // THEN there are the right number of days with the right average
         assert(avgOfDays.getOrAwaitValue().size == limit)

@@ -3,7 +3,7 @@ package app.upaya.timer.session
 
 class SessionHandler(initialSessionLength: Double = 10.0) {
 
-    private lateinit var currentSession: SessionDetails
+    private lateinit var currentSession: SessionLog
     var sessionLength: Double = initialSessionLength
         private set
 

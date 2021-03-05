@@ -13,7 +13,7 @@ import com.db.williamchart.view.BarChartView
 @Composable
 fun SessionChart(sessionAggregates: State<List<SessionAggregate>>, modifier: Modifier = Modifier) {
 
-    val sessionEntries = sessionAggregates.value.reversed().mapIndexed { index, aggregate ->
+    val sessionLogs = sessionAggregates.value.reversed().mapIndexed { index, aggregate ->
         index.toString() to aggregate.sessionCount.toFloat()
     }
 
@@ -30,7 +30,7 @@ fun SessionChart(sessionAggregates: State<List<SessionAggregate>>, modifier: Mod
                 }
             }
     ) {
-        it.show(sessionEntries)
+        it.show(sessionLogs)
     }
 
 }

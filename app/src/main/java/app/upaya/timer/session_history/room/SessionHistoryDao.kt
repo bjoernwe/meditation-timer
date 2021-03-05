@@ -2,7 +2,7 @@ package app.upaya.timer.session_history.room
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import app.upaya.timer.session.SessionDetails
+import app.upaya.timer.session.SessionLog
 import app.upaya.timer.session_history.SessionAggregate
 
 
@@ -10,7 +10,7 @@ import app.upaya.timer.session_history.SessionAggregate
 interface SessionHistoryDao {
 
     @Query("SELECT * FROM SESSIONS ORDER BY end_time DESC LIMIT :limit")
-    fun getSessions(limit: Int = 25): LiveData<List<SessionDetails>>
+    fun getSessions(limit: Int = 25): LiveData<List<SessionLog>>
 
     @Query("""SELECT COUNT(*) AS sessionCount, AVG(length) AS avgLength, 
                     TOTAL(length) AS totalLength, AVG(end_time) AS date FROM sessions""")

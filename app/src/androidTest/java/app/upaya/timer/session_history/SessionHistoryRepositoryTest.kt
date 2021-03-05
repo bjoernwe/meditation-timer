@@ -7,7 +7,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.upaya.timer.MeditationTimerApplication
 import app.upaya.timer.getOrAwaitValue
 import app.upaya.timer.session_history.room_entries.SessionEntryDao
-import app.upaya.timer.session.room.SessionEntryDatabase
+import app.upaya.timer.session.room.SessionLogDatabase
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
@@ -24,21 +24,21 @@ class SessionHistoryRepositoryTest {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    private lateinit var db: SessionEntryDatabase
+    private lateinit var db: SessionLogDatabase
     private lateinit var sessionEntryDao: SessionEntryDao
     private lateinit var sessionHistoryRepository: ISessionHistoryRepository
 
     @Before
     fun createDb() {
         db = initSessionDatabase()
-        sessionEntryDao = db.sessionEntryDao
+        sessionEntryDao = db.sessionLogDao
         sessionHistoryRepository = SessionHistoryRepository(db)
     }
 
-    private fun initSessionDatabase(): SessionEntryDatabase {
+    private fun initSessionDatabase(): SessionLogDatabase {
         return Room.inMemoryDatabaseBuilder(
                 ApplicationProvider.getApplicationContext<MeditationTimerApplication>(),
-                SessionEntryDatabase::class.java
+                SessionLogDatabase::class.java
         )
                 .allowMainThreadQueries()
                 .build()

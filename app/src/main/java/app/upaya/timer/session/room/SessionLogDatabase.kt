@@ -5,30 +5,30 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import app.upaya.timer.session.SessionDetails
+import app.upaya.timer.session.SessionLog
 import app.upaya.timer.session_history.room.SessionHistoryDao
 
 
-@Database(entities = [SessionDetails::class], version = 2, exportSchema = true)
+@Database(entities = [SessionLog::class], version = 2, exportSchema = true)
 @TypeConverters(Converters::class)
-abstract class SessionEntryDatabase : RoomDatabase() {
+abstract class SessionLogDatabase : RoomDatabase() {
 
-    abstract val sessionEntryDao: SessionEntryDao
+    abstract val sessionLogDao: SessionLogDao
     abstract val sessionHistoryDao: SessionHistoryDao
 
     // Singleton
     companion object {
 
         @Volatile
-        private var INSTANCE: SessionEntryDatabase? = null
+        private var INSTANCE: SessionLogDatabase? = null
 
-        fun getInstance(context: Context): SessionEntryDatabase {
+        fun getInstance(context: Context): SessionLogDatabase {
             synchronized(this) {
                 var instance = INSTANCE
                 if (instance == null) {
                     instance = Room.databaseBuilder(
                         context.applicationContext,
-                        SessionEntryDatabase::class.java,
+                        SessionLogDatabase::class.java,
                         "session_database"
                     ).build()
                     INSTANCE = instance

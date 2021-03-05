@@ -7,7 +7,7 @@ import java.util.*
 
 
 @Entity(tableName = "sessions")
-data class SessionDetails @JvmOverloads constructor(
+data class SessionLog @JvmOverloads constructor(
 
         @PrimaryKey(autoGenerate = true)
         val sessionId: Long = 0L,

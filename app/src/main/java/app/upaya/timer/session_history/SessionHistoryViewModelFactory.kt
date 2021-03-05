@@ -3,7 +3,7 @@ package app.upaya.timer.session_history
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import app.upaya.timer.session.room.SessionEntryDatabase
+import app.upaya.timer.session.room.SessionLogDatabase
 import java.lang.IllegalArgumentException
 
 
@@ -14,7 +14,7 @@ class SessionHistoryViewModelFactory(private val context: Context) : ViewModelPr
 
         if (modelClass.isAssignableFrom(SessionHistoryViewModel::class.java)) {
 
-            val sessionRepository = SessionHistoryRepository(SessionEntryDatabase.getInstance(context.applicationContext))
+            val sessionRepository = SessionHistoryRepository(SessionLogDatabase.getInstance(context.applicationContext))
 
             @Suppress("UNCHECKED_CAST")
             return SessionHistoryViewModel(sessionRepository) as T
