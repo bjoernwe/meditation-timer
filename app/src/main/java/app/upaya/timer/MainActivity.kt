@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Register event callbacks
-        sessionViewModel.state.observe(this, { onTimerStateChanged(it) })
+        sessionViewModel.state.observe(this, { onSessionStateChanged(it) })
     }
 
     override fun onStart() {
@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
         sessionLengthRepository.storeSessionLength(newSessionLength)
     }
 
-    private fun onTimerStateChanged(newSessionState: SessionState) {
+    private fun onSessionStateChanged(newSessionState: SessionState) {
         when (newSessionState) {
             is Idle -> { }
             is Running -> { bell.reset() }
