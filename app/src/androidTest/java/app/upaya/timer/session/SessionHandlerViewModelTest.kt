@@ -3,7 +3,7 @@ package app.upaya.timer.session
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.upaya.timer.getOrAwaitValue
-import app.upaya.timer.session_history.SessionHistoryRepositoryFake
+import app.upaya.timer.session.history.SessionHistoryRepositoryFake
 import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test

@@ -12,9 +12,9 @@ import androidx.compose.ui.platform.AmbientContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.viewModel
-import app.upaya.timer.session_history.SessionAggregate
-import app.upaya.timer.session_history.SessionHistoryViewModel
-import app.upaya.timer.session_history.SessionHistoryViewModelFactory
+import app.upaya.timer.session.history.SessionAggregate
+import app.upaya.timer.session.history.SessionHistoryViewModel
+import app.upaya.timer.session.history.SessionHistoryViewModelFactory
 import app.upaya.timer.session.SessionViewModel
 import app.upaya.timer.session.SessionViewModelFactory
 import app.upaya.timer.ui.composables.entities.SessionChart

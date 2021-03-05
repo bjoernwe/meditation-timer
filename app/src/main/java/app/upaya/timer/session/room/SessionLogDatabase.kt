@@ -6,7 +6,6 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import app.upaya.timer.session.SessionLog
-import app.upaya.timer.session_history.room.SessionHistoryDao
 
 
 @Database(entities = [SessionLog::class], version = 2, exportSchema = true)

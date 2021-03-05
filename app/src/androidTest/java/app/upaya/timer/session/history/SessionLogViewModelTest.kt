@@ -1,8 +1,9 @@
-package app.upaya.timer.session_history
+package app.upaya.timer.session.history
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.upaya.timer.getOrAwaitValue
+import app.upaya.timer.session.history.SessionHistoryViewModel
 import kotlinx.coroutines.runBlocking
 import org.junit.Rule
 import org.junit.Test

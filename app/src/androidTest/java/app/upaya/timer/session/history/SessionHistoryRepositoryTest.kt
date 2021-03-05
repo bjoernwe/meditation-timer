@@ -1,4 +1,4 @@
-package app.upaya.timer.session_history
+package app.upaya.timer.session.history
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
@@ -6,7 +6,9 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.upaya.timer.MeditationTimerApplication
 import app.upaya.timer.getOrAwaitValue
-import app.upaya.timer.session_history.room_entries.SessionEntryDao
+import app.upaya.timer.session.history.ISessionHistoryRepository
+import app.upaya.timer.session.history.SessionHistoryRepository
+import app.upaya.timer.history.room_entries.SessionEntryDao
 import app.upaya.timer.session.room.SessionLogDatabase
 import kotlinx.coroutines.runBlocking
 import org.junit.After

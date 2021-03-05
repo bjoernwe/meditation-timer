@@ -1,8 +1,7 @@
-package app.upaya.timer.session_length
+package app.upaya.timer.settings
 
 import android.content.Context
 import app.upaya.timer.R
-import app.upaya.timer.session_length.ISessionLengthRepository
 
 
 class SessionLengthRepository(context: Context) : ISessionLengthRepository {

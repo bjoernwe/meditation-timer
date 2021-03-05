@@ -1,4 +1,4 @@
-package app.upaya.timer.session_length
+package app.upaya.timer.settings
 
 
 interface ISessionLengthRepository {

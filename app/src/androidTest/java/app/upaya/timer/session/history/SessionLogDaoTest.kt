@@ -1,4 +1,4 @@
-package app.upaya.timer.session_history
+package app.upaya.timer.session.history
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room

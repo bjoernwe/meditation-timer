@@ -1,4 +1,4 @@
-package app.upaya.timer.session_history
+package app.upaya.timer.session.history
 
 import android.content.Context
 import androidx.lifecycle.ViewModel

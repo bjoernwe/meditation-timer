@@ -1,7 +1,6 @@
 package app.upaya.timer.session
 
 import androidx.lifecycle.*
-import app.upaya.timer.session_history.ISessionHistoryRepository
 
 
 class SessionViewModel(sessionHandler: SessionHandler) : ViewModel() {

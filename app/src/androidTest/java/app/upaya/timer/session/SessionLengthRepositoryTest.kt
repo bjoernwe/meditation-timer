@@ -2,7 +2,7 @@ package app.upaya.timer.session
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
-import app.upaya.timer.session_length.SessionLengthRepository
+import app.upaya.timer.settings.SessionLengthRepository
 import org.junit.Before
 import org.junit.Test
 

@@ -1,6 +1,6 @@
 package app.upaya.timer.session
 
-import app.upaya.timer.session_length.ISessionLengthRepository
+import app.upaya.timer.settings.ISessionLengthRepository
 
 
 class SessionLengthRepositoryFake(private var sessionLength: Double = 10.0) :

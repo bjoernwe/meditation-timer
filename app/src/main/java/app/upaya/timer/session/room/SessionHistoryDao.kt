@@ -1,9 +1,9 @@
-package app.upaya.timer.session_history.room
+package app.upaya.timer.session.room
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import app.upaya.timer.session.SessionLog
-import app.upaya.timer.session_history.SessionAggregate
+import app.upaya.timer.session.history.SessionAggregate
 
 
 @Dao
