@@ -5,8 +5,10 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.upaya.timer.MeditationTimerApplication
+import app.upaya.timer.getOrAwaitValue
 import app.upaya.timer.session.room.SessionLogDatabase
 import app.upaya.timer.session.SessionLog
+import app.upaya.timer.session.room.SessionHistoryDao
 import app.upaya.timer.session.room.SessionLogDao
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -19,13 +21,14 @@ import java.text.SimpleDateFormat
 
 
 @RunWith(AndroidJUnit4::class)
-class SessionLogDaoTest {
+class SessionHistoryDaoTest {
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()  // Make coroutines synchronous
 
     private lateinit var db: SessionLogDatabase
     private lateinit var sessionLogDao: SessionLogDao
+    private lateinit var sessionHistoryDao: SessionHistoryDao
 
     private val sessionLengthsPerDay = listOf(1, 2)
     private val numberOfSessionDays = 100
@@ -40,6 +43,7 @@ class SessionLogDaoTest {
         // Initialize Room DB (in memory)
         db = initSessionDatabase()
         sessionLogDao = db.sessionLogDao
+        sessionHistoryDao = db.sessionHistoryDao
 
         // Add sessions (two for the last N days)
         for (i in 1..numberOfSessionDays) {
@@ -70,7 +74,7 @@ class SessionLogDaoTest {
 
         // GIVEN a DB with sessions
         // WHEN an aggregate of all sessions is requested
-        val sessionAggregate = sessionLogDao.getAggregateOfAll()
+        val sessionAggregate = sessionHistoryDao.getAggregateOfAll()
 
         // THEN it matches
         assert(sessionAggregate.getOrAwaitValue().sessionCount == numberOfSessionsTotal)
@@ -84,7 +88,7 @@ class SessionLogDaoTest {
         // GIVEN a DB with sessions
         // WHEN the history of session averages is requested
         val limit = 10
-        val avgOfDays = sessionLogDao.getAggregateOfLastDays(limit)
+        val avgOfDays = sessionHistoryDao.getAggregateOfLastDays(limit)
 
         // THEN there are the right number of days with the right average
         assert(avgOfDays.getOrAwaitValue().size == limit)

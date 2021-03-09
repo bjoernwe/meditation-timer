@@ -1,4 +1,4 @@
-package app.upaya.timer.session
+package app.upaya.timer.settings
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider

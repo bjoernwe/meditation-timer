@@ -11,23 +11,28 @@ sealed class SessionState(
      * This state machine models the session's state transitions. It posts the current state to the
      * given MutableLiveData object. It also calls the SessionHandler on state transitions.
      **/
-    protected val sessionHandler: SessionHandler,
+    protected val sessionLength: Double,
+    protected val sessionHandler: ISessionHandler,
     protected val currentState: MutableLiveData<SessionState>,
     ) {
 
     companion object {
 
-        fun create(sessionHandler: SessionHandler): LiveData<SessionState> {
+        fun create(
+            sessionHandler: ISessionHandler,
+            initialSessionLength: Double = 10.0
+        ): LiveData<SessionState> {
 
             val currentState = MutableLiveData<SessionState>()
             val currentStateImmutable: LiveData<SessionState> = currentState
 
             val idleState = Idle(
+                sessionLength = initialSessionLength,
                 sessionHandler = sessionHandler,
                 currentState = currentState,
             )
 
-            sessionHandler.onSessionIdling()
+            //sessionHandler.onSessionIdling()
             currentState.postValue(idleState)
             return currentStateImmutable
         }
@@ -37,18 +42,21 @@ sealed class SessionState(
 }
 
 class Idle internal constructor(
-    sessionHandler: SessionHandler,
+    sessionLength: Double,
+    sessionHandler: ISessionHandler,
     currentState: MutableLiveData<SessionState>,
 ) : SessionState(
+    sessionLength = sessionLength,
     sessionHandler = sessionHandler,
     currentState = currentState,
 ) {
 
     fun startSession() {
         val nextState = Running(
+            sessionLength = sessionLength,
             sessionHandler = sessionHandler,
             currentState = currentState)
-        val sessionLength = sessionHandler.sessionLength.toLong().times(1000L)
+        val sessionLength = sessionLength.toLong().times(1000L)
         Timer("SessionTimer", true).schedule(sessionLength) {
             nextState.onFinish()
         }
@@ -59,15 +67,20 @@ class Idle internal constructor(
 
 
 class Running internal constructor(
-    sessionHandler: SessionHandler,
+    sessionLength: Double,
+    sessionHandler: ISessionHandler,
     currentState: MutableLiveData<SessionState>,
 ) : SessionState(
+    sessionLength = sessionLength,
     sessionHandler = sessionHandler,
     currentState = currentState,
 ) {
 
     internal fun onFinish() {
+        val sessionLog = SessionLog(length = sessionLength.toInt())
+        sessionHandler.onSessionFinished(sessionLog)
         val nextState = Finished(
+            sessionLength = sessionLength,
             sessionHandler = sessionHandler,
             currentState = currentState
         )
@@ -77,23 +90,24 @@ class Running internal constructor(
 }
 
 
-enum class SessionRating {
-    UP, DOWN
-}
-
-
 class Finished internal constructor(
-    sessionHandler: SessionHandler,
+    sessionLength: Double,
+    sessionHandler: ISessionHandler,
     currentState: MutableLiveData<SessionState>,
 ) : SessionState(
+    sessionLength = sessionLength,
     sessionHandler = sessionHandler,
     currentState = currentState,
 ) {
 
     fun rateSession(rating: SessionRating) : Double {
-        val newSessionLength = sessionHandler.onRatingSubmitted(rating)
+        val newSessionLength = sessionHandler.onRatingSubmitted(
+            rating = rating,
+            currentSessionLength = sessionLength
+        )
         currentState.postValue(
             Idle(
+                sessionLength = newSessionLength,
                 sessionHandler = sessionHandler,
                 currentState = currentState,
             )

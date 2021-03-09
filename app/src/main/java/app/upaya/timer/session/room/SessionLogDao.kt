@@ -8,10 +8,10 @@ import app.upaya.timer.session.SessionLog
 @Dao
 interface SessionLogDao {
 
-    @Insert(onConflict = OnConflictStrategy.ABORT)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(sessionLog: SessionLog)
 
-    @Query("SELECT * FROM SESSIONS ORDER BY end_time DESC LIMIT :limit")
-    fun getSessions(limit: Int = 25): LiveData<List<SessionLog>>
+    @Query("SELECT * FROM SESSIONS ORDER BY end_time DESC LIMIT 1")
+    fun getLastSession(): LiveData<SessionLog>
 
 }

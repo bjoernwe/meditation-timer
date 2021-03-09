@@ -6,9 +6,10 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.upaya.timer.MeditationTimerApplication
 import app.upaya.timer.getOrAwaitValue
-import app.upaya.timer.session.history.ISessionHistoryRepository
-import app.upaya.timer.session.history.SessionHistoryRepository
-import app.upaya.timer.history.room_entries.SessionEntryDao
+import app.upaya.timer.session.ISessionLogRepository
+import app.upaya.timer.session.SessionLog
+import app.upaya.timer.session.SessionLogRepository
+import app.upaya.timer.session.room.SessionLogDao
 import app.upaya.timer.session.room.SessionLogDatabase
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -27,13 +28,15 @@ class SessionHistoryRepositoryTest {
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private lateinit var db: SessionLogDatabase
-    private lateinit var sessionEntryDao: SessionEntryDao
+    private lateinit var sessionLogDao: SessionLogDao
+    private lateinit var sessionLogRepository: ISessionLogRepository
     private lateinit var sessionHistoryRepository: ISessionHistoryRepository
 
     @Before
     fun createDb() {
         db = initSessionDatabase()
-        sessionEntryDao = db.sessionLogDao
+        sessionLogDao = db.sessionLogDao
+        sessionLogRepository = SessionLogRepository(db)
         sessionHistoryRepository = SessionHistoryRepository(db)
     }
 
@@ -62,7 +65,7 @@ class SessionHistoryRepositoryTest {
         assert(sessionAggregate.totalLength == 0)
 
         // WHEN a session is added
-        sessionHistoryRepository.storeSession(length = 2.0, endDate = Date(1000L))
+        sessionLogRepository.storeSession(SessionLog( length = 2, endDate = Date(1000L)))
 
         // THEN the corresponding LiveData is updated accordingly
         sessionAggregate = sessionHistoryRepository.sessionAggregateOfAll.getOrAwaitValue()
@@ -71,18 +74,13 @@ class SessionHistoryRepositoryTest {
         assert(sessionAggregate.totalLength == 2)
 
         // AND WHEN another session is added
-        sessionHistoryRepository.storeSession(length = 4.0, endDate = Date(2000L))
+        sessionLogRepository.storeSession(SessionLog(length = 4, endDate = Date(2000L)))
 
         // THEN the corresponding LiveData is updated accordingly
         sessionAggregate = sessionHistoryRepository.sessionAggregateOfAll.getOrAwaitValue()
         assert(sessionAggregate.avgLength == 3f)
         assert(sessionAggregate.sessionCount == 2)
         assert(sessionAggregate.totalLength == 6)
-
-        // AND the sessions are ordered descendingly for time
-        val session0 = sessionHistoryRepository.sessions.getOrAwaitValue()[0]
-        val session1 = sessionHistoryRepository.sessions.getOrAwaitValue()[1]
-        assert(session0.endDate > session1.endDate)
     }
 
 }
