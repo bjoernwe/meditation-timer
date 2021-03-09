@@ -39,6 +39,10 @@ sealed class SessionState(
 
     }
 
+    fun getCurrentSessionLength() : Double {
+        return sessionLength
+    }
+
 }
 
 class Idle internal constructor(
