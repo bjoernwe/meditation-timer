@@ -6,14 +6,14 @@ import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.viewinterop.AndroidView
-import app.upaya.timer.sessions.SessionAggregate
+import app.upaya.timer.session.history.SessionAggregate
 import com.db.williamchart.view.BarChartView
 
 
 @Composable
 fun SessionChart(sessionAggregates: State<List<SessionAggregate>>, modifier: Modifier = Modifier) {
 
-    val sessionEntries = sessionAggregates.value.reversed().mapIndexed { index, aggregate ->
+    val sessionLogs = sessionAggregates.value.reversed().mapIndexed { index, aggregate ->
         index.toString() to aggregate.sessionCount.toFloat()
     }
 
@@ -30,7 +30,7 @@ fun SessionChart(sessionAggregates: State<List<SessionAggregate>>, modifier: Mod
                 }
             }
     ) {
-        it.show(sessionEntries)
+        it.show(sessionLogs)
     }
 
 }
