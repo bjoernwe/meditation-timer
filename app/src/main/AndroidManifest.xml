@@ -17,7 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="app.upaya.timer.ui.MainActivity"
+        <activity android:name="app.upaya.timer.MainActivity"
                   android:label="@string/main_activity_label">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
