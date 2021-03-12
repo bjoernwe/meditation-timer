@@ -26,27 +26,27 @@ fun MainLayout(onClick: () -> Unit, onRatingClick: (Double) -> Unit) {
 
         val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
         val sessionViewModel: SessionViewModel = viewModel()
-        val timerState by sessionViewModel.state.observeAsState()
+        val sessionState by sessionViewModel.state.observeAsState()
 
-        if (timerState is Finished && !sheetState.isVisible) sheetState.show()
+        if (sessionState is Finished && !sheetState.isVisible) sheetState.show()
 
         ModalBottomSheetLayout(
                 sheetState = sheetState,
                 scrimColor = Color(0, 0, 0, 128),
                 sheetBackgroundColor = MaterialTheme.colors.background,
                 sheetContent = {
-                    when (timerState) {
+                    when (sessionState) {
                         is Idle -> SessionStats()
                         is Running -> Text("There is nothing to see here!")
                         is Finished -> SessionRatingDialog(
                                 onClickDown = { sheetState.hide {
-                                    (timerState as? Finished)?.rateSession(SessionRating.DOWN)
-                                        ?.let { newSessionLength -> onRatingClick(newSessionLength) }
+                                    (sessionState as Finished).rateSession(SessionRating.DOWN)
+                                        .let { newSessionLength -> onRatingClick(newSessionLength) }
                                 } },
                                 onClickUp = {
                                     sheetState.hide {
-                                        (timerState as? Finished)?.rateSession(SessionRating.UP)
-                                            ?.let { newSessionLength -> onRatingClick(newSessionLength) }
+                                        (sessionState as Finished).rateSession(SessionRating.UP)
+                                            .let { newSessionLength -> onRatingClick(newSessionLength) }
                                     }
                                 }
                         )
