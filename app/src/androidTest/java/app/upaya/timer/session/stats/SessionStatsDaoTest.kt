@@ -1,4 +1,4 @@
-package app.upaya.timer.session.history
+package app.upaya.timer.session.stats
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
@@ -7,7 +7,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.upaya.timer.MeditationTimerApplication
 import app.upaya.timer.session.room.SessionLogDatabase
 import app.upaya.timer.session.SessionLog
-import app.upaya.timer.session.room.SessionHistoryDao
+import app.upaya.timer.session.room.SessionStatsDao
 import app.upaya.timer.session.room.SessionLogDao
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -20,14 +20,14 @@ import java.text.SimpleDateFormat
 
 
 @RunWith(AndroidJUnit4::class)
-class SessionHistoryDaoTest {
+class SessionStatsDaoTest {
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()  // Make coroutines synchronous
 
     private lateinit var db: SessionLogDatabase
     private lateinit var sessionLogDao: SessionLogDao
-    private lateinit var sessionHistoryDao: SessionHistoryDao
+    private lateinit var sessionStatsDao: SessionStatsDao
 
     private val sessionLengthsPerDay = listOf(1, 2)
     private val numberOfSessionDays = 100
@@ -42,7 +42,7 @@ class SessionHistoryDaoTest {
         // Initialize Room DB (in memory)
         db = initSessionDatabase()
         sessionLogDao = db.sessionLogDao
-        sessionHistoryDao = db.sessionHistoryDao
+        sessionStatsDao = db.sessionStatsDao
 
         // Add sessions (two for the last N days)
         for (i in 1..numberOfSessionDays) {
@@ -73,7 +73,7 @@ class SessionHistoryDaoTest {
 
         // GIVEN a DB with sessions
         // WHEN an aggregate of all sessions is requested
-        val sessionAggregate = sessionHistoryDao.getAggregateOfAll()
+        val sessionAggregate = sessionStatsDao.getAggregateOfAll()
 
         // THEN it matches
         assert(sessionAggregate.sessionCount == numberOfSessionsTotal)
@@ -87,7 +87,7 @@ class SessionHistoryDaoTest {
         // GIVEN a DB with sessions
         // WHEN the history of session averages is requested
         val limit = 10
-        val avgOfDays = sessionHistoryDao.getAggregateOfLastDays(limit)
+        val avgOfDays = sessionStatsDao.getAggregateOfLastDays(limit)
 
         // THEN there are the right number of days with the right average
         assert(avgOfDays.size == limit)

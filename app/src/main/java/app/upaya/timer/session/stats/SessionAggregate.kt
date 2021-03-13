@@ -1,4 +1,4 @@
-package app.upaya.timer.session.history
+package app.upaya.timer.session.stats
 
 import java.util.*
 

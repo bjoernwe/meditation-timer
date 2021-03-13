@@ -1,4 +1,4 @@
-package app.upaya.timer.session.history
+package app.upaya.timer.session.stats
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
@@ -21,7 +21,7 @@ import java.util.*
 
 
 @RunWith(AndroidJUnit4::class)
-class SessionHistoryRepositoryTest {
+class SessionStatsRepositoryTest {
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -29,14 +29,14 @@ class SessionHistoryRepositoryTest {
     private lateinit var db: SessionLogDatabase
     private lateinit var sessionLogDao: SessionLogDao
     private lateinit var sessionRepository: ISessionRepository
-    private lateinit var sessionHistoryRepository: ISessionHistoryRepository
+    private lateinit var sessionStatsRepository: ISessionStatsRepository
 
     @Before
     fun createDb() {
         db = initSessionDatabase()
         sessionLogDao = db.sessionLogDao
         sessionRepository = SessionRepository(db)
-        sessionHistoryRepository = SessionHistoryRepository(db)
+        sessionStatsRepository = SessionStatsRepository(db)
     }
 
     private fun initSessionDatabase(): SessionLogDatabase {
@@ -58,7 +58,7 @@ class SessionHistoryRepositoryTest {
     fun sessionLiveDataStatistics() = runBlocking {
 
         // GIVEN an empty SessionRepository
-        var sessionAggregate = sessionHistoryRepository.getSessionAggregate()
+        var sessionAggregate = sessionStatsRepository.getSessionAggregate()
         assert(sessionAggregate.avgLength == 0f)
         assert(sessionAggregate.sessionCount == 0)
         assert(sessionAggregate.totalLength == 0)
@@ -67,7 +67,7 @@ class SessionHistoryRepositoryTest {
         sessionRepository.storeSession(SessionLog( length = 2, endDate = Date(1000L)))
 
         // THEN the corresponding LiveData is updated accordingly
-        sessionAggregate = sessionHistoryRepository.getSessionAggregate()
+        sessionAggregate = sessionStatsRepository.getSessionAggregate()
         assert(sessionAggregate.avgLength == 2f)
         assert(sessionAggregate.sessionCount == 1)
         assert(sessionAggregate.totalLength == 2)
@@ -76,7 +76,7 @@ class SessionHistoryRepositoryTest {
         sessionRepository.storeSession(SessionLog(length = 4, endDate = Date(2000L)))
 
         // THEN the corresponding LiveData is updated accordingly
-        sessionAggregate = sessionHistoryRepository.getSessionAggregate()
+        sessionAggregate = sessionStatsRepository.getSessionAggregate()
         assert(sessionAggregate.avgLength == 3f)
         assert(sessionAggregate.sessionCount == 2)
         assert(sessionAggregate.totalLength == 6)

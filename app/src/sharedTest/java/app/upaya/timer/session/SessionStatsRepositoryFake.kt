@@ -1,14 +1,14 @@
 package app.upaya.timer.session
 
-import app.upaya.timer.session.history.ISessionHistoryRepository
-import app.upaya.timer.session.history.SessionAggregate
-import app.upaya.timer.session.history.aggregate
+import app.upaya.timer.session.stats.ISessionStatsRepository
+import app.upaya.timer.session.stats.SessionAggregate
+import app.upaya.timer.session.stats.aggregate
 import java.text.SimpleDateFormat
 
 
-class SessionHistoryRepositoryFake(
+class SessionStatsRepositoryFake(
     private val sessionRepository: ISessionRepository
-    ) : ISessionHistoryRepository {
+    ) : ISessionStatsRepository {
 
     override suspend fun getSessionAggregate(): SessionAggregate {
         return sessionRepository.getSessions().aggregate()

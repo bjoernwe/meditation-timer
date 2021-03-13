@@ -1,7 +1,7 @@
-package app.upaya.timer.session.history
+package app.upaya.timer.session.stats
 
 
-interface ISessionHistoryRepository {
+interface ISessionStatsRepository {
     suspend fun getSessionAggregate(): SessionAggregate
     suspend fun getSessionAggregateOfLastDays(limit: Int = 10): List<SessionAggregate>
 }

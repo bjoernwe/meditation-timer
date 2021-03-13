@@ -1,15 +1,14 @@
 package app.upaya.timer.session
 
 import androidx.lifecycle.*
-import app.upaya.timer.session.history.ISessionHistoryRepository
-import app.upaya.timer.session.history.SessionAggregate
-import app.upaya.timer.session.history.SessionHistoryRepository
+import app.upaya.timer.session.stats.ISessionStatsRepository
+import app.upaya.timer.session.stats.SessionAggregate
 import kotlinx.coroutines.launch
 
 
 class SessionViewModel(
     val sessionHandler: ISessionHandler,
-    private val sessionHistoryRepository: ISessionHistoryRepository
+    private val sessionStatsRepository: ISessionStatsRepository
     ) : ViewModel() {
 
     /**
@@ -53,8 +52,8 @@ class SessionViewModel(
         when (newState) {
             is Idle -> {
                 viewModelScope.launch {
-                    _sessionAggOfAll.value = sessionHistoryRepository.getSessionAggregate()
-                    _sessionAggOfLastDays.value = sessionHistoryRepository.getSessionAggregateOfLastDays()
+                    _sessionAggOfAll.value = sessionStatsRepository.getSessionAggregate()
+                    _sessionAggOfLastDays.value = sessionStatsRepository.getSessionAggregateOfLastDays()
                 }
                 _sessionLength.postValue(sessionHandler.sessionLength)
             }

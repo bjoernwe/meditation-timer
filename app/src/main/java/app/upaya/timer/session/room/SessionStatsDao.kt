@@ -2,11 +2,11 @@ package app.upaya.timer.session.room
 
 import androidx.room.*
 import app.upaya.timer.session.SessionLog
-import app.upaya.timer.session.history.SessionAggregate
+import app.upaya.timer.session.stats.SessionAggregate
 
 
 @Dao
-interface SessionHistoryDao {
+interface SessionStatsDao {
 
     @Query("SELECT * FROM SESSIONS ORDER BY end_time DESC LIMIT :limit")
     suspend fun getSessions(limit: Int = 25): List<SessionLog>
