@@ -13,8 +13,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.viewModel
 import app.upaya.timer.session.history.SessionAggregate
-import app.upaya.timer.session.history.SessionHistoryViewModel
-import app.upaya.timer.session.history.SessionHistoryViewModelFactory
 import app.upaya.timer.session.SessionViewModel
 import app.upaya.timer.session.SessionViewModelFactory
 import app.upaya.timer.ui.composables.entities.SessionChart
@@ -25,11 +23,10 @@ import java.util.*
 @Composable
 fun SessionStats() {
 
-    val sessionHistoryViewModel: SessionHistoryViewModel = viewModel(factory = SessionHistoryViewModelFactory(AmbientContext.current))
     val sessionViewModel: SessionViewModel = viewModel(factory = SessionViewModelFactory(AmbientContext.current))
-    val sessionAggOfLastDays = sessionHistoryViewModel.sessionAggOfLastDays.observeAsState(listOf())
-    val sessionAggOfAll = sessionHistoryViewModel.sessionAggOfAll.observeAsState(SessionAggregate(0, 0f, 0, Date()))
     val sessionLength = sessionViewModel.sessionLength.observeAsState(initial = 0.0)
+    val sessionAggOfAll = sessionViewModel.sessionAggOfAll.observeAsState(SessionAggregate(0, 0f, 0, Date()))
+    val sessionAggOfLastDays = sessionViewModel.sessionAggOfLastDays.observeAsState(listOf())
 
     Column(Modifier.padding(16.dp)) {
 

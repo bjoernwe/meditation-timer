@@ -1,9 +1,7 @@
 package app.upaya.timer.session.history
 
-import androidx.lifecycle.LiveData
-
 
 interface ISessionHistoryRepository {
-    val sessionAggregateOfAll: LiveData<SessionAggregate>
-    val sessionAggregateOfLastDays: LiveData<List<SessionAggregate>>
+    suspend fun getSessionAggregate(): SessionAggregate
+    suspend fun getSessionAggregateOfLastDays(limit: Int = 10): List<SessionAggregate>
 }

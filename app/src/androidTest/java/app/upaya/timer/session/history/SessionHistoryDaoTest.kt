@@ -5,7 +5,6 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.upaya.timer.MeditationTimerApplication
-import app.upaya.timer.getOrAwaitValue
 import app.upaya.timer.session.room.SessionLogDatabase
 import app.upaya.timer.session.SessionLog
 import app.upaya.timer.session.room.SessionHistoryDao
@@ -70,20 +69,20 @@ class SessionHistoryDaoTest {
     }
 
     @Test
-    fun getAggregateOfAllSessions() {
+    suspend fun getAggregateOfAllSessions() {
 
         // GIVEN a DB with sessions
         // WHEN an aggregate of all sessions is requested
         val sessionAggregate = sessionHistoryDao.getAggregateOfAll()
 
         // THEN it matches
-        assert(sessionAggregate.getOrAwaitValue().sessionCount == numberOfSessionsTotal)
-        assert(sessionAggregate.getOrAwaitValue().avgLength == this.sessionAvg)
-        assert(sessionAggregate.getOrAwaitValue().totalLength == this.sessionTotal)
+        assert(sessionAggregate.sessionCount == numberOfSessionsTotal)
+        assert(sessionAggregate.avgLength == this.sessionAvg)
+        assert(sessionAggregate.totalLength == this.sessionTotal)
     }
 
     @Test
-    fun getAggregateOfLastDays() {
+    suspend fun getAggregateOfLastDays() {
 
         // GIVEN a DB with sessions
         // WHEN the history of session averages is requested
@@ -91,8 +90,8 @@ class SessionHistoryDaoTest {
         val avgOfDays = sessionHistoryDao.getAggregateOfLastDays(limit)
 
         // THEN there are the right number of days with the right average
-        assert(avgOfDays.getOrAwaitValue().size == limit)
-        for (result in avgOfDays.getOrAwaitValue()) {
+        assert(avgOfDays.size == limit)
+        for (result in avgOfDays) {
             assert(result.avgLength == sessionAvg)
             assert(result.sessionCount == numberOfSessionsPerDay)
         }

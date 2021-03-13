@@ -1,6 +1,6 @@
 package app.upaya.timer.settings
 
-import app.upaya.timer.session.SessionLengthRepositoryFake
+import app.upaya.timer.settings.SessionLengthRepositoryFake
 import org.junit.Before
 import org.junit.Test
 

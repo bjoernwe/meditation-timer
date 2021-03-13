@@ -1,18 +1,13 @@
 package app.upaya.timer.session
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import app.upaya.timer.getOrAwaitValue
-import org.junit.Rule
+import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
 
 class SessionHandlerTest {
 
-    @get:Rule
-    val instantTaskExecutorRule = InstantTaskExecutorRule()  // Make coroutines synchronous
-
     @Test
-    fun onSessionFinished() {
+    fun onSessionFinished() = runBlocking {
 
         // GIVEN a SessionHandler
         val sessionLogRepository: ISessionLogRepository = SessionLogRepositoryFake()
@@ -26,7 +21,7 @@ class SessionHandlerTest {
         sessionHandler.onSessionFinished()
 
         // THEN the session is stored
-        val storedSession = sessionLogRepository.lastSession.getOrAwaitValue()
+        val storedSession = (sessionLogRepository as SessionLogRepositoryFake).getLastSession()
         assert(storedSession == finishedSession)
 
     }
