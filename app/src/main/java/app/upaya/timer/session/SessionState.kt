@@ -1,7 +1,7 @@
 package app.upaya.timer.session
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import java.util.*
 import kotlin.concurrent.schedule
 
@@ -9,27 +9,25 @@ import kotlin.concurrent.schedule
 sealed class SessionState(
     /**
      * This state machine models the session's state transitions. It posts the current state to the
-     * given MutableLiveData object. It also calls the SessionHandler on state transitions.
+     * created MutableFlowState object. It also calls the SessionHandler on state transitions.
      **/
     protected val sessionHandler: ISessionHandler,
-    protected val currentState: MutableLiveData<SessionState>,
+    protected val outputStateFlow: MutableStateFlow<SessionState?>,
     ) {
 
     companion object {
 
-        fun create(sessionHandler: ISessionHandler): LiveData<SessionState> {
+        fun create(sessionHandler: ISessionHandler): StateFlow<SessionState?> {
 
-            val currentState = MutableLiveData<SessionState>()
-            val currentStateImmutable: LiveData<SessionState> = currentState
+            val stateFlow = MutableStateFlow<SessionState?>(null)
 
             val idleState = Idle(
                 sessionHandler = sessionHandler,
-                currentState = currentState,
+                outputStateFlow = stateFlow,
             )
 
-            //sessionHandler.onSessionIdling()
-            currentState.postValue(idleState)
-            return currentStateImmutable
+            stateFlow.value = idleState
+            return stateFlow
         }
 
     }
@@ -39,21 +37,22 @@ sealed class SessionState(
 
 class Idle internal constructor(
     sessionHandler: ISessionHandler,
-    currentState: MutableLiveData<SessionState>,
+    outputStateFlow: MutableStateFlow<SessionState?>
 ) : SessionState(
     sessionHandler = sessionHandler,
-    currentState = currentState,
+    outputStateFlow = outputStateFlow
 ) {
 
     fun startSession() {
-        val nextState = Running(
+        val runningState = Running(
             sessionHandler = sessionHandler,
-            currentState = currentState)
+            outputStateFlow = outputStateFlow
+        )
         val sessionLength = sessionHandler.sessionLength.times(1000).toLong()
         Timer("SessionTimer", true).schedule(sessionLength) {
-            nextState.onFinish()
+            runningState.onFinish()
         }
-        currentState.postValue(nextState)
+        outputStateFlow.value = runningState
     }
 
 }
@@ -61,19 +60,19 @@ class Idle internal constructor(
 
 class Running internal constructor(
     sessionHandler: ISessionHandler,
-    currentState: MutableLiveData<SessionState>,
+    outputStateFlow: MutableStateFlow<SessionState?>
 ) : SessionState(
     sessionHandler = sessionHandler,
-    currentState = currentState,
+    outputStateFlow = outputStateFlow
 ) {
 
     internal fun onFinish() {
         sessionHandler.onSessionFinished()
-        val nextState = Finished(
+        val finishedState = Finished(
             sessionHandler = sessionHandler,
-            currentState = currentState
+            outputStateFlow = outputStateFlow
         )
-        currentState.postValue(nextState)
+        outputStateFlow.value = finishedState
     }
 
 }
@@ -81,19 +80,17 @@ class Running internal constructor(
 
 class Finished internal constructor(
     sessionHandler: ISessionHandler,
-    currentState: MutableLiveData<SessionState>,
+    outputStateFlow: MutableStateFlow<SessionState?>
 ) : SessionState(
     sessionHandler = sessionHandler,
-    currentState = currentState,
+    outputStateFlow = outputStateFlow
 ) {
 
     fun rateSession(rating: SessionRating) {
         sessionHandler.onRatingSubmitted(rating = rating)
-        currentState.postValue(
-            Idle(
-                sessionHandler = sessionHandler,
-                currentState = currentState,
-            )
+        outputStateFlow.value = Idle(
+            sessionHandler = sessionHandler,
+            outputStateFlow = outputStateFlow
         )
     }
 

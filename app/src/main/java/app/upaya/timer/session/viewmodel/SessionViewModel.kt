@@ -16,7 +16,7 @@ class SessionViewModel(
      * Session State
      */
 
-    val state: LiveData<SessionState> = SessionState.create(sessionHandler = sessionHandler)
+    val state: LiveData<SessionState?> = SessionState.create(sessionHandler).asLiveData()
     val isIdle: LiveData<Boolean> = Transformations.map(state) { it is Idle }
     val isRunning: LiveData<Boolean> = Transformations.map(state) { it is Running }
 
@@ -42,14 +42,14 @@ class SessionViewModel(
      * The observer is removed in onCleared().
      */
 
-    private var stateObserver: Observer<SessionState> = Observer(::onTimerStateChanged)
+    private var stateObserver: Observer<SessionState?> = Observer(::onTimerStateChanged)
     init { state.observeForever(stateObserver) }
 
     /**
      * Update LiveData on State Changes
      */
 
-    private fun onTimerStateChanged(newState: SessionState) {
+    private fun onTimerStateChanged(newState: SessionState?) {
         when (newState) {
             is Idle -> {
                 viewModelScope.launch {

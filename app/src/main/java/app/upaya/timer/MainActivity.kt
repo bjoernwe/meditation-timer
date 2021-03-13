@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun onSessionStateChanged(newSessionState: SessionState) {
+    private fun onSessionStateChanged(newSessionState: SessionState?) {
         when (newSessionState) {
             is Idle -> { }
             is Running -> { bell.reset() }
