@@ -20,7 +20,7 @@ import app.upaya.timer.ui.composables.sheets.SessionHintsCard
 @ExperimentalAnimationApi
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun MainLayout(onClick: () -> Unit, onRatingClick: (Double) -> Unit) {
+fun MainLayout(onClick: () -> Unit) {
 
     TimerTheme {
 
@@ -41,14 +41,10 @@ fun MainLayout(onClick: () -> Unit, onRatingClick: (Double) -> Unit) {
                         is Finished -> SessionRatingDialog(
                                 onClickDown = { sheetState.hide {
                                     (sessionState as Finished).rateSession(SessionRating.DOWN)
-                                        .let { newSessionLength -> onRatingClick(newSessionLength) }
                                 } },
-                                onClickUp = {
-                                    sheetState.hide {
-                                        (sessionState as Finished).rateSession(SessionRating.UP)
-                                            .let { newSessionLength -> onRatingClick(newSessionLength) }
-                                    }
-                                }
+                                onClickUp = { sheetState.hide {
+                                    (sessionState as Finished).rateSession(SessionRating.UP)
+                                } }
                         )
                     }
                 }

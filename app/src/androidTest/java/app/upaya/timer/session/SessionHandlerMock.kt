@@ -1,7 +1,6 @@
 package app.upaya.timer.session
 
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 data class OnRatingCallArgs(
@@ -13,20 +12,23 @@ data class OnRatingCallArgs(
 
 class SessionHandlerMock(
     private val onSessionFinishedCalls: MutableList<Date>,
-    private val onRatingSubmittedCalls: MutableList<OnRatingCallArgs>
+    private val onRatingSubmittedCalls: MutableList<OnRatingCallArgs>,
+    initialSessionLength: Double
 ) : ISessionHandler {
 
-    override fun onSessionFinished(sessionLog: SessionLog) {
+    override var sessionLength: Double = initialSessionLength
+        private set
+
+    override fun onSessionFinished() {
         onSessionFinishedCalls.add(Date())
     }
 
-    override fun onRatingSubmitted(rating: SessionRating, currentSessionLength: Double): Double {
+    override fun onRatingSubmitted(rating: SessionRating) {
         onRatingSubmittedCalls.add(OnRatingCallArgs(
             date = Date(),
             rating = rating,
-            currentSessionLength = currentSessionLength,
+            currentSessionLength = sessionLength,
         ))
-        return 0.0
     }
 
 }

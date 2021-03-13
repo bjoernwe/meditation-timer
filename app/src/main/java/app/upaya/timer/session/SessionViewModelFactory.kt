@@ -20,13 +20,13 @@ class SessionViewModelFactory(private val context: Context) : ViewModelProvider.
 
             val sessionLogDatabase = SessionLogDatabase.getInstance(context)
             val sessionLogRepository = SessionLogRepository(sessionLogDatabase)
-            val sessionHandler = SessionHandler(sessionLogRepository)
+            val sessionHandler = SessionHandler(
+                sessionLogRepository = sessionLogRepository,
+                initialSessionLength = initialSessionLength,
+            )
 
             @Suppress("UNCHECKED_CAST")
-            return SessionViewModel(
-                sessionHandler = sessionHandler,
-                initialSessionLength = initialSessionLength
-            ) as T
+            return SessionViewModel(sessionHandler = sessionHandler) as T
 
         } else {
             throw IllegalArgumentException("Unknown ViewModel class $modelClass")

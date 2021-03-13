@@ -4,7 +4,14 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
-class SessionHandler(private val sessionLogRepository: ISessionLogRepository) : ISessionHandler {
+class SessionHandler(
+    private val sessionLogRepository: ISessionLogRepository,
+    initialSessionLength: Double,
+    ) : ISessionHandler {
+
+    private val _sessionLength = SessionLength(initialSessionLength)
+    override val sessionLength: Double
+        get() = _sessionLength.value
 
     //override fun onSessionIdling() {
         //currentSession = SessionDetails(length = 0)
@@ -16,30 +23,18 @@ class SessionHandler(private val sessionLogRepository: ISessionLogRepository) : 
         //sessionRepository.storeSession(currentSession)
     //}
 
-    override fun onSessionFinished(sessionLog: SessionLog) {
+    override fun onSessionFinished() {
+        val sessionLog = SessionLog(length = sessionLength.toInt())
         GlobalScope.launch {
             sessionLogRepository.storeSession(sessionLog)
         }
     }
 
-    override fun onRatingSubmitted(rating: SessionRating, currentSessionLength: Double): Double {
+    override fun onRatingSubmitted(rating: SessionRating) {
         return when (rating) {
-            SessionRating.UP -> { decreaseSessionLength(currentSessionLength) }
-            SessionRating.DOWN -> { increaseSessionLength(currentSessionLength) }
+            SessionRating.UP -> { _sessionLength.decrease() }
+            SessionRating.DOWN -> { _sessionLength.increase() }
         }
-    }
-
-    private fun decreaseSessionLength(currentSessionLength: Double) : Double {
-        val newSessionLength = currentSessionLength.times(0.8)
-        return if (newSessionLength >= 1.0) {
-            newSessionLength
-        } else {
-            currentSessionLength
-        }
-    }
-
-    private fun increaseSessionLength(currentSessionLength: Double): Double {
-        return currentSessionLength.times(1.1)
     }
 
 }

@@ -24,11 +24,10 @@ class SessionStateTest {
         val onRatingSubmittedCalls: MutableList<OnRatingCallArgs> = ArrayList()
         val sessionHandler: ISessionHandler = SessionHandlerMock(
             onSessionFinishedCalls = onSessionFinishedCalls,
-            onRatingSubmittedCalls = onRatingSubmittedCalls
+            onRatingSubmittedCalls = onRatingSubmittedCalls,
+            initialSessionLength = 2.0
         )
-        val state = SessionState.create(
-            sessionHandler = sessionHandler,
-            initialSessionLength = 2.0)
+        val state = SessionState.create(sessionHandler = sessionHandler)
 
         // WHEN a session is started
         (state.getOrAwaitValue() as Idle).startSession()

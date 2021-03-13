@@ -7,6 +7,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.ui.platform.setContent
 import androidx.lifecycle.ViewModelProvider
 import app.upaya.timer.session.*
+import app.upaya.timer.session.room.SessionLogDatabase
 import app.upaya.timer.settings.SessionLengthRepository
 import app.upaya.timer.ui.Bell
 import app.upaya.timer.ui.composables.MainLayout
@@ -15,6 +16,7 @@ import app.upaya.timer.ui.composables.MainLayout
 class MainActivity : AppCompatActivity() {
 
     private lateinit var bell: Bell
+    private lateinit var sessionHandler: ISessionHandler
     private lateinit var sessionViewModel: SessionViewModel
     private lateinit var sessionLengthRepository: SessionLengthRepository
 
@@ -23,25 +25,38 @@ class MainActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
 
-        // late init
+        /**
+         * Late Inits
+         */
+
+        sessionLengthRepository = SessionLengthRepository(this)
+        val initialSessionLength = sessionLengthRepository.loadSessionLength()
+        val sessionLogDatabase = SessionLogDatabase.getInstance(this)
+        val sessionLogRepository = SessionLogRepository(sessionLogDatabase)
+        sessionHandler = SessionHandler(
+            sessionLogRepository = sessionLogRepository,
+            initialSessionLength = initialSessionLength,
+        )
+
         val sessionViewModelFactory = SessionViewModelFactory(this)
         sessionViewModel = ViewModelProvider(this, sessionViewModelFactory).get(SessionViewModel::class.java)
-        sessionLengthRepository = SessionLengthRepository(this)
+
         bell = Bell(
                 context = applicationContext,
                 hasPlayed = (savedInstanceState ?: Bundle()).getBoolean(Bell.HAS_PLAYED_KEY)
         )
 
-        // Emit Main Composable
-        setContent {
-            MainLayout(
-                onClick = ::onCircleClicked,
-                onRatingClick = ::onRatingClick,
-            )
-        }
+        /**
+         * Emit Main Composable
+         */
+        setContent { MainLayout(onClick = ::onCircleClicked) }
 
-        // Register event callbacks
-        sessionViewModel.state.observe(this, { onSessionStateChanged(it) })
+
+        /**
+         * Register Event Callbacks
+         */
+        sessionViewModel.state.observe(this) { onSessionStateChanged(it) }
+        sessionViewModel.sessionLength.observe(this) { onSessionLengthChanged(it) }
     }
 
     override fun onStart() {
@@ -63,16 +78,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun onRatingClick(newSessionLength: Double) {
-        sessionLengthRepository.storeSessionLength(newSessionLength)
-    }
-
     private fun onSessionStateChanged(newSessionState: SessionState) {
         when (newSessionState) {
             is Idle -> { }
             is Running -> { bell.reset() }
             is Finished -> { bell.play() }
         }
+    }
+
+    private fun onSessionLengthChanged(newSessionLength: Double) {
+        sessionLengthRepository.storeSessionLength(newSessionLength)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

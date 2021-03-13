@@ -1,23 +1,32 @@
 package app.upaya.timer.session
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import app.upaya.timer.getOrAwaitValue
+import org.junit.Rule
 import org.junit.Test
 
 
 class SessionHandlerTest {
+
+    @get:Rule
+    val instantTaskExecutorRule = InstantTaskExecutorRule()  // Make coroutines synchronous
 
     @Test
     fun onSessionFinished() {
 
         // GIVEN a SessionHandler
         val sessionLogRepository: ISessionLogRepository = SessionLogRepositoryFake()
-        val sessionHandler = SessionHandler(sessionLogRepository = sessionLogRepository)
+        val sessionHandler = SessionHandler(
+            sessionLogRepository = sessionLogRepository,
+            initialSessionLength = 42.0
+        )
 
         // WHEN onSessionFinished is called
-        val finishedSession = SessionLog(length = 42)
-        sessionHandler.onSessionFinished(sessionLog = finishedSession)
+        val finishedSession = SessionLog(length = sessionHandler.sessionLength.toInt())
+        sessionHandler.onSessionFinished()
 
         // THEN the session is stored
-        val storedSession = sessionLogRepository.lastSession.value
+        val storedSession = sessionLogRepository.lastSession.getOrAwaitValue()
         assert(storedSession == finishedSession)
 
     }
@@ -26,18 +35,18 @@ class SessionHandlerTest {
     fun onRatingSubmittedUp() {
 
         // GIVEN a SessionHandler
+        val initialSessionLength = 42.0
         val sessionLogRepository: ISessionLogRepository = SessionLogRepositoryFake()
-        val sessionHandler = SessionHandler(sessionLogRepository = sessionLogRepository)
-
-        // WHEN onRatingSubmitted is called with UP
-        val currentSessionLength = 42.0
-        val newSessionLength = sessionHandler.onRatingSubmitted(
-            rating = SessionRating.UP,
-            currentSessionLength = currentSessionLength
+        val sessionHandler = SessionHandler(
+            sessionLogRepository = sessionLogRepository,
+            initialSessionLength = initialSessionLength
         )
 
+        // WHEN onRatingSubmitted is called with UP
+        sessionHandler.onRatingSubmitted(rating = SessionRating.UP)
+
         // THEN the current session length is decreased
-        assert(newSessionLength < currentSessionLength)
+        assert(sessionHandler.sessionLength < initialSessionLength)
 
     }
 
@@ -45,18 +54,18 @@ class SessionHandlerTest {
     fun onRatingSubmittedDown() {
 
         // GIVEN a SessionHandler
+        val initialSessionLength = 42.0
         val sessionLogRepository: ISessionLogRepository = SessionLogRepositoryFake()
-        val sessionHandler = SessionHandler(sessionLogRepository = sessionLogRepository)
-
-        // WHEN onRatingSubmitted is called with UP
-        val currentSessionLength = 42.0
-        val newSessionLength = sessionHandler.onRatingSubmitted(
-            rating = SessionRating.DOWN,
-            currentSessionLength = currentSessionLength
+        val sessionHandler = SessionHandler(
+            sessionLogRepository = sessionLogRepository,
+            initialSessionLength = initialSessionLength
         )
 
+        // WHEN onRatingSubmitted is called with UP
+        sessionHandler.onRatingSubmitted(rating = SessionRating.DOWN)
+
         // THEN the current session length is decreased
-        assert(newSessionLength > currentSessionLength)
+        assert(sessionHandler.sessionLength > initialSessionLength)
 
     }
 

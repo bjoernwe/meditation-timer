@@ -8,12 +8,14 @@ enum class SessionRating {
 
 interface ISessionHandler {
 
+    val sessionLength: Double
+
     //fun onSessionIdling()
 
     //fun onSessionStarted()
 
-    fun onSessionFinished(sessionLog: SessionLog)
+    fun onSessionFinished()
 
-    fun onRatingSubmitted(rating: SessionRating, currentSessionLength: Double): Double
+    fun onRatingSubmitted(rating: SessionRating)
 
 }
