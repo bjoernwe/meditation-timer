@@ -10,11 +10,15 @@ class SessionStatsRepository(sessionLogDatabase: SessionLogDatabase) : ISessionS
     private val sessionStatsDao = sessionLogDatabase.sessionStatsDao
 
     override suspend fun getSessionAggregate(): SessionAggregate {
-        return sessionStatsDao.getAggregateOfAll()
+        return withContext(Dispatchers.IO) {
+            return@withContext sessionStatsDao.getAggregateOfAll()
+        }
     }
 
     override suspend fun getSessionAggregateOfLastDays(limit: Int): List<SessionAggregate> {
-        return sessionStatsDao.getAggregateOfLastDays(limit = limit)
+        return withContext(Dispatchers.IO) {
+            return@withContext sessionStatsDao.getAggregateOfLastDays(limit = limit)
+        }
     }
 
 }
