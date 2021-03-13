@@ -5,7 +5,7 @@ import kotlinx.coroutines.launch
 
 
 class SessionHandler(
-    private val sessionLogRepository: ISessionLogRepository,
+    private val sessionRepository: ISessionRepository,
     initialSessionLength: Double,
     ) : ISessionHandler {
 
@@ -26,7 +26,7 @@ class SessionHandler(
     override fun onSessionFinished() {
         val sessionLog = SessionLog(length = sessionLength.toInt())
         GlobalScope.launch {
-            sessionLogRepository.storeSession(sessionLog)
+            sessionRepository.storeSession(sessionLog)
         }
     }
 

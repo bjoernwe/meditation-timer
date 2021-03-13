@@ -5,7 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 
-class SessionLogRepository(private val sessionLogDatabase: SessionLogDatabase) : ISessionLogRepository {
+class SessionRepository(private val sessionLogDatabase: SessionLogDatabase) : ISessionRepository {
 
     override suspend fun getSessions(): List<SessionLog> {
         return sessionLogDatabase.sessionLogDao.getSessions()

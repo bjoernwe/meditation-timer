@@ -10,7 +10,7 @@ class SessionLogRepositoryFakeTest {
     fun storeSession() = runBlocking {
 
         // GIVEN an empty SessionLogRepository
-        val sessionRepository = SessionLogRepositoryFake()
+        val sessionRepository = SessionRepositoryFake()
         assert(sessionRepository.getLastSession() == null)
 
         // WHEN a session is stored

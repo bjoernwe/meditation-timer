@@ -10,9 +10,9 @@ class SessionHandlerTest {
     fun onSessionFinished() = runBlocking {
 
         // GIVEN a SessionHandler
-        val sessionLogRepository: ISessionLogRepository = SessionLogRepositoryFake()
+        val sessionRepository: ISessionRepository = SessionRepositoryFake()
         val sessionHandler = SessionHandler(
-            sessionLogRepository = sessionLogRepository,
+            sessionRepository = sessionRepository,
             initialSessionLength = 42.0
         )
 
@@ -21,7 +21,7 @@ class SessionHandlerTest {
         sessionHandler.onSessionFinished()
 
         // THEN the session is stored
-        val storedSession = (sessionLogRepository as SessionLogRepositoryFake).getLastSession()
+        val storedSession = (sessionRepository as SessionRepositoryFake).getLastSession()
         assert(storedSession == finishedSession)
 
     }
@@ -31,9 +31,9 @@ class SessionHandlerTest {
 
         // GIVEN a SessionHandler
         val initialSessionLength = 42.0
-        val sessionLogRepository: ISessionLogRepository = SessionLogRepositoryFake()
+        val sessionRepository: ISessionRepository = SessionRepositoryFake()
         val sessionHandler = SessionHandler(
-            sessionLogRepository = sessionLogRepository,
+            sessionRepository = sessionRepository,
             initialSessionLength = initialSessionLength
         )
 
@@ -50,9 +50,9 @@ class SessionHandlerTest {
 
         // GIVEN a SessionHandler
         val initialSessionLength = 42.0
-        val sessionLogRepository: ISessionLogRepository = SessionLogRepositoryFake()
+        val sessionRepository: ISessionRepository = SessionRepositoryFake()
         val sessionHandler = SessionHandler(
-            sessionLogRepository = sessionLogRepository,
+            sessionRepository = sessionRepository,
             initialSessionLength = initialSessionLength
         )
 

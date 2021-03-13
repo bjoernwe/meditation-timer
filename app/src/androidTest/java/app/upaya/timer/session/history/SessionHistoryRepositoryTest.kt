@@ -5,9 +5,9 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.upaya.timer.MeditationTimerApplication
-import app.upaya.timer.session.ISessionLogRepository
+import app.upaya.timer.session.ISessionRepository
 import app.upaya.timer.session.SessionLog
-import app.upaya.timer.session.SessionLogRepository
+import app.upaya.timer.session.SessionRepository
 import app.upaya.timer.session.room.SessionLogDao
 import app.upaya.timer.session.room.SessionLogDatabase
 import kotlinx.coroutines.runBlocking
@@ -28,14 +28,14 @@ class SessionHistoryRepositoryTest {
 
     private lateinit var db: SessionLogDatabase
     private lateinit var sessionLogDao: SessionLogDao
-    private lateinit var sessionLogRepository: ISessionLogRepository
+    private lateinit var sessionRepository: ISessionRepository
     private lateinit var sessionHistoryRepository: ISessionHistoryRepository
 
     @Before
     fun createDb() {
         db = initSessionDatabase()
         sessionLogDao = db.sessionLogDao
-        sessionLogRepository = SessionLogRepository(db)
+        sessionRepository = SessionRepository(db)
         sessionHistoryRepository = SessionHistoryRepository(db)
     }
 
@@ -64,7 +64,7 @@ class SessionHistoryRepositoryTest {
         assert(sessionAggregate.totalLength == 0)
 
         // WHEN a session is added
-        sessionLogRepository.storeSession(SessionLog( length = 2, endDate = Date(1000L)))
+        sessionRepository.storeSession(SessionLog( length = 2, endDate = Date(1000L)))
 
         // THEN the corresponding LiveData is updated accordingly
         sessionAggregate = sessionHistoryRepository.getSessionAggregate()
@@ -73,7 +73,7 @@ class SessionHistoryRepositoryTest {
         assert(sessionAggregate.totalLength == 2)
 
         // AND WHEN another session is added
-        sessionLogRepository.storeSession(SessionLog(length = 4, endDate = Date(2000L)))
+        sessionRepository.storeSession(SessionLog(length = 4, endDate = Date(2000L)))
 
         // THEN the corresponding LiveData is updated accordingly
         sessionAggregate = sessionHistoryRepository.getSessionAggregate()

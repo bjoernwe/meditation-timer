@@ -4,7 +4,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class SessionLogRepositoryFake : ISessionLogRepository {
+class SessionRepositoryFake : ISessionRepository {
 
     private val sessions: MutableList<SessionLog> = ArrayList()
 

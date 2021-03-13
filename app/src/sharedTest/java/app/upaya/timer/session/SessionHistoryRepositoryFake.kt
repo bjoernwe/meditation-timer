@@ -7,15 +7,15 @@ import java.text.SimpleDateFormat
 
 
 class SessionHistoryRepositoryFake(
-    private val sessionLogRepository: ISessionLogRepository
+    private val sessionRepository: ISessionRepository
     ) : ISessionHistoryRepository {
 
     override suspend fun getSessionAggregate(): SessionAggregate {
-        return sessionLogRepository.getSessions().aggregate()
+        return sessionRepository.getSessions().aggregate()
     }
 
     override suspend fun getSessionAggregateOfLastDays(limit: Int): List<SessionAggregate> {
-        return sessionLogRepository.getSessions()
+        return sessionRepository.getSessions()
             .groupBy { SimpleDateFormat("y-M-d").format(it.endDate) }
             .map { it.value.aggregate() }
             .sortedByDescending { aggregate -> aggregate.date }
