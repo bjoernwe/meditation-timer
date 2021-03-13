@@ -1,13 +1,11 @@
 package app.upaya.timer.session.repository.stats
 
-import app.upaya.timer.session.repository.room.SessionLogDatabase
+import app.upaya.timer.session.repository.room.SessionStatsDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 
-class SessionStatsRepository(sessionLogDatabase: SessionLogDatabase) : ISessionStatsRepository {
-
-    private val sessionStatsDao = sessionLogDatabase.sessionStatsDao
+class SessionStatsRepository(private val sessionStatsDao: SessionStatsDao) : ISessionStatsRepository {
 
     override suspend fun getSessionAggregate(): SessionAggregate {
         return withContext(Dispatchers.IO) {

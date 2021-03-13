@@ -34,8 +34,8 @@ class MainActivity : AppCompatActivity() {
 
         sessionLengthRepository = SessionLengthRepository(this)
         val initialSessionLength = sessionLengthRepository.loadSessionLength()
-        val sessionLogDatabase = SessionLogDatabase.getInstance(this)
-        val sessionRepository = SessionRepository(sessionLogDatabase)
+        val sessionLogDao = SessionLogDatabase.getInstance(this).sessionLogDao
+        val sessionRepository = SessionRepository(sessionLogDao)
         sessionHandler = SessionHandler(
             sessionRepository = sessionRepository,
             initialSessionLength = initialSessionLength,

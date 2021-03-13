@@ -21,8 +21,8 @@ class SessionViewModelFactory(private val context: Context) : ViewModelProvider.
             val sessionLengthRepository = SessionLengthRepository(context)
             val initialSessionLength = sessionLengthRepository.loadSessionLength()
             val sessionLogDatabase = SessionLogDatabase.getInstance(context)
-            val sessionLogRepository = SessionRepository(sessionLogDatabase)
-            val sessionStatsRepository = SessionStatsRepository(sessionLogDatabase)
+            val sessionLogRepository = SessionRepository(sessionLogDatabase.sessionLogDao)
+            val sessionStatsRepository = SessionStatsRepository(sessionLogDatabase.sessionStatsDao)
             val sessionHandler = SessionHandler(
                 sessionRepository = sessionLogRepository,
                 initialSessionLength = initialSessionLength,
