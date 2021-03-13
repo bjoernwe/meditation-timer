@@ -1,11 +1,11 @@
-package app.upaya.timer.session.room
+package app.upaya.timer.session.repository.room
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import app.upaya.timer.session.SessionLog
+import app.upaya.timer.session.repository.SessionLog
 
 
 @Database(entities = [SessionLog::class], version = 2, exportSchema = true)

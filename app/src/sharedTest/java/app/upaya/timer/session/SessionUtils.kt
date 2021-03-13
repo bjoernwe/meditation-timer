@@ -1,6 +1,6 @@
-package app.upaya.timer.session.stats
+package app.upaya.timer.session.repository.stats
 
-import app.upaya.timer.session.SessionLog
+import app.upaya.timer.session.repository.SessionLog
 import java.util.*
 
 

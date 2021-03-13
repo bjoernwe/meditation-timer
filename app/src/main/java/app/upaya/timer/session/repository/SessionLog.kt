@@ -1,4 +1,4 @@
-package app.upaya.timer.session
+package app.upaya.timer.session.repository
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

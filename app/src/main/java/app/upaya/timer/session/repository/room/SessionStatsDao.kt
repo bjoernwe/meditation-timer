@@ -1,8 +1,8 @@
-package app.upaya.timer.session.room
+package app.upaya.timer.session.repository.room
 
 import androidx.room.*
-import app.upaya.timer.session.SessionLog
-import app.upaya.timer.session.stats.SessionAggregate
+import app.upaya.timer.session.repository.SessionLog
+import app.upaya.timer.session.repository.stats.SessionAggregate
 
 
 @Dao

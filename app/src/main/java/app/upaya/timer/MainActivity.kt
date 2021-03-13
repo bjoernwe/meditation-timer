@@ -7,7 +7,10 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.ui.platform.setContent
 import androidx.lifecycle.ViewModelProvider
 import app.upaya.timer.session.*
-import app.upaya.timer.session.room.SessionLogDatabase
+import app.upaya.timer.session.repository.SessionRepository
+import app.upaya.timer.session.repository.room.SessionLogDatabase
+import app.upaya.timer.session.viewmodel.SessionViewModel
+import app.upaya.timer.session.viewmodel.SessionViewModelFactory
 import app.upaya.timer.settings.SessionLengthRepository
 import app.upaya.timer.ui.Bell
 import app.upaya.timer.ui.composables.MainLayout

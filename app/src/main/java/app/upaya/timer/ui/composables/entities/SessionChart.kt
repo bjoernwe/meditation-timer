@@ -6,7 +6,7 @@ import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.viewinterop.AndroidView
-import app.upaya.timer.session.stats.SessionAggregate
+import app.upaya.timer.session.repository.stats.SessionAggregate
 import com.db.williamchart.view.BarChartView
 
 

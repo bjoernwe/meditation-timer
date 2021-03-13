@@ -1,10 +1,12 @@
-package app.upaya.timer.session
+package app.upaya.timer.session.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import app.upaya.timer.session.stats.SessionStatsRepository
-import app.upaya.timer.session.room.SessionLogDatabase
+import app.upaya.timer.session.SessionHandler
+import app.upaya.timer.session.repository.SessionRepository
+import app.upaya.timer.session.repository.stats.SessionStatsRepository
+import app.upaya.timer.session.repository.room.SessionLogDatabase
 import app.upaya.timer.settings.SessionLengthRepository
 import java.lang.IllegalArgumentException
 

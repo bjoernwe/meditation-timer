@@ -1,15 +1,15 @@
-package app.upaya.timer.session.stats
+package app.upaya.timer.session.repository.stats
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.upaya.timer.MeditationTimerApplication
-import app.upaya.timer.session.ISessionRepository
-import app.upaya.timer.session.SessionLog
-import app.upaya.timer.session.SessionRepository
-import app.upaya.timer.session.room.SessionLogDao
-import app.upaya.timer.session.room.SessionLogDatabase
+import app.upaya.timer.session.repository.ISessionRepository
+import app.upaya.timer.session.repository.SessionLog
+import app.upaya.timer.session.repository.SessionRepository
+import app.upaya.timer.session.repository.room.SessionLogDao
+import app.upaya.timer.session.repository.room.SessionLogDatabase
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before

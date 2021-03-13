@@ -1,6 +1,6 @@
-package app.upaya.timer.session
+package app.upaya.timer.session.repository
 
-import app.upaya.timer.session.room.SessionLogDatabase
+import app.upaya.timer.session.repository.room.SessionLogDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

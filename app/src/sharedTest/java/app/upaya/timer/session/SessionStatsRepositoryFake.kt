@@ -1,8 +1,9 @@
 package app.upaya.timer.session
 
-import app.upaya.timer.session.stats.ISessionStatsRepository
-import app.upaya.timer.session.stats.SessionAggregate
-import app.upaya.timer.session.stats.aggregate
+import app.upaya.timer.session.repository.ISessionRepository
+import app.upaya.timer.session.repository.stats.ISessionStatsRepository
+import app.upaya.timer.session.repository.stats.SessionAggregate
+import app.upaya.timer.session.repository.stats.aggregate
 import java.text.SimpleDateFormat
 
 
