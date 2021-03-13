@@ -1,8 +1,10 @@
 package app.upaya.timer.session.repository
 
+import kotlinx.coroutines.flow.Flow
+
 
 interface ISessionRepository {
-    suspend fun getSessions(): List<SessionLog>
-    suspend fun getLastSession(): SessionLog?
+    val lastSession: Flow<SessionLog>
+    val sessions: Flow<List<SessionLog>>
     suspend fun storeSession(sessionLog: SessionLog)
 }

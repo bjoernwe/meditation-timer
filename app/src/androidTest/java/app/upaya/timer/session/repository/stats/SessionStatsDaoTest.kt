@@ -69,7 +69,7 @@ class SessionStatsDaoTest {
     }
 
     @Test
-    suspend fun getAggregateOfAllSessions() {
+    fun getAggregateOfAllSessions() {
 
         // GIVEN a DB with sessions
         // WHEN an aggregate of all sessions is requested
@@ -82,12 +82,12 @@ class SessionStatsDaoTest {
     }
 
     @Test
-    suspend fun getAggregateOfLastDays() {
+    fun getAggregateOfLastDays() {
 
         // GIVEN a DB with sessions
         // WHEN the history of session averages is requested
         val limit = 10
-        val avgOfDays = sessionStatsDao.getAggregateOfLastDays(limit)
+        val avgOfDays = sessionStatsDao.getAggregatesOfLastDays(limit)
 
         // THEN there are the right number of days with the right average
         assert(avgOfDays.size == limit)

@@ -7,17 +7,8 @@ import kotlinx.coroutines.withContext
 
 class SessionRepository(private val sessionLogDao: SessionLogDao) : ISessionRepository {
 
-    override suspend fun getSessions(): List<SessionLog> {
-        return withContext(Dispatchers.IO) {
-            return@withContext sessionLogDao.getSessions()
-        }
-    }
-
-    override suspend fun getLastSession(): SessionLog {
-        return withContext(Dispatchers.IO) {
-            return@withContext sessionLogDao.getLastSession()
-        }
-    }
+    override val lastSession = sessionLogDao.getLastSession()
+    override val sessions = sessionLogDao.getSessions()
 
     override suspend fun storeSession(sessionLog: SessionLog) {
         withContext(Dispatchers.IO) {

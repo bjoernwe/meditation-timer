@@ -2,6 +2,7 @@ package app.upaya.timer.session.repository.room
 
 import androidx.room.*
 import app.upaya.timer.session.repository.SessionLog
+import kotlinx.coroutines.flow.Flow
 
 
 @Dao
@@ -11,9 +12,9 @@ interface SessionLogDao {
     suspend fun insert(sessionLog: SessionLog)
 
     @Query("SELECT * FROM SESSIONS ORDER BY end_time DESC")
-    suspend fun getSessions(): List<SessionLog>
+    fun getSessions(): Flow<List<SessionLog>>
 
     @Query("SELECT * FROM SESSIONS ORDER BY end_time DESC LIMIT 1")
-    suspend fun getLastSession(): SessionLog
+    fun getLastSession(): Flow<SessionLog>
 
 }

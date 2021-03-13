@@ -1,7 +1,9 @@
 package app.upaya.timer.session.repository.stats
 
+import kotlinx.coroutines.flow.Flow
+
 
 interface ISessionStatsRepository {
-    suspend fun getSessionAggregate(): SessionAggregate
-    suspend fun getSessionAggregateOfLastDays(limit: Int = 10): List<SessionAggregate>
+    val sessionAggregate: Flow<SessionAggregate>
+    val sessionAggregatesOfLastDays: Flow<List<SessionAggregate>>
 }
