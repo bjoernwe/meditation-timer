@@ -1,14 +1,12 @@
-package app.upaya.timer.session.repository.stats
+package app.upaya.timer.session.repository.room
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.upaya.timer.MeditationTimerApplication
-import app.upaya.timer.session.repository.room.SessionLogDatabase
 import app.upaya.timer.session.repository.SessionLog
-import app.upaya.timer.session.repository.room.SessionStatsDao
-import app.upaya.timer.session.repository.room.SessionLogDao
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
@@ -69,11 +67,11 @@ class SessionStatsDaoTest {
     }
 
     @Test
-    fun getAggregateOfAllSessions() {
+    fun getAggregateOfAllSessions() = runBlocking {
 
         // GIVEN a DB with sessions
         // WHEN an aggregate of all sessions is requested
-        val sessionAggregate = sessionStatsDao.getAggregateOfAll()
+        val sessionAggregate = sessionStatsDao.getAggregate().first()
 
         // THEN it matches
         assert(sessionAggregate.sessionCount == numberOfSessionsTotal)
@@ -82,12 +80,12 @@ class SessionStatsDaoTest {
     }
 
     @Test
-    fun getAggregateOfLastDays() {
+    fun getAggregateOfLastDays() = runBlocking {
 
         // GIVEN a DB with sessions
         // WHEN the history of session averages is requested
         val limit = 10
-        val avgOfDays = sessionStatsDao.getAggregatesOfLastDays(limit)
+        val avgOfDays = sessionStatsDao.getAggregatesOfLastDays(limit).first()
 
         // THEN there are the right number of days with the right average
         assert(avgOfDays.size == limit)

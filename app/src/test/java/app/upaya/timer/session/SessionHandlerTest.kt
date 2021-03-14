@@ -2,6 +2,7 @@ package app.upaya.timer.session
 
 import app.upaya.timer.session.repository.ISessionRepository
 import app.upaya.timer.session.repository.SessionLog
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
@@ -23,8 +24,7 @@ class SessionHandlerTest {
         sessionHandler.onSessionFinished()
 
         // THEN the session is stored
-        val storedSession = (sessionRepository as SessionRepositoryFake).getLastSession()
-        assert(storedSession == finishedSession)
+        assert(sessionRepository.lastSession.first() == finishedSession)
 
     }
 

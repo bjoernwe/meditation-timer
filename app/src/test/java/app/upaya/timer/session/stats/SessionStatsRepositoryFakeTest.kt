@@ -1,6 +1,8 @@
-package app.upaya.timer.session
+package app.upaya.timer.session.stats
 
+import app.upaya.timer.session.SessionRepositoryFake
 import app.upaya.timer.session.repository.SessionLog
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import java.util.*
@@ -15,7 +17,7 @@ class SessionStatsRepositoryFakeTest {
     fun sessionLiveDataStatistics() = runBlocking {
 
         // GIVEN an empty SessionRepository
-        var sessionAggregate = sessionStatsRepository.getSessionAggregate()
+        var sessionAggregate = sessionStatsRepository.sessionAggregate.first()
         assert(sessionAggregate.avgLength == 0f)
         assert(sessionAggregate.sessionCount == 0)
         assert(sessionAggregate.totalLength == 0)
@@ -24,7 +26,7 @@ class SessionStatsRepositoryFakeTest {
         sessionLogRepository.storeSession(SessionLog(length = 2, endDate = Date(1000L)))
 
         // THEN the corresponding LiveData is updated accordingly
-        sessionAggregate = sessionStatsRepository.getSessionAggregate()
+        sessionAggregate = sessionStatsRepository.sessionAggregate.first()
         assert(sessionAggregate.avgLength == 2f)
         assert(sessionAggregate.sessionCount == 1)
         assert(sessionAggregate.totalLength == 2)
@@ -33,7 +35,7 @@ class SessionStatsRepositoryFakeTest {
         sessionLogRepository.storeSession(SessionLog(length = 4, endDate = Date(2000L)))
 
         // THEN the corresponding LiveData is updated accordingly
-        sessionAggregate = sessionStatsRepository.getSessionAggregate()
+        sessionAggregate = sessionStatsRepository.sessionAggregate.first()
         assert(sessionAggregate.avgLength == 3f)
         assert(sessionAggregate.sessionCount == 2)
         assert(sessionAggregate.totalLength == 6)
