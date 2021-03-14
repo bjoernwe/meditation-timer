@@ -1,9 +1,13 @@
 package app.upaya.timer.session
 
+import kotlin.math.max
+
 
 class SessionLength(length: Double) {
 
-    var value = length
+    private val minLength: Double = 1.0
+
+    var value = max(length, minLength)
         private set
 
     fun increase() {
@@ -12,7 +16,7 @@ class SessionLength(length: Double) {
 
     fun decrease() {
         val newSessionLength = value.times(.8)
-        if (newSessionLength >= 1.0) {
+        if (newSessionLength >= minLength) {
             value = newSessionLength
         }
     }

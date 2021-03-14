@@ -48,7 +48,7 @@ class Idle internal constructor(
             sessionHandler = sessionHandler,
             outputStateFlow = outputStateFlow
         )
-        val sessionLength = sessionHandler.sessionLength.times(1000).toLong()
+        val sessionLength = sessionHandler.sessionLength.value.times(1000).toLong()
         Timer("SessionTimer", true).schedule(sessionLength) {
             runningState.onFinish()
         }

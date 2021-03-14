@@ -1,40 +1,38 @@
 package app.upaya.timer.session
 
+import app.upaya.timer.hints.Hint
+import app.upaya.timer.hints.HintRepository
 import app.upaya.timer.session.repository.ISessionRepository
 import app.upaya.timer.session.repository.SessionLog
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 
 class SessionHandler(
     private val sessionRepository: ISessionRepository,
+    private val hintRepository: HintRepository,
     initialSessionLength: Double,
     ) : ISessionHandler {
 
-    private val _sessionLength = SessionLength(initialSessionLength)
-    override val sessionLength: Double
-        get() = _sessionLength.value
+    private val sessionLengthUpdater = SessionLength(initialSessionLength)
+    private val _sessionLength: MutableStateFlow<Double> = MutableStateFlow(sessionLengthUpdater.value)
+    override val sessionLength: StateFlow<Double> = _sessionLength
 
-    //override fun onSessionIdling() {
-        //currentSession = SessionDetails(length = 0)
-        //sessionRepository.storeSession(currentSession)
-    //}
-
-    //override fun onSessionStarted() {
-        //currentSession.startDate = Date()
-        //sessionRepository.storeSession(currentSession)
-    //}
+    private val _currentHint: MutableStateFlow<Hint> = MutableStateFlow(hintRepository.getRandomHint())
+    override val currentHint: StateFlow<Hint> = _currentHint
 
     override fun onSessionFinished() {
-        val sessionLog = SessionLog(length = sessionLength.toInt())
+        val sessionLog = SessionLog(length = sessionLength.value.toInt())
         sessionRepository.storeSession(sessionLog)
     }
 
     override fun onRatingSubmitted(rating: SessionRating) {
-        return when (rating) {
-            SessionRating.UP -> { _sessionLength.decrease() }
-            SessionRating.DOWN -> { _sessionLength.increase() }
+        when (rating) {
+            SessionRating.UP -> { sessionLengthUpdater.decrease() }
+            SessionRating.DOWN -> { sessionLengthUpdater.increase() }
         }
+        _sessionLength.value = sessionLengthUpdater.value
+        _currentHint.value = hintRepository.getRandomHint()
     }
 
 }

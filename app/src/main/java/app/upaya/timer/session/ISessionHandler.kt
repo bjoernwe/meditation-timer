@@ -1,5 +1,8 @@
 package app.upaya.timer.session
 
+import app.upaya.timer.hints.Hint
+import kotlinx.coroutines.flow.StateFlow
+
 
 enum class SessionRating {
     UP, DOWN
@@ -8,7 +11,8 @@ enum class SessionRating {
 
 interface ISessionHandler {
 
-    val sessionLength: Double
+    val sessionLength: StateFlow<Double>
+    val currentHint: StateFlow<Hint>
 
     //fun onSessionIdling()
 

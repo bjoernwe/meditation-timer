@@ -5,17 +5,22 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Science
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.viewModel
 import androidx.ui.tooling.preview.Preview
-import app.upaya.timer.R
+import app.upaya.timer.session.viewmodel.SessionViewModel
 import app.upaya.timer.ui.composables.blueGrey800Light
 
 
 @Composable
 fun SessionHintsCard(modifier: Modifier = Modifier) {
+
+    val sessionViewModel: SessionViewModel = viewModel()
+    val hint by sessionViewModel.currentHint.observeAsState()
 
     Row(
             modifier = modifier,
@@ -28,13 +33,17 @@ fun SessionHintsCard(modifier: Modifier = Modifier) {
                 modifier = Modifier.padding(8.dp)
         )
 
-        Text(
-                text = stringArrayResource(R.array.hints).random(),
+        hint?.hint?.let { hint ->
+
+            Text(
+                text = hint,
                 color = MaterialTheme.colors.onSurface,
                 modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
-        )
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            )
+
+        }
 
     }
 
