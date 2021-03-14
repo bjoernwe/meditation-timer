@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.viewModel
 import app.upaya.timer.session.*
+import app.upaya.timer.session.viewmodel.SessionViewModel
 import app.upaya.timer.ui.composables.entities.StatsButton
 import app.upaya.timer.ui.composables.sheets.SessionHintsCard
 
@@ -20,35 +21,31 @@ import app.upaya.timer.ui.composables.sheets.SessionHintsCard
 @ExperimentalAnimationApi
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun MainLayout(onClick: () -> Unit, onRatingClick: (Double) -> Unit) {
+fun MainLayout(onClick: () -> Unit) {
 
     TimerTheme {
 
         val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
         val sessionViewModel: SessionViewModel = viewModel()
-        val timerState by sessionViewModel.state.observeAsState()
+        val sessionState by sessionViewModel.state.observeAsState()
 
-        if (timerState is Finished && !sheetState.isVisible) sheetState.show()
+        if (sessionState is Finished && !sheetState.isVisible) sheetState.show()
 
         ModalBottomSheetLayout(
                 sheetState = sheetState,
                 scrimColor = Color(0, 0, 0, 128),
                 sheetBackgroundColor = MaterialTheme.colors.background,
                 sheetContent = {
-                    when (timerState) {
+                    when (sessionState) {
                         is Idle -> SessionStats()
                         is Running -> Text("There is nothing to see here!")
                         is Finished -> SessionRatingDialog(
                                 onClickDown = { sheetState.hide {
-                                    (timerState as? Finished)?.rateSession(SessionRating.DOWN)
-                                        ?.let { newSessionLength -> onRatingClick(newSessionLength) }
+                                    (sessionState as Finished).rateSession(SessionRating.DOWN)
                                 } },
-                                onClickUp = {
-                                    sheetState.hide {
-                                        (timerState as? Finished)?.rateSession(SessionRating.UP)
-                                            ?.let { newSessionLength -> onRatingClick(newSessionLength) }
-                                    }
-                                }
+                                onClickUp = { sheetState.hide {
+                                    (sessionState as Finished).rateSession(SessionRating.UP)
+                                } }
                         )
                     }
                 }
@@ -77,7 +74,7 @@ fun MainLayout(onClick: () -> Unit, onRatingClick: (Double) -> Unit) {
 
                 AnimatedVisibility(
                         visible = sessionViewModel.isIdle.observeAsState(false).value,
-                        enter = fadeIn() + slideInVertically({it/2}),
+                        enter = fadeIn(),
                         modifier =  Modifier
                                 .constrainAs(hintCard)
                                 {

@@ -1,7 +1,7 @@
 package app.upaya.timer.session
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import java.util.*
 import kotlin.concurrent.schedule
 
@@ -9,114 +9,89 @@ import kotlin.concurrent.schedule
 sealed class SessionState(
     /**
      * This state machine models the session's state transitions. It posts the current state to the
-     * given MutableLiveData object. It also calls the SessionHandler on state transitions.
+     * created MutableFlowState object. It also calls the SessionHandler on state transitions.
      **/
-    protected val sessionLength: Double,
     protected val sessionHandler: ISessionHandler,
-    protected val currentState: MutableLiveData<SessionState>,
+    protected val outputStateFlow: MutableStateFlow<SessionState?>,
     ) {
 
     companion object {
 
-        fun create(
-            sessionHandler: ISessionHandler,
-            initialSessionLength: Double = 10.0
-        ): LiveData<SessionState> {
+        fun create(sessionHandler: ISessionHandler): StateFlow<SessionState?> {
 
-            val currentState = MutableLiveData<SessionState>()
-            val currentStateImmutable: LiveData<SessionState> = currentState
+            val stateFlow = MutableStateFlow<SessionState?>(null)
 
             val idleState = Idle(
-                sessionLength = initialSessionLength,
                 sessionHandler = sessionHandler,
-                currentState = currentState,
+                outputStateFlow = stateFlow,
             )
 
-            //sessionHandler.onSessionIdling()
-            currentState.postValue(idleState)
-            return currentStateImmutable
+            stateFlow.value = idleState
+            return stateFlow
         }
 
-    }
-
-    fun getCurrentSessionLength() : Double {
-        return sessionLength
     }
 
 }
 
+
 class Idle internal constructor(
-    sessionLength: Double,
     sessionHandler: ISessionHandler,
-    currentState: MutableLiveData<SessionState>,
+    outputStateFlow: MutableStateFlow<SessionState?>
 ) : SessionState(
-    sessionLength = sessionLength,
     sessionHandler = sessionHandler,
-    currentState = currentState,
+    outputStateFlow = outputStateFlow
 ) {
 
     fun startSession() {
-        val nextState = Running(
-            sessionLength = sessionLength,
+        val runningState = Running(
             sessionHandler = sessionHandler,
-            currentState = currentState)
-        val sessionLength = sessionLength.toLong().times(1000L)
+            outputStateFlow = outputStateFlow
+        )
+        val sessionLength = sessionHandler.sessionLength.value.times(1000).toLong()
         Timer("SessionTimer", true).schedule(sessionLength) {
-            nextState.onFinish()
+            runningState.onFinish()
         }
-        currentState.postValue(nextState)
+        outputStateFlow.value = runningState
     }
 
 }
 
 
 class Running internal constructor(
-    sessionLength: Double,
     sessionHandler: ISessionHandler,
-    currentState: MutableLiveData<SessionState>,
+    outputStateFlow: MutableStateFlow<SessionState?>
 ) : SessionState(
-    sessionLength = sessionLength,
     sessionHandler = sessionHandler,
-    currentState = currentState,
+    outputStateFlow = outputStateFlow
 ) {
 
     internal fun onFinish() {
-        val sessionLog = SessionLog(length = sessionLength.toInt())
-        sessionHandler.onSessionFinished(sessionLog)
-        val nextState = Finished(
-            sessionLength = sessionLength,
+        sessionHandler.onSessionFinished()
+        val finishedState = Finished(
             sessionHandler = sessionHandler,
-            currentState = currentState
+            outputStateFlow = outputStateFlow
         )
-        currentState.postValue(nextState)
+        outputStateFlow.value = finishedState
     }
 
 }
 
 
 class Finished internal constructor(
-    sessionLength: Double,
     sessionHandler: ISessionHandler,
-    currentState: MutableLiveData<SessionState>,
+    outputStateFlow: MutableStateFlow<SessionState?>
 ) : SessionState(
-    sessionLength = sessionLength,
     sessionHandler = sessionHandler,
-    currentState = currentState,
+    outputStateFlow = outputStateFlow
 ) {
 
-    fun rateSession(rating: SessionRating) : Double {
-        val newSessionLength = sessionHandler.onRatingSubmitted(
-            rating = rating,
-            currentSessionLength = sessionLength
+    fun rateSession(rating: SessionRating) {
+        sessionHandler.onRatingSubmitted(rating = rating)
+        outputStateFlow.value = Idle(
+            sessionHandler = sessionHandler,
+            outputStateFlow = outputStateFlow
         )
-        currentState.postValue(
-            Idle(
-                sessionLength = newSessionLength,
-                sessionHandler = sessionHandler,
-                currentState = currentState,
-            )
-        )
-        return newSessionLength
     }
 
 }

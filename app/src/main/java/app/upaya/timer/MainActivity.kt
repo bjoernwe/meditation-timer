@@ -7,6 +7,8 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.ui.platform.setContent
 import androidx.lifecycle.ViewModelProvider
 import app.upaya.timer.session.*
+import app.upaya.timer.session.viewmodel.SessionViewModel
+import app.upaya.timer.session.viewmodel.SessionViewModelFactory
 import app.upaya.timer.settings.SessionLengthRepository
 import app.upaya.timer.ui.Bell
 import app.upaya.timer.ui.composables.MainLayout
@@ -23,25 +25,32 @@ class MainActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
 
-        // late init
+        /**
+         * Late Inits
+         */
+
         val sessionViewModelFactory = SessionViewModelFactory(this)
         sessionViewModel = ViewModelProvider(this, sessionViewModelFactory).get(SessionViewModel::class.java)
         sessionLengthRepository = SessionLengthRepository(this)
+
         bell = Bell(
                 context = applicationContext,
                 hasPlayed = (savedInstanceState ?: Bundle()).getBoolean(Bell.HAS_PLAYED_KEY)
         )
 
-        // Emit Main Composable
-        setContent {
-            MainLayout(
-                onClick = ::onCircleClicked,
-                onRatingClick = ::onRatingClick,
-            )
-        }
+        /**
+         * Emit Main Composable
+         */
 
-        // Register event callbacks
-        sessionViewModel.state.observe(this, { onSessionStateChanged(it) })
+        setContent { MainLayout(onClick = ::onCircleClicked) }
+
+
+        /**
+         * Register Event Callbacks
+         */
+
+        sessionViewModel.state.observe(this) { onSessionStateChanged(it) }
+        sessionViewModel.sessionLength.observe(this) { onSessionLengthChanged(it) }
     }
 
     override fun onStart() {
@@ -63,16 +72,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun onRatingClick(newSessionLength: Double) {
-        sessionLengthRepository.storeSessionLength(newSessionLength)
-    }
-
-    private fun onSessionStateChanged(newSessionState: SessionState) {
+    private fun onSessionStateChanged(newSessionState: SessionState?) {
         when (newSessionState) {
             is Idle -> { }
             is Running -> { bell.reset() }
             is Finished -> { bell.play() }
         }
+    }
+
+    private fun onSessionLengthChanged(newSessionLength: Double) {
+        sessionLengthRepository.storeSessionLength(newSessionLength)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

@@ -3,6 +3,9 @@ package app.upaya.timer.session
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.upaya.timer.getOrAwaitValue
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -17,42 +20,41 @@ class SessionStateTest {
     val instantTaskExecutorRule = InstantTaskExecutorRule()  // Make coroutines synchronous
 
     @Test
-    fun sessionStateTransitions() {
+    fun sessionStateTransitions() = runBlocking {
 
         // GIVEN a SessionState object
         val onSessionFinishedCalls: MutableList<Date> = ArrayList()
         val onRatingSubmittedCalls: MutableList<OnRatingCallArgs> = ArrayList()
         val sessionHandler: ISessionHandler = SessionHandlerMock(
             onSessionFinishedCalls = onSessionFinishedCalls,
-            onRatingSubmittedCalls = onRatingSubmittedCalls
+            onRatingSubmittedCalls = onRatingSubmittedCalls,
+            initialSessionLength = 2.0
         )
-        val state = SessionState.create(
-            sessionHandler = sessionHandler,
-            initialSessionLength = 2.0)
+        val state: StateFlow<SessionState?> = SessionState.create(sessionHandler = sessionHandler)
 
         // WHEN a session is started
-        (state.getOrAwaitValue() as Idle).startSession()
+        (state.first() as Idle).startSession()
 
         // THEN the state moves from Idle to Running
-        assert(state.getOrAwaitValue() is Running)
+        assert(state.first() is Running)
 
         // AND WHEN one second has passed
         Thread.sleep(1000)
 
         // THEN the state is still Running
-        assert(state.getOrAwaitValue() is Running)
+        assert(state.first() is Running)
 
         // AND WHEN more time has passed
         Thread.sleep(1500)
 
         // THEN the state is Finished
-        assert(state.getOrAwaitValue() is Finished)
+        assert(state.first() is Finished)
 
         // AND WHEN the finished session is rated
-        (state.getOrAwaitValue() as Finished).rateSession(SessionRating.DOWN)
+        (state.first() as Finished).rateSession(SessionRating.DOWN)
 
         // THEN the new state is Idle again
-        assert(state.getOrAwaitValue() is Idle)
+        assert(state.first() is Idle)
     }
 
 }
