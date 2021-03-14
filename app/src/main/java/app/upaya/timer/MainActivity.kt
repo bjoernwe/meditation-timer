@@ -7,8 +7,6 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.ui.platform.setContent
 import androidx.lifecycle.ViewModelProvider
 import app.upaya.timer.session.*
-import app.upaya.timer.session.repository.SessionRepository
-import app.upaya.timer.session.repository.room.SessionLogDatabase
 import app.upaya.timer.session.viewmodel.SessionViewModel
 import app.upaya.timer.session.viewmodel.SessionViewModelFactory
 import app.upaya.timer.settings.SessionLengthRepository
@@ -19,7 +17,6 @@ import app.upaya.timer.ui.composables.MainLayout
 class MainActivity : AppCompatActivity() {
 
     private lateinit var bell: Bell
-    private lateinit var sessionHandler: ISessionHandler
     private lateinit var sessionViewModel: SessionViewModel
     private lateinit var sessionLengthRepository: SessionLengthRepository
 
@@ -32,17 +29,9 @@ class MainActivity : AppCompatActivity() {
          * Late Inits
          */
 
-        sessionLengthRepository = SessionLengthRepository(this)
-        val initialSessionLength = sessionLengthRepository.loadSessionLength()
-        val sessionLogDao = SessionLogDatabase.getInstance(this).sessionLogDao
-        val sessionRepository = SessionRepository(sessionLogDao)
-        sessionHandler = SessionHandler(
-            sessionRepository = sessionRepository,
-            initialSessionLength = initialSessionLength,
-        )
-
         val sessionViewModelFactory = SessionViewModelFactory(this)
         sessionViewModel = ViewModelProvider(this, sessionViewModelFactory).get(SessionViewModel::class.java)
+        sessionLengthRepository = SessionLengthRepository(this)
 
         bell = Bell(
                 context = applicationContext,
@@ -52,12 +41,14 @@ class MainActivity : AppCompatActivity() {
         /**
          * Emit Main Composable
          */
+
         setContent { MainLayout(onClick = ::onCircleClicked) }
 
 
         /**
          * Register Event Callbacks
          */
+
         sessionViewModel.state.observe(this) { onSessionStateChanged(it) }
         sessionViewModel.sessionLength.observe(this) { onSessionLengthChanged(it) }
     }

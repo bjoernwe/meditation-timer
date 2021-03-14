@@ -10,7 +10,10 @@ import app.upaya.timer.session.repository.SessionLog
 import app.upaya.timer.session.repository.SessionRepository
 import app.upaya.timer.session.repository.room.SessionLogDao
 import app.upaya.timer.session.repository.room.SessionLogDatabase
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.TestCoroutineScope
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -31,12 +34,16 @@ class SessionStatsRepositoryTest {
     private lateinit var sessionRepository: ISessionRepository
     private lateinit var sessionStatsRepository: ISessionStatsRepository
 
+    @ExperimentalCoroutinesApi
     @Before
     fun createDb() {
         db = initSessionDatabase()
         sessionLogDao = db.sessionLogDao
-        sessionRepository = SessionRepository(db)
-        sessionStatsRepository = SessionStatsRepository(db)
+        sessionRepository = SessionRepository(
+            sessionLogDao = db.sessionLogDao,
+            externalScope = TestCoroutineScope()
+        )
+        sessionStatsRepository = SessionStatsRepository(db.sessionStatsDao)
     }
 
     private fun initSessionDatabase(): SessionLogDatabase {
@@ -58,7 +65,7 @@ class SessionStatsRepositoryTest {
     fun sessionLiveDataStatistics() = runBlocking {
 
         // GIVEN an empty SessionRepository
-        var sessionAggregate = sessionStatsRepository.getSessionAggregate()
+        var sessionAggregate = sessionStatsRepository.sessionAggregate.first()
         assert(sessionAggregate.avgLength == 0f)
         assert(sessionAggregate.sessionCount == 0)
         assert(sessionAggregate.totalLength == 0)
@@ -66,8 +73,8 @@ class SessionStatsRepositoryTest {
         // WHEN a session is added
         sessionRepository.storeSession(SessionLog( length = 2, endDate = Date(1000L)))
 
-        // THEN the corresponding LiveData is updated accordingly
-        sessionAggregate = sessionStatsRepository.getSessionAggregate()
+        // THEN the corresponding StateFlow is updated accordingly
+        sessionAggregate = sessionStatsRepository.sessionAggregate.first()
         assert(sessionAggregate.avgLength == 2f)
         assert(sessionAggregate.sessionCount == 1)
         assert(sessionAggregate.totalLength == 2)
@@ -75,8 +82,8 @@ class SessionStatsRepositoryTest {
         // AND WHEN another session is added
         sessionRepository.storeSession(SessionLog(length = 4, endDate = Date(2000L)))
 
-        // THEN the corresponding LiveData is updated accordingly
-        sessionAggregate = sessionStatsRepository.getSessionAggregate()
+        // THEN the corresponding StateFlow is updated accordingly
+        sessionAggregate = sessionStatsRepository.sessionAggregate.first()
         assert(sessionAggregate.avgLength == 3f)
         assert(sessionAggregate.sessionCount == 2)
         assert(sessionAggregate.totalLength == 6)

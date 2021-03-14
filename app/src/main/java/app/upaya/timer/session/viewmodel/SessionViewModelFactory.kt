@@ -3,6 +3,7 @@ package app.upaya.timer.session.viewmodel
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import app.upaya.timer.MeditationTimerApplication
 import app.upaya.timer.session.SessionHandler
 import app.upaya.timer.session.repository.SessionRepository
 import app.upaya.timer.session.repository.stats.SessionStatsRepository
@@ -21,7 +22,10 @@ class SessionViewModelFactory(private val context: Context) : ViewModelProvider.
             val sessionLengthRepository = SessionLengthRepository(context)
             val initialSessionLength = sessionLengthRepository.loadSessionLength()
             val sessionLogDatabase = SessionLogDatabase.getInstance(context)
-            val sessionLogRepository = SessionRepository(sessionLogDatabase.sessionLogDao)
+            val sessionLogRepository = SessionRepository(
+                sessionLogDao = sessionLogDatabase.sessionLogDao,
+                externalScope = (context.applicationContext as MeditationTimerApplication).applicationScope
+            )
             val sessionStatsRepository = SessionStatsRepository(sessionLogDatabase.sessionStatsDao)
             val sessionHandler = SessionHandler(
                 sessionRepository = sessionLogRepository,
