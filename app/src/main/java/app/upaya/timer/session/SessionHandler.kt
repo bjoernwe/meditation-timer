@@ -27,9 +27,7 @@ class SessionHandler(
 
     override fun onSessionFinished() {
         val sessionLog = SessionLog(length = sessionLength.toInt())
-        GlobalScope.launch {
-            sessionRepository.storeSession(sessionLog)
-        }
+        sessionRepository.storeSession(sessionLog)
     }
 
     override fun onRatingSubmitted(rating: SessionRating) {

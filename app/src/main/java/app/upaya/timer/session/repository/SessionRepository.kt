@@ -13,12 +13,14 @@ class SessionRepository(
     override val lastSession = sessionLogDao.getLastSession()
     override val sessions = sessionLogDao.getSessions()
 
-    override suspend fun storeSession(sessionLog: SessionLog) = withContext(ioDispatcher) {
+    override fun storeSession(sessionLog: SessionLog) {
         externalScope.launch {
-            // Move session logging to another scope (not ViewModel) to make sure it's completed
-            // independently of the UI lifecycle
-            sessionLogDao.insert(sessionLog = sessionLog)
-        }.join()
+            withContext(ioDispatcher) {
+                // Move session logging to another scope (not ViewModel) to make sure it's completed
+                // independently of the UI lifecycle
+                sessionLogDao.insert(sessionLog = sessionLog)
+            }
+        }
     }
 
 }

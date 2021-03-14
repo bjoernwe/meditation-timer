@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 interface ISessionRepository {
     val lastSession: Flow<SessionLog>
     val sessions: Flow<List<SessionLog>>
-    suspend fun storeSession(sessionLog: SessionLog)
+    fun storeSession(sessionLog: SessionLog)
 }
