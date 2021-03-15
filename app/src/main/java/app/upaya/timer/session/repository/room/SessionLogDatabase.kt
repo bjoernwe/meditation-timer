@@ -8,7 +8,7 @@ import androidx.room.TypeConverters
 import app.upaya.timer.session.repository.SessionLog
 
 
-@Database(entities = [SessionLog::class], version = 2, exportSchema = true)
+@Database(entities = [SessionLog::class], version = 4, exportSchema = true)
 @TypeConverters(Converters::class)
 abstract class SessionLogDatabase : RoomDatabase() {
 
@@ -29,7 +29,9 @@ abstract class SessionLogDatabase : RoomDatabase() {
                         context.applicationContext,
                         SessionLogDatabase::class.java,
                         "session_database"
-                    ).build()
+                    )
+                        .fallbackToDestructiveMigrationFrom(3)
+                        .build()
                     INSTANCE = instance
                 }
                 return instance

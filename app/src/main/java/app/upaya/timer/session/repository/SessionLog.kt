@@ -4,18 +4,26 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.*
+import kotlin.math.abs
+import kotlin.random.Random
 
 
 @Entity(tableName = "sessions")
 data class SessionLog @JvmOverloads constructor(
 
-        @PrimaryKey(autoGenerate = true)
-        val sessionId: Long = 0L,
+        @PrimaryKey
+        val sessionId: Long = abs(Random.nextLong()),
+
+        @ColumnInfo(name = "init_time", index = true)
+        val initDate: Date = Date(),
+
+        @ColumnInfo(name = "start_time")
+        var startDate: Date? = null,
 
         @ColumnInfo(name = "end_time", index = true)
-        val endDate: Date = Date(),
+        var endDate: Date? = null,
 
         @ColumnInfo
         val length: Int,
 
-    )
+        )

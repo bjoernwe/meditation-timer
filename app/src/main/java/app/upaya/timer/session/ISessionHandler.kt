@@ -14,9 +14,9 @@ interface ISessionHandler {
     val sessionLength: StateFlow<Double>
     val currentHint: StateFlow<Hint>
 
-    //fun onSessionIdling()
+    fun onSessionIdling()
 
-    //fun onSessionStarted()
+    fun onSessionStarted()
 
     fun onSessionFinished()
 
