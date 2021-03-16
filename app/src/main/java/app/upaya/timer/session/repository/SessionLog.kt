@@ -14,6 +14,9 @@ data class SessionLog @JvmOverloads constructor(
         @PrimaryKey
         val sessionId: Long = abs(Random.nextLong()),
 
+        @ColumnInfo(name = "hint")
+        var hint: String,
+
         @ColumnInfo(name = "init_time", index = true)
         val initDate: Date = Date(),
 
@@ -23,7 +26,10 @@ data class SessionLog @JvmOverloads constructor(
         @ColumnInfo(name = "end_time", index = true)
         var endDate: Date? = null,
 
-        @ColumnInfo
-        val length: Int,
+        @ColumnInfo(name = "rating_time")
+        var ratingDate: Date? = null,
+
+        @ColumnInfo(name = "rating")
+        var rating: Float? = null,
 
         )

@@ -88,9 +88,9 @@ class Finished internal constructor(
     outputStateFlow = outputStateFlow
 ) {
 
-    fun rateSession(rating: SessionRating) {
+    fun rateSession(rating: Double) {
         sessionHandler.onRatingSubmitted(rating = rating)
-        sessionHandler.onSessionIdling()
+        sessionHandler.onSessionIdling()  // Immediately move to next state
         outputStateFlow.value = Idle(
             sessionHandler = sessionHandler,
             outputStateFlow = outputStateFlow

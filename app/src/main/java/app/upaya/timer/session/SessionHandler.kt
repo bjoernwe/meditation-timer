@@ -25,27 +25,41 @@ class SessionHandler(
     private lateinit var sessionLog: SessionLog
 
     override fun onSessionIdling() {
-        sessionLog = SessionLog()
-        sessionRepository.storeSession(sessionLog)
+        sessionLog = SessionLog(hint = currentHint.value.id.toString())
+        sessionLog.store()
     }
 
     override fun onSessionStarted() {
-        sessionLog.startDate = Date()
-        sessionRepository.storeSession(sessionLog)
+        sessionLog.apply {
+            this.startDate = Date()
+            this.store()
+        }
     }
 
     override fun onSessionFinished() {
-        sessionLog.endDate = Date()
-        sessionRepository.storeSession(sessionLog)
+        sessionLog.apply {
+            this.endDate = Date()
+            this.store()
+        }
     }
 
-    override fun onRatingSubmitted(rating: SessionRating) {
-        when (rating) {
-            SessionRating.UP -> { sessionLengthUpdater.decrease() }
-            SessionRating.DOWN -> { sessionLengthUpdater.increase() }
+    override fun onRatingSubmitted(rating: Double) {
+        sessionLengthUpdater.updateFromRating(rating)
+        sessionLog.apply {
+            this.ratingDate = Date()
+            this.rating = rating.toFloat()
+            this.store()
         }
+        updateFlows()
+    }
+
+    private fun updateFlows() {
         _sessionLength.value = sessionLengthUpdater.value
         _currentHint.value = hintRepository.getRandomHint()
+    }
+
+    private fun SessionLog.store() {
+        sessionRepository.storeSession(this)
     }
 
 }
