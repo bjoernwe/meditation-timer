@@ -25,7 +25,7 @@ fun SessionStats() {
 
     val sessionViewModel: SessionViewModel = viewModel(factory = SessionViewModelFactory(AmbientContext.current))
     val sessionLength = sessionViewModel.sessionLength.observeAsState(initial = 0.0)
-    val sessionAggOfAll = sessionViewModel.sessionAggregate.observeAsState(SessionAggregate(0, 0f, 0, Date()))
+    val sessionAggOfAll = sessionViewModel.sessionAggregate.observeAsState(SessionAggregate())
     val sessionAggOfLastDays = sessionViewModel.sessionAggregatesOfLastDays.observeAsState(listOf())
 
     Column(Modifier.padding(16.dp)) {

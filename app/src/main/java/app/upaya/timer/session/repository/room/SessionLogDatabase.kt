@@ -13,7 +13,6 @@ import app.upaya.timer.session.repository.SessionLog
 abstract class SessionLogDatabase : RoomDatabase() {
 
     abstract val sessionLogDao: SessionLogDao
-    abstract val sessionStatsDao: SessionStatsDao
 
     // Singleton
     companion object {

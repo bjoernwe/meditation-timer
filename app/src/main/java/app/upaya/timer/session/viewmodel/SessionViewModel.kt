@@ -5,14 +5,15 @@ import app.upaya.timer.hints.Hint
 import app.upaya.timer.session.*
 import app.upaya.timer.session.creator.ISessionCreator
 import app.upaya.timer.session.repository.ISessionRepository
-import app.upaya.timer.session.repository.stats.ISessionStatsRepository
+import app.upaya.timer.session.repository.stats.SessionStatsRepository
 
 
 class SessionViewModel(
-    val sessionCreator: ISessionCreator,
+    sessionCreator: ISessionCreator,
     sessionRepository: ISessionRepository,
-    sessionStatsRepository: ISessionStatsRepository
     ) : ViewModel() {
+
+    private val sessionStatsRepository = SessionStatsRepository(sessionRepository)
 
     /**
      * Session State

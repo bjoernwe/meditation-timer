@@ -7,7 +7,6 @@ import app.upaya.timer.MeditationTimerApplication
 import app.upaya.timer.hints.HintRepository
 import app.upaya.timer.session.creator.SessionCreator
 import app.upaya.timer.session.repository.SessionRepository
-import app.upaya.timer.session.repository.stats.SessionStatsRepository
 import app.upaya.timer.session.repository.room.SessionLogDatabase
 import app.upaya.timer.settings.SessionLengthRepository
 import java.lang.IllegalArgumentException
@@ -47,14 +46,10 @@ class SessionViewModelFactory(private val context: Context) : ViewModelProvider.
                 sessionLengthRepository = sessionLengthRepository,
             )
 
-            // SessionStatsRepository
-            val sessionStatsRepository = SessionStatsRepository(sessionLogDatabase.sessionStatsDao)
-
             @Suppress("UNCHECKED_CAST")
             return SessionViewModel(
                 sessionCreator = sessionCreator,
                 sessionRepository = sessionRepository,
-                sessionStatsRepository = sessionStatsRepository
             ) as T
 
         } else {
