@@ -1,5 +1,6 @@
 package app.upaya.timer.session
 
+import app.upaya.timer.session.creator.ISessionCreator
 import java.util.*
 
 
@@ -10,11 +11,11 @@ data class OnRatingCallArgs(
 )
 
 
-class SessionHandlerMock(
+class SessionCreatorMock(
     private val onSessionFinishedCalls: MutableList<Date>,
     private val onRatingSubmittedCalls: MutableList<OnRatingCallArgs>,
     initialSessionLength: Double
-) : ISessionHandler {
+) : ISessionCreator {
 
     override var sessionLength: Double = initialSessionLength
         private set

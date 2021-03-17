@@ -50,7 +50,6 @@ class MainActivity : AppCompatActivity() {
          */
 
         sessionViewModel.state.observe(this) { onSessionStateChanged(it) }
-        sessionViewModel.sessionLength.observe(this) { onSessionLengthChanged(it) }
     }
 
     override fun onStart() {
@@ -78,10 +77,6 @@ class MainActivity : AppCompatActivity() {
             is Running -> { bell.reset() }
             is Finished -> { bell.play() }
         }
-    }
-
-    private fun onSessionLengthChanged(newSessionLength: Double) {
-        sessionLengthRepository.storeSessionLength(newSessionLength)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

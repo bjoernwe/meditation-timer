@@ -1,5 +1,6 @@
 package app.upaya.timer.session
 
+import app.upaya.timer.session.creator.SessionCreator
 import app.upaya.timer.session.repository.ISessionRepository
 import app.upaya.timer.session.repository.SessionLog
 import kotlinx.coroutines.flow.first
@@ -14,7 +15,7 @@ class SessionHandlerTest {
 
         // GIVEN a SessionHandler
         val sessionRepository: ISessionRepository = SessionRepositoryFake()
-        val sessionHandler = SessionHandler(
+        val sessionHandler = SessionCreator(
             sessionRepository = sessionRepository,
             initialSessionLength = 42.0
         )
@@ -34,7 +35,7 @@ class SessionHandlerTest {
         // GIVEN a SessionHandler
         val initialSessionLength = 42.0
         val sessionRepository: ISessionRepository = SessionRepositoryFake()
-        val sessionHandler = SessionHandler(
+        val sessionHandler = SessionCreator(
             sessionRepository = sessionRepository,
             initialSessionLength = initialSessionLength
         )
@@ -53,7 +54,7 @@ class SessionHandlerTest {
         // GIVEN a SessionHandler
         val initialSessionLength = 42.0
         val sessionRepository: ISessionRepository = SessionRepositoryFake()
-        val sessionHandler = SessionHandler(
+        val sessionHandler = SessionCreator(
             sessionRepository = sessionRepository,
             initialSessionLength = initialSessionLength
         )

@@ -2,7 +2,7 @@ package app.upaya.timer.session
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import app.upaya.timer.getOrAwaitValue
+import app.upaya.timer.session.creator.ISessionCreator
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -10,7 +10,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 @RunWith(AndroidJUnit4::class)
@@ -25,12 +24,12 @@ class SessionStateTest {
         // GIVEN a SessionState object
         val onSessionFinishedCalls: MutableList<Date> = ArrayList()
         val onRatingSubmittedCalls: MutableList<OnRatingCallArgs> = ArrayList()
-        val sessionHandler: ISessionHandler = SessionHandlerMock(
+        val sessionCreator: ISessionCreator = SessionCreatorMock(
             onSessionFinishedCalls = onSessionFinishedCalls,
             onRatingSubmittedCalls = onRatingSubmittedCalls,
             initialSessionLength = 2.0
         )
-        val state: StateFlow<SessionState?> = SessionState.create(sessionHandler = sessionHandler)
+        val state: StateFlow<SessionState?> = SessionState.create(sessionCreator = sessionCreator)
 
         // WHEN a session is started
         (state.first() as Idle).startSession()
