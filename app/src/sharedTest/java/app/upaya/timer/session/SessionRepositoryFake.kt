@@ -5,7 +5,7 @@ import app.upaya.timer.session.repository.SessionLog
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
-import kotlin.collections.ArrayList
+import java.util.*
 
 
 class SessionRepositoryFake : ISessionRepository {
@@ -16,7 +16,7 @@ class SessionRepositoryFake : ISessionRepository {
 
     override val lastSession: Flow<SessionLog> = _sessions.map { it.last() }
 
-    override suspend fun storeSession(sessionLog: SessionLog) {
+    override fun storeSession(sessionLog: SessionLog) {
         _sessions.value.add(sessionLog)
         _sessions.value = _sessions.value
     }
