@@ -6,6 +6,7 @@ import app.upaya.timer.session.repository.ISessionRepository
 import app.upaya.timer.session.repository.SessionLog
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import java.util.*
 
 
 class SessionHandler(
@@ -21,18 +22,44 @@ class SessionHandler(
     private val _currentHint: MutableStateFlow<Hint> = MutableStateFlow(hintRepository.getRandomHint())
     override val currentHint: StateFlow<Hint> = _currentHint
 
-    override fun onSessionFinished() {
-        val sessionLog = SessionLog(length = sessionLength.value.toInt())
-        sessionRepository.storeSession(sessionLog)
+    private lateinit var sessionLog: SessionLog
+
+    override fun onSessionIdling() {
+        sessionLog = SessionLog(hint = currentHint.value.id.toString())
+        sessionLog.store()
     }
 
-    override fun onRatingSubmitted(rating: SessionRating) {
-        when (rating) {
-            SessionRating.UP -> { sessionLengthUpdater.decrease() }
-            SessionRating.DOWN -> { sessionLengthUpdater.increase() }
+    override fun onSessionStarted() {
+        sessionLog.apply {
+            this.startDate = Date()
+            this.store()
         }
+    }
+
+    override fun onSessionFinished() {
+        sessionLog.apply {
+            this.endDate = Date()
+            this.store()
+        }
+    }
+
+    override fun onRatingSubmitted(rating: Double) {
+        sessionLengthUpdater.updateFromRating(rating)
+        sessionLog.apply {
+            this.ratingDate = Date()
+            this.rating = rating.toFloat()
+            this.store()
+        }
+        updateFlows()
+    }
+
+    private fun updateFlows() {
         _sessionLength.value = sessionLengthUpdater.value
         _currentHint.value = hintRepository.getRandomHint()
+    }
+
+    private fun SessionLog.store() {
+        sessionRepository.storeSession(this)
     }
 
 }

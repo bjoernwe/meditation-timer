@@ -19,14 +19,15 @@ sealed class SessionState(
 
         fun create(sessionHandler: ISessionHandler): StateFlow<SessionState?> {
 
-            val stateFlow = MutableStateFlow<SessionState?>(null)
+            sessionHandler.onSessionIdling()
 
+            val stateFlow = MutableStateFlow<SessionState?>(null)
             val idleState = Idle(
                 sessionHandler = sessionHandler,
                 outputStateFlow = stateFlow,
             )
-
             stateFlow.value = idleState
+
             return stateFlow
         }
 
@@ -52,6 +53,7 @@ class Idle internal constructor(
         Timer("SessionTimer", true).schedule(sessionLength) {
             runningState.onFinish()
         }
+        sessionHandler.onSessionStarted()
         outputStateFlow.value = runningState
     }
 
@@ -86,8 +88,9 @@ class Finished internal constructor(
     outputStateFlow = outputStateFlow
 ) {
 
-    fun rateSession(rating: SessionRating) {
+    fun rateSession(rating: Double) {
         sessionHandler.onRatingSubmitted(rating = rating)
+        sessionHandler.onSessionIdling()  // Immediately move to next state
         outputStateFlow.value = Idle(
             sessionHandler = sessionHandler,
             outputStateFlow = outputStateFlow

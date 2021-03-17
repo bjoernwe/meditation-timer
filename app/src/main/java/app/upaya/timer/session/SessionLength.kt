@@ -10,11 +10,20 @@ class SessionLength(length: Double) {
     var value = max(length, minLength)
         private set
 
-    fun increase() {
+    fun updateFromRating(rating: Double) : Double {
+        if (rating < 0.5) {
+            this.decrease()
+        } else {
+            this.increase()
+        }
+        return value
+    }
+
+    private fun increase() {
         value = value.times(1.1)
     }
 
-    fun decrease() {
+    private fun decrease() {
         val newSessionLength = value.times(.8)
         if (newSessionLength >= minLength) {
             value = newSessionLength
