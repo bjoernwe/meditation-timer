@@ -12,6 +12,12 @@ val blueGrey800Dark = Color(0xff102027)
 val cyan900 = Color(0xff006064)
 val cyan900Light = Color(0xff428e92)
 val cyan900Dark = Color(0xff00363a)
+val lightGreenA100 = Color(0xffccff90)
+val lightGreenA100Light = Color(0xffffffc2)
+val lightGreenA100Dark = Color(0xff99cc60)
+val lightGreenA200 = Color(0xffb2ff59)
+val lightGreenA200Light = Color(0xffe7ff8c)
+val lightGreenA200Dark = Color(0xff7ecb20)
 val deepOrange700 = Color(0xffe64a19)
 val deepOrange700Light = Color(0xffff7d47)
 val deepOrange700Dark = Color(0xffac0800)
@@ -24,10 +30,13 @@ val purple700 = Color(0xFF3700B3)
 val teal200 = Color(0xFF80CBC4)
 val teal500 = Color(0xFF009688)
 val teal700 = Color(0xFF00796B)
+val tealA700 = Color(0xff00bfa5)
+val tealA700Light = Color(0xff5df2d6)
+val tealA700Dark = Color(0xff008e76)
 
 
 private val darkColorPalette = darkColors(
-        primary = cyan900Light,
+        primary = tealA700,
         surface = blueGrey800,
         background = blueGrey800Dark,
         onSurface = Color.White,
