@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
+import java.util.*
 
 
 class SessionRepositoryFakeTest {
@@ -17,7 +18,7 @@ class SessionRepositoryFakeTest {
         assert(sessionRepository.sessions.first().isEmpty())
 
         // WHEN a session is stored
-        val sessionLog = SessionLog(length = 42)
+        val sessionLog = SessionLog(hint = UUID.randomUUID())
         sessionRepository.storeSession(sessionLog)
 
         // THEN the session FlowState updates accordingly

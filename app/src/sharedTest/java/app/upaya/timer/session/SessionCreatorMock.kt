@@ -8,13 +8,6 @@ import kotlinx.coroutines.flow.StateFlow
 import java.util.*
 
 
-data class OnRatingCallArgs(
-    val date: Date,
-    val rating: Double,
-    val currentSessionLength: Double,
-)
-
-
 class SessionCreatorMock(
     private val onRatingSubmittedCalls: MutableList<SessionLog>,
     initialSessionLength: Double
@@ -23,11 +16,19 @@ class SessionCreatorMock(
     private val _sessionLength = MutableStateFlow(initialSessionLength)
     override val sessionLength: StateFlow<Double> = _sessionLength
 
-    override val currentHint: StateFlow<Hint>
-        get() = TODO("Not yet implemented")
+    private val _currentHint = MutableStateFlow(generateRandomHint())
+    override val currentHint: StateFlow<Hint> = _currentHint
 
     override fun onRatingSubmitted(sessionLog: SessionLog) {
         onRatingSubmittedCalls.add(sessionLog)
+    }
+
+    private fun generateRandomHint() : Hint {
+        val randomUUID = UUID.randomUUID()
+        return Hint(
+            hint = randomUUID.toString(),
+            id = randomUUID
+        )
     }
 
 }
