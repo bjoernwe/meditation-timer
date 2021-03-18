@@ -79,8 +79,7 @@ class SessionStateTest {
         assert(storedSession.ratingDate == null)
 
         // AND WHEN the session has finished
-        Thread.sleep(1500)
-        assert(state.first() is Finished)
+        state.first { s -> s is Finished }
 
         // THEN the stored session has an end timestamp
         assert(storedSession.startDate != null)
