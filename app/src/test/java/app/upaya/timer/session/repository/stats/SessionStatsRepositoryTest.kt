@@ -1,8 +1,7 @@
-package app.upaya.timer.session.stats
+package app.upaya.timer.session.repository.stats
 
-import app.upaya.timer.session.SessionRepositoryFake
+import app.upaya.timer.session.repository.SessionRepositoryFake
 import app.upaya.timer.session.repository.SessionLog
-import app.upaya.timer.session.repository.stats.SessionStatsRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals

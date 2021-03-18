@@ -1,6 +1,5 @@
-package app.upaya.timer.session
+package app.upaya.timer.session.repository
 
-import app.upaya.timer.session.repository.SessionLog
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.runBlocking
