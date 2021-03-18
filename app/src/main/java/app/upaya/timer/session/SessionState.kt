@@ -1,5 +1,8 @@
 package app.upaya.timer.session
 
+import app.upaya.timer.session.creator.ISessionCreator
+import app.upaya.timer.session.repository.ISessionRepository
+import app.upaya.timer.session.repository.SessionLog
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.util.*
@@ -9,26 +12,35 @@ import kotlin.concurrent.schedule
 sealed class SessionState(
     /**
      * This state machine models the session's state transitions. It posts the current state to the
-     * created MutableFlowState object. It also calls the SessionHandler on state transitions.
+     * created [MutableFlowState] object. It also updates and stores session logs. Details about the
+     * sessions - like their length and the next hint - are deferred to an injected [SessionCreator]
+     * object, which may be implemented in different ways.
      **/
-    protected val sessionHandler: ISessionHandler,
+    protected val sessionLog: SessionLog,
+    protected val sessionCreator: ISessionCreator,
+    protected val sessionRepository: ISessionRepository,
     protected val outputStateFlow: MutableStateFlow<SessionState?>,
     ) {
 
+    init {
+        // store the current session on every state transition
+        sessionRepository.storeSession(sessionLog = sessionLog)
+    }
+
     companion object {
 
-        fun create(sessionHandler: ISessionHandler): StateFlow<SessionState?> {
-
-            sessionHandler.onSessionIdling()
-
-            val stateFlow = MutableStateFlow<SessionState?>(null)
-            val idleState = Idle(
-                sessionHandler = sessionHandler,
-                outputStateFlow = stateFlow,
+        fun create(
+            sessionCreator: ISessionCreator,
+            sessionRepository: ISessionRepository,
+        ): StateFlow<SessionState?> {
+            val outputStateFlow = MutableStateFlow<SessionState?>(null)
+            outputStateFlow.value = Idle(
+                sessionLog = SessionLog(hint = sessionCreator.currentHint.value.id),
+                sessionCreator = sessionCreator,
+                sessionRepository = sessionRepository,
+                outputStateFlow = outputStateFlow,
             )
-            stateFlow.value = idleState
-
-            return stateFlow
+            return outputStateFlow
         }
 
     }
@@ -37,23 +49,28 @@ sealed class SessionState(
 
 
 class Idle internal constructor(
-    sessionHandler: ISessionHandler,
+    sessionLog: SessionLog,
+    sessionCreator: ISessionCreator,
+    sessionRepository: ISessionRepository,
     outputStateFlow: MutableStateFlow<SessionState?>
 ) : SessionState(
-    sessionHandler = sessionHandler,
+    sessionLog = sessionLog,
+    sessionCreator = sessionCreator,
+    sessionRepository = sessionRepository,
     outputStateFlow = outputStateFlow
 ) {
 
     fun startSession() {
         val runningState = Running(
-            sessionHandler = sessionHandler,
+            sessionLog = sessionLog.apply { this.startDate = Date() },
+            sessionCreator = sessionCreator,
+            sessionRepository = sessionRepository,
             outputStateFlow = outputStateFlow
         )
-        val sessionLength = sessionHandler.sessionLength.value.times(1000).toLong()
+        val sessionLength = sessionCreator.sessionLength.value.times(1000).toLong()
         Timer("SessionTimer", true).schedule(sessionLength) {
             runningState.onFinish()
         }
-        sessionHandler.onSessionStarted()
         outputStateFlow.value = runningState
     }
 
@@ -61,40 +78,59 @@ class Idle internal constructor(
 
 
 class Running internal constructor(
-    sessionHandler: ISessionHandler,
+    sessionLog: SessionLog,
+    sessionCreator: ISessionCreator,
+    sessionRepository: ISessionRepository,
     outputStateFlow: MutableStateFlow<SessionState?>
 ) : SessionState(
-    sessionHandler = sessionHandler,
+    sessionLog = sessionLog,
+    sessionCreator = sessionCreator,
+    sessionRepository = sessionRepository,
     outputStateFlow = outputStateFlow
 ) {
 
     internal fun onFinish() {
-        sessionHandler.onSessionFinished()
-        val finishedState = Finished(
-            sessionHandler = sessionHandler,
+        outputStateFlow.value = Finished(
+            sessionLog = sessionLog.apply { this.endDate = Date() },
+            sessionCreator = sessionCreator,
+            sessionRepository = sessionRepository,
             outputStateFlow = outputStateFlow
         )
-        outputStateFlow.value = finishedState
     }
 
 }
 
 
 class Finished internal constructor(
-    sessionHandler: ISessionHandler,
+    sessionLog: SessionLog,
+    sessionCreator: ISessionCreator,
+    sessionRepository: ISessionRepository,
     outputStateFlow: MutableStateFlow<SessionState?>
 ) : SessionState(
-    sessionHandler = sessionHandler,
+    sessionLog = sessionLog,
+    sessionCreator = sessionCreator,
+    sessionRepository = sessionRepository,
     outputStateFlow = outputStateFlow
 ) {
 
     fun rateSession(rating: Double) {
-        sessionHandler.onRatingSubmitted(rating = rating)
-        sessionHandler.onSessionIdling()  // Immediately move to next state
+
+        // update & store session rating
+        sessionLog.ratingDate = Date()
+        sessionLog.rating = rating.toFloat()
+        sessionRepository.storeSession(sessionLog = sessionLog)
+
+        // inform SessionCreator
+        sessionCreator.onRatingSubmitted(sessionLog = sessionLog)
+
+        // update StateFlow
         outputStateFlow.value = Idle(
-            sessionHandler = sessionHandler,
+            sessionLog = SessionLog(hint = sessionCreator.currentHint.value.id),
+            sessionCreator = sessionCreator,
+            sessionRepository = sessionRepository,
             outputStateFlow = outputStateFlow
         )
+
     }
 
 }

@@ -5,9 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import app.upaya.timer.MeditationTimerApplication
 import app.upaya.timer.hints.HintRepository
-import app.upaya.timer.session.SessionHandler
+import app.upaya.timer.session.creator.SessionCreator
 import app.upaya.timer.session.repository.SessionRepository
-import app.upaya.timer.session.repository.stats.SessionStatsRepository
 import app.upaya.timer.session.repository.room.SessionLogDatabase
 import app.upaya.timer.settings.SessionLengthRepository
 import java.lang.IllegalArgumentException
@@ -30,7 +29,7 @@ class SessionViewModelFactory(private val context: Context) : ViewModelProvider.
 
             // SessionLogRepository
             val sessionLogDatabase = SessionLogDatabase.getInstance(context)
-            val sessionLogRepository = SessionRepository(
+            val sessionRepository = SessionRepository(
                 sessionLogDao = sessionLogDatabase.sessionLogDao,
                 externalScope = (context.applicationContext as MeditationTimerApplication).applicationScope
             )
@@ -38,24 +37,19 @@ class SessionViewModelFactory(private val context: Context) : ViewModelProvider.
             // HintRepository
             val hintRepository = HintRepository(context)
 
-            // initialSessionLength
+            // SessionRepository
             val sessionLengthRepository = SessionLengthRepository(context)
-            val initialSessionLength = sessionLengthRepository.loadSessionLength()
 
-            // SessionHandler
-            val sessionHandler = SessionHandler(
-                sessionRepository = sessionLogRepository,
+            // SessionCreator
+            val sessionCreator = SessionCreator(
                 hintRepository = hintRepository,
-                initialSessionLength = initialSessionLength,
+                sessionLengthRepository = sessionLengthRepository,
             )
-
-            // SessionStatsRepository
-            val sessionStatsRepository = SessionStatsRepository(sessionLogDatabase.sessionStatsDao)
 
             @Suppress("UNCHECKED_CAST")
             return SessionViewModel(
-                sessionHandler = sessionHandler,
-                sessionStatsRepository = sessionStatsRepository
+                sessionCreator = sessionCreator,
+                sessionRepository = sessionRepository,
             ) as T
 
         } else {

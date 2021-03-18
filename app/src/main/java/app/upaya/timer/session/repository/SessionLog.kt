@@ -15,7 +15,7 @@ data class SessionLog @JvmOverloads constructor(
         val sessionId: Long = abs(Random.nextLong()),
 
         @ColumnInfo(name = "hint")
-        var hint: String,
+        var hint: UUID,
 
         @ColumnInfo(name = "init_time", index = true)
         val initDate: Date = Date(),
