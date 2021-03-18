@@ -26,28 +26,28 @@ class SessionStatsRepositoryTest {
     fun sessionLiveDataStatistics() = runBlocking {
 
         // GIVEN an empty SessionRepository
-        var sessionAggregate = sessionStatsRepository.sessionAggregate.first()
-        assert(sessionAggregate.sessionCount == 0)
-        assert(sessionAggregate.avgLength == null)
-        assert(sessionAggregate.totalLength == null)
+        var sessionStats = sessionStatsRepository.sessionStats.first()
+        assert(sessionStats.sessionCount == 0)
+        assert(sessionStats.avgLength == null)
+        assert(sessionStats.totalLength == null)
 
         // WHEN a session is added
         sessionLogRepository.storeSession(generateSessionLog(length = 2))
 
         // THEN the corresponding Flow is updated accordingly
-        sessionAggregate = sessionStatsRepository.sessionAggregate.first()
-        assertEquals(2.0, sessionAggregate.avgLength!!, 0.001)
-        assert(sessionAggregate.sessionCount == 1)
-        assert(sessionAggregate.totalLength == 2)
+        sessionStats = sessionStatsRepository.sessionStats.first()
+        assertEquals(2.0, sessionStats.avgLength!!, 0.001)
+        assert(sessionStats.sessionCount == 1)
+        assert(sessionStats.totalLength == 2)
 
         // AND WHEN another session is added
         sessionLogRepository.storeSession(generateSessionLog(length = 4))
 
         // THEN the corresponding Flow is updated accordingly
-        sessionAggregate = sessionStatsRepository.sessionAggregate.first()
-        assertEquals(3.0, sessionAggregate.avgLength!!, 0.001)
-        assert(sessionAggregate.sessionCount == 2)
-        assert(sessionAggregate.totalLength == 6)
+        sessionStats = sessionStatsRepository.sessionStats.first()
+        assertEquals(3.0, sessionStats.avgLength!!, 0.001)
+        assert(sessionStats.sessionCount == 2)
+        assert(sessionStats.totalLength == 6)
     }
 
 }

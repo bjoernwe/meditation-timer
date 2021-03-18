@@ -4,6 +4,6 @@ import kotlinx.coroutines.flow.Flow
 
 
 interface ISessionStatsRepository {
-    val sessionAggregate: Flow<SessionAggregate>
-    val sessionAggregatesOfLastDays: Flow<List<SessionAggregate>>
+    val sessionStats: Flow<SessionStats>
+    val sessionStatsOfLastDays: Flow<List<SessionStats>>
 }

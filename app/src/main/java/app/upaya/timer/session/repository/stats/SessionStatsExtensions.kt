@@ -22,25 +22,25 @@ fun List<SessionLog>.lenghts() : List<Int> {
 }
 
 
-fun List<SessionLog>.aggregate() : SessionAggregate {
+fun List<SessionLog>.calcStats() : SessionStats {
 
     val sessionLengths = this.lenghts()
 
     // Return empty
     if (sessionLengths.isEmpty())
-        return SessionAggregate(
+        return SessionStats(
             sessionCount = 0,
             avgLength = null,
             totalLength = null,
             date = null
         )
 
-    // Aggregates
+    // Stats
     val avgLength = sessionLengths.average()
     val totalLength = sessionLengths.sum()
     val avgInitDate = Date(this.map { s -> s.initDate.time }.average().toLong())
 
-    return SessionAggregate(
+    return SessionStats(
             sessionCount = sessionLengths.size,
             avgLength = avgLength,
             totalLength = totalLength,

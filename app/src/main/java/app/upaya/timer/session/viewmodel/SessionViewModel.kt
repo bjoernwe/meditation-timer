@@ -38,7 +38,7 @@ class SessionViewModel(
      * Session Stats
      */
 
-    val sessionAggregate = sessionStatsRepository.sessionAggregate.asLiveData()
-    val sessionAggregatesOfLastDays = sessionStatsRepository.sessionAggregatesOfLastDays.asLiveData()
+    val sessionStats = sessionStatsRepository.sessionStats.asLiveData()
+    val sessionStatsOfLastDays = sessionStatsRepository.sessionStatsOfLastDays.asLiveData()
 
 }
