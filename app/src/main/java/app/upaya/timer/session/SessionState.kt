@@ -12,7 +12,9 @@ import kotlin.concurrent.schedule
 sealed class SessionState(
     /**
      * This state machine models the session's state transitions. It posts the current state to the
-     * created MutableFlowState object.
+     * created [MutableFlowState] object. It also updates and stores session logs. Details about the
+     * sessions - like their length and the next hint - are deferred to an injected [SessionCreator]
+     * object, which may be implemented in different ways.
      **/
     protected val sessionLog: SessionLog,
     protected val sessionCreator: ISessionCreator,
@@ -32,13 +34,12 @@ sealed class SessionState(
             sessionRepository: ISessionRepository,
         ): StateFlow<SessionState?> {
             val outputStateFlow = MutableStateFlow<SessionState?>(null)
-            val idleState = Idle(
+            outputStateFlow.value = Idle(
                 sessionLog = SessionLog(hint = sessionCreator.currentHint.value.id),
                 sessionCreator = sessionCreator,
                 sessionRepository = sessionRepository,
                 outputStateFlow = outputStateFlow,
             )
-            outputStateFlow.value = idleState
             return outputStateFlow
         }
 
@@ -89,13 +90,12 @@ class Running internal constructor(
 ) {
 
     internal fun onFinish() {
-        val finishedState = Finished(
+        outputStateFlow.value = Finished(
             sessionLog = sessionLog.apply { this.endDate = Date() },
             sessionCreator = sessionCreator,
             sessionRepository = sessionRepository,
             outputStateFlow = outputStateFlow
         )
-        outputStateFlow.value = finishedState
     }
 
 }
@@ -115,12 +115,15 @@ class Finished internal constructor(
 
     fun rateSession(rating: Double) {
 
+        // update & store session rating
         sessionLog.ratingDate = Date()
         sessionLog.rating = rating.toFloat()
         sessionRepository.storeSession(sessionLog = sessionLog)
 
+        // inform SessionCreator
         sessionCreator.onRatingSubmitted(sessionLog = sessionLog)
 
+        // update StateFlow
         outputStateFlow.value = Idle(
             sessionLog = SessionLog(hint = sessionCreator.currentHint.value.id),
             sessionCreator = sessionCreator,
