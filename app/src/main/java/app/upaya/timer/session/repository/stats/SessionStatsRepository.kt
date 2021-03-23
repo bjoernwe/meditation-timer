@@ -8,21 +8,21 @@ import java.util.*
 
 class SessionStatsRepository(
     sessionRepository: ISessionRepository,
-    aggregateLimit: Int = 10,
+    recentDaysLimit: Int = 10,
 ) : ISessionStatsRepository {
 
-    override val sessionAggregate = sessionRepository.sessions.map { it.aggregate() }
+    override val sessionStats = sessionRepository.sessions.map { it.calcStats() }
 
-    override val sessionAggregatesOfLastDays = sessionRepository.sessions.map { sessionLogs ->
+    override val sessionStatsOfLastDays = sessionRepository.sessions.map { sessionLogs ->
         sessionLogs.groupBy {
             SimpleDateFormat(
                 "y-M-d",
                 Locale.getDefault()
             ).format(it.initDate)
         }
-            .map { it.value.aggregate() }
-            .sortedByDescending { aggregate -> aggregate.date }
-            .takeLast(aggregateLimit)
+            .map { it.value.calcStats() }
+            .sortedByDescending { stats -> stats.date }
+            .takeLast(recentDaysLimit)
     }
 
 }

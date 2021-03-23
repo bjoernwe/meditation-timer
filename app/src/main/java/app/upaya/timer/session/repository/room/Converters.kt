@@ -18,4 +18,14 @@ class Converters {
         return value?.let { Date(1000L * it) }
     }
 
+    @TypeConverter
+    fun uuidToString(uuid: UUID): String {
+        return uuid.toString()
+    }
+
+    @TypeConverter
+    fun uuidFromString(value: String?): UUID? {
+        return UUID.fromString(value)
+    }
+
 }
