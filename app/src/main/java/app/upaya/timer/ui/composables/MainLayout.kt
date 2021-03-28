@@ -15,7 +15,7 @@ import androidx.compose.ui.viewinterop.viewModel
 import app.upaya.timer.session.*
 import app.upaya.timer.session.viewmodel.SessionViewModel
 import app.upaya.timer.ui.composables.entities.StatsButton
-import app.upaya.timer.ui.composables.sheets.SessionHintsCard
+import app.upaya.timer.ui.composables.sheets.ProbeCard
 
 
 @ExperimentalAnimationApi
@@ -37,9 +37,9 @@ fun MainLayout(onClick: () -> Unit) {
                 sheetBackgroundColor = MaterialTheme.colors.background,
                 sheetContent = {
                     when (sessionState) {
-                        is Idle -> SessionStats()
+                        is Idle -> ExperimentationStats()
                         is Running -> Text("There is nothing to see here!")
-                        is Finished -> SessionRatingDialog(
+                        is Finished -> ExperimentFeedbackDialog(
                                 onClickDown = { sheetState.hide {
                                     (sessionState as Finished).rateSession(1.0)
                                 } },
@@ -58,7 +58,7 @@ fun MainLayout(onClick: () -> Unit) {
                         onClick = onClick
                 )
 
-                val (hintCard, statsButton) = createRefs()
+                val (probeCard, statsButton) = createRefs()
 
                 AnimatedVisibility(
                         visible = sessionViewModel.isIdle.observeAsState(false).value,
@@ -76,7 +76,7 @@ fun MainLayout(onClick: () -> Unit) {
                         visible = sessionViewModel.isIdle.observeAsState(false).value,
                         enter = fadeIn(),
                         modifier =  Modifier
-                                .constrainAs(hintCard)
+                                .constrainAs(probeCard)
                                 {
                                     start.linkTo(parent.start)
                                     end.linkTo(parent.end)
@@ -85,7 +85,7 @@ fun MainLayout(onClick: () -> Unit) {
                                 .padding(24.dp)
                                 .fillMaxWidth()
                 ) {
-                    SessionHintsCard()
+                    ProbeCard()
                 }
 
             }  // ConstraintLayout

@@ -17,10 +17,10 @@ import app.upaya.timer.ui.composables.blueGrey800Light
 
 
 @Composable
-fun SessionHintsCard(modifier: Modifier = Modifier) {
+fun ProbeCard(modifier: Modifier = Modifier) {
 
     val sessionViewModel: SessionViewModel = viewModel()
-    val hint by sessionViewModel.currentHint.observeAsState()
+    val probe by sessionViewModel.currentHint.observeAsState()
 
     Row(
             modifier = modifier,
@@ -33,10 +33,10 @@ fun SessionHintsCard(modifier: Modifier = Modifier) {
                 modifier = Modifier.padding(8.dp)
         )
 
-        hint?.hint?.let { hint ->
+        probe?.hint?.let { probe ->
 
             Text(
-                text = hint,
+                text = probe,
                 color = MaterialTheme.colors.onSurface,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -52,6 +52,6 @@ fun SessionHintsCard(modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
-fun SessionHintsPreview() {
-    SessionHintsCard()
+fun ProbeCardPreview() {
+    ProbeCard()
 }

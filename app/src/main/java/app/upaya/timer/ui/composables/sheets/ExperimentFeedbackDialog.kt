@@ -16,7 +16,7 @@ import androidx.ui.tooling.preview.Preview
 
 
 @Composable
-fun SessionRatingDialog(onClickDown: () -> Unit, onClickUp: () -> Unit) {
+fun ExperimentFeedbackDialog(onClickDown: () -> Unit, onClickUp: () -> Unit) {
 
     Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -53,8 +53,8 @@ fun SessionRatingDialog(onClickDown: () -> Unit, onClickUp: () -> Unit) {
 
 @Preview
 @Composable
-fun SessionRatingDialogPreview() {
-    SessionRatingDialog(
+fun ExperimentFeedbackDialogPreview() {
+    ExperimentFeedbackDialog(
             onClickDown = {},
             onClickUp = {},
     )
