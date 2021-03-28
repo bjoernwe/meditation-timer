@@ -2,7 +2,7 @@
     <string name="app_name">Upaya Timer</string>
     <string name="main_activity_label">Upaya Timer</string>
     <string name="pref_session_length" translatable="false">pref_session_length</string>
-    <string name="session_feedback_question">Did you lose your focus?</string>
+    <string name="session_feedback_question">Did you go away?</string>
     <string name="session_feedback_thumb_down">Thumb Down</string>
     <string name="session_feedback_thumb_up">Thumb Up</string>
     <string name="preference_file">app.upaya.timer.preferences</string>
