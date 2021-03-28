@@ -1,4 +1,4 @@
-package app.upaya.timer.ui.composables
+package app.upaya.timer.ui.composables.sheets
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
@@ -21,12 +21,12 @@ fun ExperimentFeedbackDialog(onClickDown: () -> Unit, onClickUp: () -> Unit) {
     Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(24.dp)
+                .fillMaxWidth()
+                .padding(24.dp)
     ) {
 
         Text(
-                "Did you lose your focus?",
+                "Did you go away?",
                 color = MaterialTheme.colors.onSurface,
                 modifier = Modifier.padding(16.dp)
         )
