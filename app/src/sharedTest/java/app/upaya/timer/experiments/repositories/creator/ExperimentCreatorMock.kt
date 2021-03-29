@@ -1,4 +1,4 @@
-package app.upaya.timer.session.creator
+package app.upaya.timer.experiments.repositories.creator
 
 import app.upaya.timer.experiments.creator.IExperimentCreator
 import app.upaya.timer.experiments.probes.Probe
@@ -9,21 +9,21 @@ import java.util.*
 
 
 class ExperimentCreatorMock(
-    private val onRatingSubmittedCalls: MutableList<ExperimentLog>,
-    initialSessionLength: Double
+    private val feedbackSubmittedCalls: MutableList<ExperimentLog>,
+    initialExperimentLength: Double
 ) : IExperimentCreator {
 
-    private val _sessionLength = MutableStateFlow(initialSessionLength)
-    override val currentLength: StateFlow<Double> = _sessionLength
+    private val _currentLength = MutableStateFlow(initialExperimentLength)
+    override val currentLength: StateFlow<Double> = _currentLength
 
-    private val _currentHint = MutableStateFlow(generateRandomHint())
-    override val currentProbe: StateFlow<Probe> = _currentHint
+    private val _currentProbe = MutableStateFlow(generateRandomProbe())
+    override val currentProbe: StateFlow<Probe> = _currentProbe
 
     override fun onFeedbackSubmitted(experimentLog: ExperimentLog) {
-        onRatingSubmittedCalls.add(experimentLog)
+        feedbackSubmittedCalls.add(experimentLog)
     }
 
-    private fun generateRandomHint() : Probe {
+    private fun generateRandomProbe() : Probe {
         val randomUUID = UUID.randomUUID()
         return Probe(
             probe = randomUUID.toString(),
