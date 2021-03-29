@@ -6,7 +6,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.ui.platform.setContent
 import androidx.lifecycle.ViewModelProvider
-import app.upaya.timer.session.*
+import app.upaya.timer.experiments.ExperimentState
+import app.upaya.timer.experiments.Finished
+import app.upaya.timer.experiments.Idle
+import app.upaya.timer.experiments.Running
 import app.upaya.timer.experiments.viewmodel.ExperimentViewModel
 import app.upaya.timer.experiments.viewmodel.ExperimentViewModelFactory
 import app.upaya.timer.experiments.repositories.length.ExperimentLengthRepository

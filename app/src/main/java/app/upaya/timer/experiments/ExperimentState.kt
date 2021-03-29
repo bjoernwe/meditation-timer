@@ -1,4 +1,4 @@
-package app.upaya.timer.session
+package app.upaya.timer.experiments
 
 import app.upaya.timer.experiments.creator.IExperimentCreator
 import app.upaya.timer.experiments.repositories.logs.IExperimentLogRepository
@@ -14,7 +14,7 @@ sealed class ExperimentState(
      * This state machine models the experiment's state transitions. It posts the current state to
      * the created [MutableFlowState] object. It also updates and stores experiment logs. Details
      * about the experiments - like their length and the next probe - are deferred to an injected
-     * [SessionCreator] object, which may be provide different implementations.
+     * [ExperimentCreator] object, which may be provide different implementations.
      **/
     protected val experimentLog: ExperimentLog,
     protected val experimentCreator: IExperimentCreator,
@@ -23,7 +23,7 @@ sealed class ExperimentState(
     ) {
 
     init {
-        // store the current session on every state transition
+        // store the current experiment on every state transition
         experimentLogRepository.storeExperiment(experimentLog = experimentLog)
     }
 
@@ -67,8 +67,10 @@ class Idle internal constructor(
             experimentLogRepository = experimentLogRepository,
             outputStateFlow = outputStateFlow
         )
-        val sessionLength = experimentCreator.currentLength.value.times(1000).toLong()
-        Timer("SessionTimer", true).schedule(sessionLength) {
+        val experimentLength = experimentCreator.currentLength.value
+        Timer("ExperimentTimer", true).schedule(
+            experimentLength.times(1000).toLong()
+        ) {
             runningState.onFinish()
         }
         outputStateFlow.value = runningState
@@ -115,12 +117,12 @@ class Finished internal constructor(
 
     fun rateExperiment(rating: Double) {
 
-        // update & store session rating
+        // update & store experiment rating
         experimentLog.ratingDate = Date()
         experimentLog.rating = rating.toFloat()
         experimentLogRepository.storeExperiment(experimentLog = experimentLog)
 
-        // inform SessionCreator
+        // inform ExperimentCreator
         experimentCreator.onFeedbackSubmitted(experimentLog = experimentLog)
 
         // update StateFlow

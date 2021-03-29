@@ -6,19 +6,19 @@ import app.upaya.timer.R
 
 class ExperimentLengthRepository(context: Context) : IExperimentLengthRepository {
 
-    private val defaultSessionLength = 10.0F
-    private val prefSessionLengthId = context.getString(R.string.pref_session_length)
+    private val defaultExperimentLength = 10.0F
+    private val prefExperimentLengthId = context.getString(R.string.pref_session_length)
     private val prefs = with (context.applicationContext) {
         getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE)
     }
 
     override fun loadExperimentLength(): Double {
-        return prefs.getFloat(prefSessionLengthId, defaultSessionLength).toDouble()
+        return prefs.getFloat(prefExperimentLengthId, defaultExperimentLength).toDouble()
     }
 
     override fun storeExperimentLength(experimentLength: Double) {
         with (prefs.edit()) {
-            putFloat(prefSessionLengthId, experimentLength.toFloat())
+            putFloat(prefExperimentLengthId, experimentLength.toFloat())
             apply()
         }
     }

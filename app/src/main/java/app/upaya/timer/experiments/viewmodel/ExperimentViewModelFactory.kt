@@ -37,18 +37,18 @@ class ExperimentViewModelFactory(private val context: Context) : ViewModelProvid
             // ProbeRepository
             val probeRepository = ProbeRepository(context)
 
-            // SessionRepository
-            val sessionLengthRepository = ExperimentLengthRepository(context)
+            // ExperimentRepository
+            val experimentLengthRepository = ExperimentLengthRepository(context)
 
-            // SessionCreator
-            val sessionCreator = ExperimentCreator(
+            // ExperimentCreator
+            val experimentCreator = ExperimentCreator(
                 probeRepository = probeRepository,
-                experimentLengthRepository = sessionLengthRepository,
+                experimentLengthRepository = experimentLengthRepository,
             )
 
             @Suppress("UNCHECKED_CAST")
             return ExperimentViewModel(
-                experimentCreator = sessionCreator,
+                experimentCreator = experimentCreator,
                 experimentLogRepository = experimentLogRepository,
             ) as T
 

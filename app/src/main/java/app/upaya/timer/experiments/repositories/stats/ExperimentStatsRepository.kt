@@ -13,8 +13,8 @@ class ExperimentStatsRepository(
 
     override val experimentStats = experimentLogRepository.experiments.map { it.calcStats() }
 
-    override val experimentStatsOfLastDays = experimentLogRepository.experiments.map { sessionLogs ->
-        sessionLogs.groupBy {
+    override val experimentStatsOfLastDays = experimentLogRepository.experiments.map { experimentLogs ->
+        experimentLogs.groupBy {
             SimpleDateFormat(
                 "y-M-d",
                 Locale.getDefault()
