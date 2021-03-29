@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import app.upaya.timer.MeditationTimerApplication
-import app.upaya.timer.probes.ProbeRepository
+import app.upaya.timer.experiments.probes.ProbeRepository
 import app.upaya.timer.experiments.creator.ExperimentCreator
 import app.upaya.timer.experiments.repositories.logs.ExperimentLogRepository
 import app.upaya.timer.experiments.repositories.logs.room.ExperimentLogDatabase

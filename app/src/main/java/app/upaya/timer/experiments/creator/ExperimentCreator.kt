@@ -1,7 +1,7 @@
 package app.upaya.timer.experiments.creator
 
-import app.upaya.timer.probes.Probe
-import app.upaya.timer.probes.ProbeRepository
+import app.upaya.timer.experiments.probes.Probe
+import app.upaya.timer.experiments.probes.ProbeRepository
 import app.upaya.timer.experiments.repositories.logs.ExperimentLog
 import app.upaya.timer.experiments.repositories.length.SessionLengthRepository
 import kotlinx.coroutines.flow.MutableStateFlow

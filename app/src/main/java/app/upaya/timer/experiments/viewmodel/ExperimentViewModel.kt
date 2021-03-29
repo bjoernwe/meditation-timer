@@ -1,7 +1,7 @@
 package app.upaya.timer.experiments.viewmodel
 
 import androidx.lifecycle.*
-import app.upaya.timer.probes.Probe
+import app.upaya.timer.experiments.probes.Probe
 import app.upaya.timer.session.*
 import app.upaya.timer.experiments.creator.IExperimentCreator
 import app.upaya.timer.experiments.repositories.logs.IExperimentLogRepository

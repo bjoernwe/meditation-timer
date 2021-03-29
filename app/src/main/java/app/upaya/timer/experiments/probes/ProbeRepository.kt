@@ -1,4 +1,4 @@
-package app.upaya.timer.probes
+package app.upaya.timer.experiments.probes
 
 import android.content.Context
 import app.upaya.timer.R
