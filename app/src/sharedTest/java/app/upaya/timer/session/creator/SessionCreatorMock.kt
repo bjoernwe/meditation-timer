@@ -1,6 +1,6 @@
 package app.upaya.timer.session.creator
 
-import app.upaya.timer.hints.Hint
+import app.upaya.timer.probes.Probe
 import app.upaya.timer.session.repository.SessionLog
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,16 +16,16 @@ class SessionCreatorMock(
     override val sessionLength: StateFlow<Double> = _sessionLength
 
     private val _currentHint = MutableStateFlow(generateRandomHint())
-    override val currentHint: StateFlow<Hint> = _currentHint
+    override val currentProbe: StateFlow<Probe> = _currentHint
 
     override fun onRatingSubmitted(sessionLog: SessionLog) {
         onRatingSubmittedCalls.add(sessionLog)
     }
 
-    private fun generateRandomHint() : Hint {
+    private fun generateRandomHint() : Probe {
         val randomUUID = UUID.randomUUID()
-        return Hint(
-            hint = randomUUID.toString(),
+        return Probe(
+            probe = randomUUID.toString(),
             id = randomUUID
         )
     }

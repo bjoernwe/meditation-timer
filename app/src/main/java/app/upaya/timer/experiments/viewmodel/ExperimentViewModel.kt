@@ -1,7 +1,7 @@
 package app.upaya.timer.experiments.viewmodel
 
 import androidx.lifecycle.*
-import app.upaya.timer.hints.Hint
+import app.upaya.timer.probes.Probe
 import app.upaya.timer.session.*
 import app.upaya.timer.session.creator.ISessionCreator
 import app.upaya.timer.session.repository.ISessionRepository
@@ -33,7 +33,7 @@ class ExperimentViewModel(
      * Probe
      */
 
-    val currentProbe: LiveData<Hint> = sessionCreator.currentHint.asLiveData()
+    val currentProbe: LiveData<Probe> = sessionCreator.currentProbe.asLiveData()
 
     /**
      * Experiments Stats

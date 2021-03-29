@@ -35,7 +35,7 @@ sealed class SessionState(
         ): StateFlow<SessionState?> {
             val outputStateFlow = MutableStateFlow<SessionState?>(null)
             outputStateFlow.value = Idle(
-                sessionLog = SessionLog(hint = sessionCreator.currentHint.value.id),
+                sessionLog = SessionLog(hint = sessionCreator.currentProbe.value.id),
                 sessionCreator = sessionCreator,
                 sessionRepository = sessionRepository,
                 outputStateFlow = outputStateFlow,
@@ -125,7 +125,7 @@ class Finished internal constructor(
 
         // update StateFlow
         outputStateFlow.value = Idle(
-            sessionLog = SessionLog(hint = sessionCreator.currentHint.value.id),
+            sessionLog = SessionLog(hint = sessionCreator.currentProbe.value.id),
             sessionCreator = sessionCreator,
             sessionRepository = sessionRepository,
             outputStateFlow = outputStateFlow

@@ -33,7 +33,7 @@ fun ProbeCard(modifier: Modifier = Modifier) {
                 modifier = Modifier.padding(8.dp)
         )
 
-        probe?.hint?.let { probe ->
+        probe?.probe?.let { probe ->
 
             Text(
                 text = probe,

@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import app.upaya.timer.MeditationTimerApplication
-import app.upaya.timer.hints.HintRepository
+import app.upaya.timer.probes.ProbeRepository
 import app.upaya.timer.session.creator.SessionCreator
 import app.upaya.timer.session.repository.SessionRepository
 import app.upaya.timer.session.repository.room.SessionLogDatabase
@@ -34,15 +34,15 @@ class ExperimentViewModelFactory(private val context: Context) : ViewModelProvid
                 externalScope = (context.applicationContext as MeditationTimerApplication).applicationScope
             )
 
-            // HintRepository
-            val hintRepository = HintRepository(context)
+            // ProbeRepository
+            val probeRepository = ProbeRepository(context)
 
             // SessionRepository
             val sessionLengthRepository = SessionLengthRepository(context)
 
             // SessionCreator
             val sessionCreator = SessionCreator(
-                hintRepository = hintRepository,
+                probeRepository = probeRepository,
                 sessionLengthRepository = sessionLengthRepository,
             )
 
