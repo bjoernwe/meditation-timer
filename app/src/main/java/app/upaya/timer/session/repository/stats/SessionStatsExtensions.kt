@@ -1,5 +1,6 @@
 package app.upaya.timer.session.repository.stats
 
+import app.upaya.timer.experiments.repository.stats.ExperimentStats
 import app.upaya.timer.session.repository.SessionLog
 import java.util.*
 
@@ -22,14 +23,14 @@ fun List<SessionLog>.lenghts() : List<Int> {
 }
 
 
-fun List<SessionLog>.calcStats() : SessionStats {
+fun List<SessionLog>.calcStats() : ExperimentStats {
 
     val sessionLengths = this.lenghts()
 
     // Return empty
     if (sessionLengths.isEmpty())
-        return SessionStats(
-            sessionCount = 0,
+        return ExperimentStats(
+            count = 0,
             avgLength = null,
             totalLength = null,
             date = null
@@ -40,8 +41,8 @@ fun List<SessionLog>.calcStats() : SessionStats {
     val totalLength = sessionLengths.sum()
     val avgInitDate = Date(this.map { s -> s.initDate.time }.average().toLong())
 
-    return SessionStats(
-            sessionCount = sessionLengths.size,
+    return ExperimentStats(
+            count = sessionLengths.size,
             avgLength = avgLength,
             totalLength = totalLength,
             date = avgInitDate

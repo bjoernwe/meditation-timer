@@ -9,7 +9,7 @@ import org.junit.Test
 import java.util.*
 
 
-class SessionStatsRepositoryTest {
+class ExperimentStatsRepositoryTest {
 
     private val sessionLogRepository = SessionRepositoryFake()
     private val sessionStatsRepository = SessionStatsRepository(sessionLogRepository)
@@ -26,8 +26,8 @@ class SessionStatsRepositoryTest {
     fun sessionLiveDataStatistics() = runBlocking {
 
         // GIVEN an empty SessionRepository
-        var sessionStats = sessionStatsRepository.sessionStats.first()
-        assert(sessionStats.sessionCount == 0)
+        var sessionStats = sessionStatsRepository.experimentStats.first()
+        assert(sessionStats.count == 0)
         assert(sessionStats.avgLength == null)
         assert(sessionStats.totalLength == null)
 
@@ -35,18 +35,18 @@ class SessionStatsRepositoryTest {
         sessionLogRepository.storeSession(generateSessionLog(length = 2))
 
         // THEN the corresponding Flow is updated accordingly
-        sessionStats = sessionStatsRepository.sessionStats.first()
+        sessionStats = sessionStatsRepository.experimentStats.first()
         assertEquals(2.0, sessionStats.avgLength!!, 0.001)
-        assert(sessionStats.sessionCount == 1)
+        assert(sessionStats.count == 1)
         assert(sessionStats.totalLength == 2)
 
         // AND WHEN another session is added
         sessionLogRepository.storeSession(generateSessionLog(length = 4))
 
         // THEN the corresponding Flow is updated accordingly
-        sessionStats = sessionStatsRepository.sessionStats.first()
+        sessionStats = sessionStatsRepository.experimentStats.first()
         assertEquals(3.0, sessionStats.avgLength!!, 0.001)
-        assert(sessionStats.sessionCount == 2)
+        assert(sessionStats.count == 2)
         assert(sessionStats.totalLength == 6)
     }
 

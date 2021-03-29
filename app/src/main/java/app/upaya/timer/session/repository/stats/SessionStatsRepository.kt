@@ -11,9 +11,9 @@ class SessionStatsRepository(
     recentDaysLimit: Int = 10,
 ) : ISessionStatsRepository {
 
-    override val sessionStats = sessionRepository.sessions.map { it.calcStats() }
+    override val experimentStats = sessionRepository.sessions.map { it.calcStats() }
 
-    override val sessionStatsOfLastDays = sessionRepository.sessions.map { sessionLogs ->
+    override val experimentStatsOfLastDays = sessionRepository.sessions.map { sessionLogs ->
         sessionLogs.groupBy {
             SimpleDateFormat(
                 "y-M-d",

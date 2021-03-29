@@ -39,7 +39,7 @@ class ExperimentViewModel(
      * Experiments Stats
      */
 
-    val experimentStats = sessionStatsRepository.sessionStats.asLiveData()
-    val experimentStatsOfLastDays = sessionStatsRepository.sessionStatsOfLastDays.asLiveData()
+    val experimentStats = sessionStatsRepository.experimentStats.asLiveData()
+    val experimentStatsOfLastDays = sessionStatsRepository.experimentStatsOfLastDays.asLiveData()
 
 }

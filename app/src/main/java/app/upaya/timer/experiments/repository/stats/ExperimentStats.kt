@@ -1,10 +1,10 @@
-package app.upaya.timer.session.repository.stats
+package app.upaya.timer.experiments.repository.stats
 
 import java.util.*
 
 
-data class SessionStats(
-        val sessionCount: Int = 0,
+data class ExperimentStats(
+        val count: Int = 0,
         val avgLength: Double? = null,
         val totalLength: Int? = null,
         val date: Date? = null

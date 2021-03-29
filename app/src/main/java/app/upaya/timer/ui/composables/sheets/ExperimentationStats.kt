@@ -12,7 +12,7 @@ import androidx.compose.ui.platform.AmbientContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.viewModel
-import app.upaya.timer.session.repository.stats.SessionStats
+import app.upaya.timer.experiments.repository.stats.ExperimentStats
 import app.upaya.timer.experiments.viewmodel.ExperimentViewModel
 import app.upaya.timer.experiments.viewmodel.ExperimentViewModelFactory
 import app.upaya.timer.ui.composables.entities.ExperimentStatsChart
@@ -24,7 +24,7 @@ fun ExperimentationStats() {
 
     val experimentViewModel: ExperimentViewModel = viewModel(factory = ExperimentViewModelFactory(AmbientContext.current))
     val experimentLength = experimentViewModel.experimentLength.observeAsState(initial = 0.0)
-    val experimentStats = experimentViewModel.experimentStats.observeAsState(SessionStats())
+    val experimentStats = experimentViewModel.experimentStats.observeAsState(ExperimentStats())
     val experimentStatsOfLastDays = experimentViewModel.experimentStatsOfLastDays.observeAsState(listOf())
 
     Column(Modifier.padding(16.dp)) {
@@ -55,7 +55,7 @@ fun ExperimentationStats() {
             Divider(Modifier.padding(bottom = 24.dp))
 
             Text(
-                    text = "${experimentStats.value.sessionCount} experiments "
+                    text = "${experimentStats.value.count} experiments "
                             + "(${fromSecsToTimeString(experimentStats.value.totalLength)} total)",
                     color = MaterialTheme.colors.onSurface,
             )
