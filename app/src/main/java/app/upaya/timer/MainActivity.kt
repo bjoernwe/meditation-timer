@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import app.upaya.timer.session.*
 import app.upaya.timer.experiments.viewmodel.ExperimentViewModel
 import app.upaya.timer.experiments.viewmodel.ExperimentViewModelFactory
-import app.upaya.timer.settings.SessionLengthRepository
+import app.upaya.timer.experiments.repositories.length.SessionLengthRepository
 import app.upaya.timer.ui.Bell
 import app.upaya.timer.ui.composables.MainLayout
 

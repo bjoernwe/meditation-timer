@@ -1,17 +1,17 @@
-package app.upaya.timer.session.creator
+package app.upaya.timer.experiments.creator
 
 import kotlin.math.max
 
 
-class SessionLength(length: Double) {
+class ExperimentLength(length: Double) {
 
     private val minLength: Double = 1.0
 
     var value = max(length, minLength)
         private set
 
-    fun updateFromRating(rating: Double) : Double {
-        if (rating < 0.5) {
+    fun updateFromFeedback(feedback: Double) : Double {
+        if (feedback < 0.5) {
             this.decrease()
         } else {
             this.increase()
@@ -24,9 +24,9 @@ class SessionLength(length: Double) {
     }
 
     private fun decrease() {
-        val newSessionLength = value.times(.8)
-        if (newSessionLength >= minLength) {
-            value = newSessionLength
+        val newExperimentLength = value.times(.8)
+        if (newExperimentLength >= minLength) {
+            value = newExperimentLength
         }
     }
 

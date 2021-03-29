@@ -1,13 +1,13 @@
 package app.upaya.timer.settings
 
-import app.upaya.timer.settings.SessionLengthRepositoryFake
+import app.upaya.timer.experiments.repositories.length.ISessionLengthRepository
 import org.junit.Before
 import org.junit.Test
 
 import org.junit.Assert.*
 
 
-class SessionLengthRepositoryFakeTest {
+class ExperimentLengthRepositoryFakeTest {
 
     private lateinit var sessionLengthRepository: ISessionLengthRepository
 

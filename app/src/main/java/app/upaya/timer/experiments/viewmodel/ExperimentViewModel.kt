@@ -3,13 +3,13 @@ package app.upaya.timer.experiments.viewmodel
 import androidx.lifecycle.*
 import app.upaya.timer.probes.Probe
 import app.upaya.timer.session.*
-import app.upaya.timer.session.creator.ISessionCreator
+import app.upaya.timer.experiments.creator.IExperimentCreator
 import app.upaya.timer.experiments.repositories.logs.IExperimentLogRepository
 import app.upaya.timer.experiments.repositories.stats.ExperimentStatsRepository
 
 
 class ExperimentViewModel(
-    sessionCreator: ISessionCreator,
+    experimentCreator: IExperimentCreator,
     experimentLogRepository: IExperimentLogRepository,
     ) : ViewModel() {
 
@@ -20,11 +20,11 @@ class ExperimentViewModel(
      */
 
     val state: LiveData<ExperimentState?> = ExperimentState.create(
-        sessionCreator = sessionCreator,
+        experimentCreator = experimentCreator,
         experimentLogRepository = experimentLogRepository,
     ).asLiveData()
 
-    val experimentLength: LiveData<Double> = sessionCreator.sessionLength.asLiveData()
+    val experimentLength: LiveData<Double> = experimentCreator.currentLength.asLiveData()
 
     val isIdle: LiveData<Boolean> = Transformations.map(state) { it is Idle }
     val isRunning: LiveData<Boolean> = Transformations.map(state) { it is Running }
@@ -33,7 +33,7 @@ class ExperimentViewModel(
      * Probe
      */
 
-    val currentProbe: LiveData<Probe> = sessionCreator.currentProbe.asLiveData()
+    val currentProbe: LiveData<Probe> = experimentCreator.currentProbe.asLiveData()
 
     /**
      * Experiments Stats

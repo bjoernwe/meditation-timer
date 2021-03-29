@@ -1,12 +1,12 @@
-package app.upaya.timer.session.creator
+package app.upaya.timer.experiments.creator
 
 import app.upaya.timer.probes.Probe
 import app.upaya.timer.experiments.repositories.logs.ExperimentLog
 import kotlinx.coroutines.flow.StateFlow
 
 
-interface ISessionCreator {
-    val sessionLength: StateFlow<Double>
+interface IExperimentCreator {
+    val currentLength: StateFlow<Double>
     val currentProbe: StateFlow<Probe>
-    fun onRatingSubmitted(experimentLog: ExperimentLog)
+    fun onFeedbackSubmitted(experimentLog: ExperimentLog)
 }

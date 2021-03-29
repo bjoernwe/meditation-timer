@@ -2,14 +2,14 @@ package app.upaya.timer.settings
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
-import app.upaya.timer.settings.SessionLengthRepository
+import app.upaya.timer.experiments.repositories.length.SessionLengthRepository
 import org.junit.Before
 import org.junit.Test
 
 import org.junit.Assert.*
 
 
-class SessionLengthRepositoryTest {
+class ExperimentLengthRepositoryTest {
 
     private lateinit var context: Context
     private lateinit var sessionRepository: SessionLengthRepository

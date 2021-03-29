@@ -1,6 +1,6 @@
 package app.upaya.timer.session
 
-import app.upaya.timer.session.creator.ISessionCreator
+import app.upaya.timer.experiments.creator.IExperimentCreator
 import app.upaya.timer.experiments.repositories.logs.IExperimentLogRepository
 import app.upaya.timer.experiments.repositories.logs.ExperimentLog
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +17,7 @@ sealed class ExperimentState(
      * [SessionCreator] object, which may be provide different implementations.
      **/
     protected val experimentLog: ExperimentLog,
-    protected val sessionCreator: ISessionCreator,
+    protected val experimentCreator: IExperimentCreator,
     protected val experimentLogRepository: IExperimentLogRepository,
     protected val outputStateFlow: MutableStateFlow<ExperimentState?>,
     ) {
@@ -30,13 +30,13 @@ sealed class ExperimentState(
     companion object {
 
         fun create(
-            sessionCreator: ISessionCreator,
+            experimentCreator: IExperimentCreator,
             experimentLogRepository: IExperimentLogRepository,
         ): StateFlow<ExperimentState?> {
             val outputStateFlow = MutableStateFlow<ExperimentState?>(null)
             outputStateFlow.value = Idle(
-                experimentLog = ExperimentLog(hint = sessionCreator.currentProbe.value.id),
-                sessionCreator = sessionCreator,
+                experimentLog = ExperimentLog(hint = experimentCreator.currentProbe.value.id),
+                experimentCreator = experimentCreator,
                 experimentLogRepository = experimentLogRepository,
                 outputStateFlow = outputStateFlow,
             )
@@ -50,12 +50,12 @@ sealed class ExperimentState(
 
 class Idle internal constructor(
     experimentLog: ExperimentLog,
-    sessionCreator: ISessionCreator,
+    experimentCreator: IExperimentCreator,
     experimentLogRepository: IExperimentLogRepository,
     outputStateFlow: MutableStateFlow<ExperimentState?>
 ) : ExperimentState(
     experimentLog = experimentLog,
-    sessionCreator = sessionCreator,
+    experimentCreator = experimentCreator,
     experimentLogRepository = experimentLogRepository,
     outputStateFlow = outputStateFlow
 ) {
@@ -63,11 +63,11 @@ class Idle internal constructor(
     fun startExperiment() {
         val runningState = Running(
             experimentLog = experimentLog.apply { this.startDate = Date() },
-            sessionCreator = sessionCreator,
+            experimentCreator = experimentCreator,
             experimentLogRepository = experimentLogRepository,
             outputStateFlow = outputStateFlow
         )
-        val sessionLength = sessionCreator.sessionLength.value.times(1000).toLong()
+        val sessionLength = experimentCreator.currentLength.value.times(1000).toLong()
         Timer("SessionTimer", true).schedule(sessionLength) {
             runningState.onFinish()
         }
@@ -79,12 +79,12 @@ class Idle internal constructor(
 
 class Running internal constructor(
     experimentLog: ExperimentLog,
-    sessionCreator: ISessionCreator,
+    experimentCreator: IExperimentCreator,
     experimentLogRepository: IExperimentLogRepository,
     outputStateFlow: MutableStateFlow<ExperimentState?>
 ) : ExperimentState(
     experimentLog = experimentLog,
-    sessionCreator = sessionCreator,
+    experimentCreator = experimentCreator,
     experimentLogRepository = experimentLogRepository,
     outputStateFlow = outputStateFlow
 ) {
@@ -92,7 +92,7 @@ class Running internal constructor(
     internal fun onFinish() {
         outputStateFlow.value = Finished(
             experimentLog = experimentLog.apply { this.endDate = Date() },
-            sessionCreator = sessionCreator,
+            experimentCreator = experimentCreator,
             experimentLogRepository = experimentLogRepository,
             outputStateFlow = outputStateFlow
         )
@@ -103,12 +103,12 @@ class Running internal constructor(
 
 class Finished internal constructor(
     experimentLog: ExperimentLog,
-    sessionCreator: ISessionCreator,
+    experimentCreator: IExperimentCreator,
     experimentLogRepository: IExperimentLogRepository,
     outputStateFlow: MutableStateFlow<ExperimentState?>
 ) : ExperimentState(
     experimentLog = experimentLog,
-    sessionCreator = sessionCreator,
+    experimentCreator = experimentCreator,
     experimentLogRepository = experimentLogRepository,
     outputStateFlow = outputStateFlow
 ) {
@@ -121,12 +121,12 @@ class Finished internal constructor(
         experimentLogRepository.storeExperiment(experimentLog = experimentLog)
 
         // inform SessionCreator
-        sessionCreator.onRatingSubmitted(experimentLog = experimentLog)
+        experimentCreator.onFeedbackSubmitted(experimentLog = experimentLog)
 
         // update StateFlow
         outputStateFlow.value = Idle(
-            experimentLog = ExperimentLog(hint = sessionCreator.currentProbe.value.id),
-            sessionCreator = sessionCreator,
+            experimentLog = ExperimentLog(hint = experimentCreator.currentProbe.value.id),
+            experimentCreator = experimentCreator,
             experimentLogRepository = experimentLogRepository,
             outputStateFlow = outputStateFlow
         )

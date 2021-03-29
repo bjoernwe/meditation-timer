@@ -1,7 +1,7 @@
 package app.upaya.timer.session
 
-import app.upaya.timer.session.creator.ISessionCreator
-import app.upaya.timer.session.creator.SessionCreatorMock
+import app.upaya.timer.experiments.creator.IExperimentCreator
+import app.upaya.timer.session.creator.ExperimentCreatorMock
 import app.upaya.timer.experiments.repositories.logs.IExperimentLogRepository
 import app.upaya.timer.session.repository.ExperimentLogRepositoryFake
 import kotlinx.coroutines.flow.StateFlow
@@ -17,12 +17,12 @@ class ExperimentStateTest {
     fun sessionStateTransitions() = runBlocking {
 
         // GIVEN a SessionState object
-        val sessionCreator: ISessionCreator = SessionCreatorMock(
+        val experimentCreator: IExperimentCreator = ExperimentCreatorMock(
             onRatingSubmittedCalls = ArrayList(),
             initialSessionLength = 2.0
         )
         val state: StateFlow<ExperimentState?> = ExperimentState.create(
-            sessionCreator = sessionCreator,
+            experimentCreator = experimentCreator,
             experimentLogRepository = ExperimentLogRepositoryFake(),
         )
 
@@ -55,13 +55,13 @@ class ExperimentStateTest {
     fun sessionLogsAreStoredWithTimestamps() = runBlocking {
 
         // GIVEN a SessionState object
-        val sessionCreator: ISessionCreator = SessionCreatorMock(
+        val experimentCreator: IExperimentCreator = ExperimentCreatorMock(
             onRatingSubmittedCalls = ArrayList(),
             initialSessionLength = 1.0
         )
         val experimentLogRepository: IExperimentLogRepository = ExperimentLogRepositoryFake()
         val state: StateFlow<ExperimentState?> = ExperimentState.create(
-            sessionCreator = sessionCreator,
+            experimentCreator = experimentCreator,
             experimentLogRepository = experimentLogRepository,
         )
 

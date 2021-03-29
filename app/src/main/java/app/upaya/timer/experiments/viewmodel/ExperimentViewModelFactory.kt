@@ -5,10 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import app.upaya.timer.MeditationTimerApplication
 import app.upaya.timer.probes.ProbeRepository
-import app.upaya.timer.session.creator.SessionCreator
+import app.upaya.timer.experiments.creator.ExperimentCreator
 import app.upaya.timer.experiments.repositories.logs.ExperimentLogRepository
 import app.upaya.timer.experiments.repositories.logs.room.ExperimentLogDatabase
-import app.upaya.timer.settings.SessionLengthRepository
+import app.upaya.timer.experiments.repositories.length.SessionLengthRepository
 import java.lang.IllegalArgumentException
 
 
@@ -41,14 +41,14 @@ class ExperimentViewModelFactory(private val context: Context) : ViewModelProvid
             val sessionLengthRepository = SessionLengthRepository(context)
 
             // SessionCreator
-            val sessionCreator = SessionCreator(
+            val sessionCreator = ExperimentCreator(
                 probeRepository = probeRepository,
-                sessionLengthRepository = sessionLengthRepository,
+                experimentLengthRepository = sessionLengthRepository,
             )
 
             @Suppress("UNCHECKED_CAST")
             return ExperimentViewModel(
-                sessionCreator = sessionCreator,
+                experimentCreator = sessionCreator,
                 experimentLogRepository = experimentLogRepository,
             ) as T
 
