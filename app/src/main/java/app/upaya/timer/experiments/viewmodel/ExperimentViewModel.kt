@@ -1,4 +1,4 @@
-package app.upaya.timer.session.viewmodel
+package app.upaya.timer.experiments.viewmodel
 
 import androidx.lifecycle.*
 import app.upaya.timer.hints.Hint
@@ -8,7 +8,7 @@ import app.upaya.timer.session.repository.ISessionRepository
 import app.upaya.timer.session.repository.stats.SessionStatsRepository
 
 
-class SessionViewModel(
+class ExperimentViewModel(
     sessionCreator: ISessionCreator,
     sessionRepository: ISessionRepository,
     ) : ViewModel() {
@@ -16,7 +16,7 @@ class SessionViewModel(
     private val sessionStatsRepository = SessionStatsRepository(sessionRepository)
 
     /**
-     * Session State
+     * Experiment State
      */
 
     val state: LiveData<SessionState?> = SessionState.create(
@@ -24,21 +24,22 @@ class SessionViewModel(
         sessionRepository = sessionRepository,
     ).asLiveData()
 
+    val experimentLength: LiveData<Double> = sessionCreator.sessionLength.asLiveData()
+
     val isIdle: LiveData<Boolean> = Transformations.map(state) { it is Idle }
     val isRunning: LiveData<Boolean> = Transformations.map(state) { it is Running }
 
     /**
-     * Session Length
+     * Probe
      */
 
-    val sessionLength: LiveData<Double> = sessionCreator.sessionLength.asLiveData()
-    val currentHint: LiveData<Hint> = sessionCreator.currentHint.asLiveData()
+    val currentProbe: LiveData<Hint> = sessionCreator.currentHint.asLiveData()
 
     /**
-     * Session Stats
+     * Experiments Stats
      */
 
-    val sessionStats = sessionStatsRepository.sessionStats.asLiveData()
-    val sessionStatsOfLastDays = sessionStatsRepository.sessionStatsOfLastDays.asLiveData()
+    val experimentStats = sessionStatsRepository.sessionStats.asLiveData()
+    val experimentStatsOfLastDays = sessionStatsRepository.sessionStatsOfLastDays.asLiveData()
 
 }

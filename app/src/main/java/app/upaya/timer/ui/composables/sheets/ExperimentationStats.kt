@@ -13,8 +13,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.viewModel
 import app.upaya.timer.session.repository.stats.SessionStats
-import app.upaya.timer.session.viewmodel.SessionViewModel
-import app.upaya.timer.session.viewmodel.SessionViewModelFactory
+import app.upaya.timer.experiments.viewmodel.ExperimentViewModel
+import app.upaya.timer.experiments.viewmodel.ExperimentViewModelFactory
 import app.upaya.timer.ui.composables.entities.ExperimentStatsChart
 import app.upaya.timer.ui.fromSecsToTimeString
 
@@ -22,16 +22,16 @@ import app.upaya.timer.ui.fromSecsToTimeString
 @Composable
 fun ExperimentationStats() {
 
-    val sessionViewModel: SessionViewModel = viewModel(factory = SessionViewModelFactory(AmbientContext.current))
-    val sessionLength = sessionViewModel.sessionLength.observeAsState(initial = 0.0)
-    val sessionAggOfAll = sessionViewModel.sessionStats.observeAsState(SessionStats())
-    val sessionAggOfLastDays = sessionViewModel.sessionStatsOfLastDays.observeAsState(listOf())
+    val experimentViewModel: ExperimentViewModel = viewModel(factory = ExperimentViewModelFactory(AmbientContext.current))
+    val experimentLength = experimentViewModel.experimentLength.observeAsState(initial = 0.0)
+    val experimentStats = experimentViewModel.experimentStats.observeAsState(SessionStats())
+    val experimentStatsOfLastDays = experimentViewModel.experimentStatsOfLastDays.observeAsState(listOf())
 
     Column(Modifier.padding(16.dp)) {
 
-        if (sessionAggOfLastDays.value.size >= 3) {
+        if (experimentStatsOfLastDays.value.size >= 3) {
             ExperimentStatsChart(
-                    sessionStats = sessionAggOfLastDays,
+                    experimentStats = experimentStatsOfLastDays,
                     modifier = Modifier
                             .fillMaxWidth()
                             .align(Alignment.CenterHorizontally)
@@ -55,13 +55,13 @@ fun ExperimentationStats() {
             Divider(Modifier.padding(bottom = 24.dp))
 
             Text(
-                    text = "${sessionAggOfAll.value.sessionCount} experiments "
-                            + "(${fromSecsToTimeString(sessionAggOfAll.value.totalLength)} total)",
+                    text = "${experimentStats.value.sessionCount} experiments "
+                            + "(${fromSecsToTimeString(experimentStats.value.totalLength)} total)",
                     color = MaterialTheme.colors.onSurface,
             )
 
             Text(
-                    text = "Current experiment length: ${sessionLength.value.toInt()}",
+                    text = "Current experiment length: ${experimentLength.value.toInt()}",
                     color = MaterialTheme.colors.onSurface,
             )
 

@@ -1,4 +1,4 @@
-package app.upaya.timer.session.viewmodel
+package app.upaya.timer.experiments.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
@@ -13,15 +13,15 @@ import java.lang.IllegalArgumentException
 
 
 /**
- * The factory allows us to pass arguments to the SessionViewModel.
+ * The factory allows us to pass arguments to the ExperimentViewModel.
  * It is also used as a "dirty main component" that assembles and injects all the dependencies for
  * the business layer.
  * */
-class SessionViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
+class ExperimentViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
 
-        if (modelClass.isAssignableFrom(SessionViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(ExperimentViewModel::class.java)) {
 
             /**
              * Inject Dependencies
@@ -47,7 +47,7 @@ class SessionViewModelFactory(private val context: Context) : ViewModelProvider.
             )
 
             @Suppress("UNCHECKED_CAST")
-            return SessionViewModel(
+            return ExperimentViewModel(
                 sessionCreator = sessionCreator,
                 sessionRepository = sessionRepository,
             ) as T

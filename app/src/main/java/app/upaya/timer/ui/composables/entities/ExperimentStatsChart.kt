@@ -11,9 +11,9 @@ import com.db.williamchart.view.BarChartView
 
 
 @Composable
-fun ExperimentStatsChart(sessionStats: State<List<SessionStats>>, modifier: Modifier = Modifier) {
+fun ExperimentStatsChart(experimentStats: State<List<SessionStats>>, modifier: Modifier = Modifier) {
 
-    val experimentLogs = sessionStats.value.reversed().mapIndexed { index, stats ->
+    val experimentLogs = experimentStats.value.reversed().mapIndexed { index, stats ->
         index.toString() to stats.sessionCount.toFloat()
     }
 

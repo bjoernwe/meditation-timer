@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.viewModel
 import app.upaya.timer.session.*
-import app.upaya.timer.session.viewmodel.SessionViewModel
+import app.upaya.timer.experiments.viewmodel.ExperimentViewModel
 import app.upaya.timer.ui.composables.entities.StatsButton
 import app.upaya.timer.ui.composables.sheets.ExperimentFeedbackDialog
 import app.upaya.timer.ui.composables.sheets.ExperimentationStats
@@ -28,25 +28,25 @@ fun MainLayout(onClick: () -> Unit) {
     TimerTheme {
 
         val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
-        val sessionViewModel: SessionViewModel = viewModel()
-        val sessionState by sessionViewModel.state.observeAsState()
+        val experimentViewModel: ExperimentViewModel = viewModel()
+        val experimentState by experimentViewModel.state.observeAsState()
 
-        if (sessionState is Finished && !sheetState.isVisible) sheetState.show()
+        if (experimentState is Finished && !sheetState.isVisible) sheetState.show()
 
         ModalBottomSheetLayout(
                 sheetState = sheetState,
                 scrimColor = Color(0, 0, 0, 128),
                 sheetBackgroundColor = MaterialTheme.colors.background,
                 sheetContent = {
-                    when (sessionState) {
+                    when (experimentState) {
                         is Idle -> ExperimentationStats()
                         is Running -> Text("There is nothing to see here!")
                         is Finished -> ExperimentFeedbackDialog(
                                 onClickDown = { sheetState.hide {
-                                    (sessionState as Finished).rateSession(1.0)
+                                    (experimentState as Finished).rateSession(1.0)
                                 } },
                                 onClickUp = { sheetState.hide {
-                                    (sessionState as Finished).rateSession(0.0)
+                                    (experimentState as Finished).rateSession(0.0)
                                 } }
                         )
                     }
@@ -56,14 +56,14 @@ fun MainLayout(onClick: () -> Unit) {
             ConstraintLayout {
 
                 TimerRing(
-                        activated = sessionViewModel.isRunning.observeAsState(false),
+                        activated = experimentViewModel.isRunning.observeAsState(false),
                         onClick = onClick
                 )
 
                 val (probeCard, statsButton) = createRefs()
 
                 AnimatedVisibility(
-                        visible = sessionViewModel.isIdle.observeAsState(false).value,
+                        visible = experimentViewModel.isIdle.observeAsState(false).value,
                         modifier = Modifier
                                 .constrainAs(statsButton)
                                 {
@@ -75,7 +75,7 @@ fun MainLayout(onClick: () -> Unit) {
                 }
 
                 AnimatedVisibility(
-                        visible = sessionViewModel.isIdle.observeAsState(false).value,
+                        visible = experimentViewModel.isIdle.observeAsState(false).value,
                         enter = fadeIn(),
                         modifier =  Modifier
                                 .constrainAs(probeCard)

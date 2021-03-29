@@ -7,8 +7,8 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.ui.platform.setContent
 import androidx.lifecycle.ViewModelProvider
 import app.upaya.timer.session.*
-import app.upaya.timer.session.viewmodel.SessionViewModel
-import app.upaya.timer.session.viewmodel.SessionViewModelFactory
+import app.upaya.timer.experiments.viewmodel.ExperimentViewModel
+import app.upaya.timer.experiments.viewmodel.ExperimentViewModelFactory
 import app.upaya.timer.settings.SessionLengthRepository
 import app.upaya.timer.ui.Bell
 import app.upaya.timer.ui.composables.MainLayout
@@ -17,7 +17,7 @@ import app.upaya.timer.ui.composables.MainLayout
 class MainActivity : AppCompatActivity() {
 
     private lateinit var bell: Bell
-    private lateinit var sessionViewModel: SessionViewModel
+    private lateinit var experimentViewModel: ExperimentViewModel
     private lateinit var sessionLengthRepository: SessionLengthRepository
 
     @ExperimentalAnimationApi
@@ -29,8 +29,9 @@ class MainActivity : AppCompatActivity() {
          * Late Inits
          */
 
-        val sessionViewModelFactory = SessionViewModelFactory(this)
-        sessionViewModel = ViewModelProvider(this, sessionViewModelFactory).get(SessionViewModel::class.java)
+        val sessionViewModelFactory = ExperimentViewModelFactory(this)
+        experimentViewModel = ViewModelProvider(this, sessionViewModelFactory).get(
+            ExperimentViewModel::class.java)
         sessionLengthRepository = SessionLengthRepository(this)
 
         bell = Bell(
@@ -49,7 +50,7 @@ class MainActivity : AppCompatActivity() {
          * Register Event Callbacks
          */
 
-        sessionViewModel.state.observe(this) { onSessionStateChanged(it) }
+        experimentViewModel.state.observe(this) { onSessionStateChanged(it) }
     }
 
     override fun onStart() {
@@ -65,8 +66,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onCircleClicked() {
-        if (sessionViewModel.state.value is Idle) {
-            (sessionViewModel.state.value as? Idle)?.startSession()
+        if (experimentViewModel.state.value is Idle) {
+            (experimentViewModel.state.value as? Idle)?.startSession()
             bell.vibrate(50, 100)
         }
     }

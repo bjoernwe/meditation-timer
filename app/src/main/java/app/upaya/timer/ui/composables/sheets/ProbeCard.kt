@@ -12,15 +12,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.viewModel
 import androidx.ui.tooling.preview.Preview
-import app.upaya.timer.session.viewmodel.SessionViewModel
+import app.upaya.timer.experiments.viewmodel.ExperimentViewModel
 import app.upaya.timer.ui.composables.blueGrey800Light
 
 
 @Composable
 fun ProbeCard(modifier: Modifier = Modifier) {
 
-    val sessionViewModel: SessionViewModel = viewModel()
-    val probe by sessionViewModel.currentHint.observeAsState()
+    val experimentViewModel: ExperimentViewModel = viewModel()
+    val probe by experimentViewModel.currentProbe.observeAsState()
 
     Row(
             modifier = modifier,
