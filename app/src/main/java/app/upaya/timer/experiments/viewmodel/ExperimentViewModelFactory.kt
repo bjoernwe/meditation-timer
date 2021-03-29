@@ -7,7 +7,7 @@ import app.upaya.timer.MeditationTimerApplication
 import app.upaya.timer.probes.ProbeRepository
 import app.upaya.timer.session.creator.SessionCreator
 import app.upaya.timer.experiments.repositories.logs.ExperimentLogRepository
-import app.upaya.timer.session.repository.room.SessionLogDatabase
+import app.upaya.timer.experiments.repositories.logs.room.ExperimentLogDatabase
 import app.upaya.timer.settings.SessionLengthRepository
 import java.lang.IllegalArgumentException
 
@@ -24,13 +24,13 @@ class ExperimentViewModelFactory(private val context: Context) : ViewModelProvid
         if (modelClass.isAssignableFrom(ExperimentViewModel::class.java)) {
 
             /**
-             * Inject Dependencies
+             * Create & Inject Dependencies
              */
 
-            // SessionLogRepository
-            val sessionLogDatabase = SessionLogDatabase.getInstance(context)
-            val sessionRepository = ExperimentLogRepository(
-                sessionLogDao = sessionLogDatabase.sessionLogDao,
+            // ExperimentLogRepository
+            val experimentLogDatabase = ExperimentLogDatabase.getInstance(context)
+            val experimentLogRepository = ExperimentLogRepository(
+                experimentLogDao = experimentLogDatabase.experimentLogDao,
                 externalScope = (context.applicationContext as MeditationTimerApplication).applicationScope
             )
 
@@ -49,7 +49,7 @@ class ExperimentViewModelFactory(private val context: Context) : ViewModelProvid
             @Suppress("UNCHECKED_CAST")
             return ExperimentViewModel(
                 sessionCreator = sessionCreator,
-                experimentLogRepository = sessionRepository,
+                experimentLogRepository = experimentLogRepository,
             ) as T
 
         } else {
