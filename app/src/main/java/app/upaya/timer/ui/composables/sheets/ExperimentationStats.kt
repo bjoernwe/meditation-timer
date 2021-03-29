@@ -12,7 +12,7 @@ import androidx.compose.ui.platform.AmbientContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.viewModel
-import app.upaya.timer.experiments.repository.stats.ExperimentStats
+import app.upaya.timer.experiments.repositories.stats.ExperimentStats
 import app.upaya.timer.experiments.viewmodel.ExperimentViewModel
 import app.upaya.timer.experiments.viewmodel.ExperimentViewModelFactory
 import app.upaya.timer.ui.composables.entities.ExperimentStatsChart

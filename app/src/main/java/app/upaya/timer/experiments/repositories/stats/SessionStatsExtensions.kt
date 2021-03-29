@@ -1,11 +1,10 @@
-package app.upaya.timer.session.repository.stats
+package app.upaya.timer.experiments.repositories.stats
 
-import app.upaya.timer.experiments.repository.stats.ExperimentStats
-import app.upaya.timer.session.repository.SessionLog
+import app.upaya.timer.experiments.repositories.logs.ExperimentLog
 import java.util.*
 
 
-fun SessionLog.length() : Int? {
+fun ExperimentLog.length() : Int? {
     val start = startDate
     val end = endDate
     if (start == null || end == null) return null
@@ -13,22 +12,22 @@ fun SessionLog.length() : Int? {
 }
 
 
-fun List<SessionLog>.filterValid() : List<SessionLog> {
+fun List<ExperimentLog>.filterValid() : List<ExperimentLog> {
     return this.filter { s -> s.length() != null }
 }
 
 
-fun List<SessionLog>.lenghts() : List<Int> {
+fun List<ExperimentLog>.lenghts() : List<Int> {
     return this.filterValid().map { s -> s.length()!! }
 }
 
 
-fun List<SessionLog>.calcStats() : ExperimentStats {
+fun List<ExperimentLog>.calcStats() : ExperimentStats {
 
-    val sessionLengths = this.lenghts()
+    val experimentLengths = this.lenghts()
 
     // Return empty
-    if (sessionLengths.isEmpty())
+    if (experimentLengths.isEmpty())
         return ExperimentStats(
             count = 0,
             avgLength = null,
@@ -37,12 +36,12 @@ fun List<SessionLog>.calcStats() : ExperimentStats {
         )
 
     // Stats
-    val avgLength = sessionLengths.average()
-    val totalLength = sessionLengths.sum()
+    val avgLength = experimentLengths.average()
+    val totalLength = experimentLengths.sum()
     val avgInitDate = Date(this.map { s -> s.initDate.time }.average().toLong())
 
     return ExperimentStats(
-            count = sessionLengths.size,
+            count = experimentLengths.size,
             avgLength = avgLength,
             totalLength = totalLength,
             date = avgInitDate

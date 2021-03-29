@@ -2,8 +2,8 @@ package app.upaya.timer.session
 
 import app.upaya.timer.session.creator.ISessionCreator
 import app.upaya.timer.session.creator.SessionCreatorMock
-import app.upaya.timer.session.repository.ISessionRepository
-import app.upaya.timer.session.repository.SessionRepositoryFake
+import app.upaya.timer.experiments.repositories.logs.IExperimentLogRepository
+import app.upaya.timer.session.repository.ExperimentLogRepositoryFake
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -23,7 +23,7 @@ class ExperimentStateTest {
         )
         val state: StateFlow<ExperimentState?> = ExperimentState.create(
             sessionCreator = sessionCreator,
-            sessionRepository = SessionRepositoryFake(),
+            experimentLogRepository = ExperimentLogRepositoryFake(),
         )
 
         // WHEN a session is started
@@ -59,13 +59,13 @@ class ExperimentStateTest {
             onRatingSubmittedCalls = ArrayList(),
             initialSessionLength = 1.0
         )
-        val sessionRepository: ISessionRepository = SessionRepositoryFake()
+        val experimentLogRepository: IExperimentLogRepository = ExperimentLogRepositoryFake()
         val state: StateFlow<ExperimentState?> = ExperimentState.create(
             sessionCreator = sessionCreator,
-            sessionRepository = sessionRepository,
+            experimentLogRepository = experimentLogRepository,
         )
 
-        val storedSession = sessionRepository.lastSession.first()
+        val storedSession = experimentLogRepository.lastExperiment.first()
         assert(storedSession.startDate == null)
         assert(storedSession.endDate == null)
         assert(storedSession.ratingDate == null)
@@ -96,7 +96,7 @@ class ExperimentStateTest {
 
         // AND THEN a new idling session is stored already
         // THEN the stored session has an end timestamp
-        val newStoredSession = sessionRepository.lastSession.first()
+        val newStoredSession = experimentLogRepository.lastExperiment.first()
         assert(newStoredSession.startDate == null)
         assert(newStoredSession.endDate == null)
         assert(newStoredSession.ratingDate == null)

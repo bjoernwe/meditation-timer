@@ -1,4 +1,4 @@
-package app.upaya.timer.session.repository
+package app.upaya.timer.experiments.repositories.logs
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -9,7 +9,7 @@ import kotlin.random.Random
 
 
 @Entity(tableName = "sessions")
-data class SessionLog @JvmOverloads constructor(
+data class ExperimentLog @JvmOverloads constructor(
 
         @PrimaryKey
         val sessionId: Long = abs(Random.nextLong()),

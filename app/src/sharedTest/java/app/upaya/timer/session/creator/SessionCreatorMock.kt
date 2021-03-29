@@ -1,14 +1,14 @@
 package app.upaya.timer.session.creator
 
 import app.upaya.timer.probes.Probe
-import app.upaya.timer.session.repository.SessionLog
+import app.upaya.timer.experiments.repositories.logs.ExperimentLog
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.util.*
 
 
 class SessionCreatorMock(
-    private val onRatingSubmittedCalls: MutableList<SessionLog>,
+    private val onRatingSubmittedCalls: MutableList<ExperimentLog>,
     initialSessionLength: Double
 ) : ISessionCreator {
 
@@ -18,8 +18,8 @@ class SessionCreatorMock(
     private val _currentHint = MutableStateFlow(generateRandomHint())
     override val currentProbe: StateFlow<Probe> = _currentHint
 
-    override fun onRatingSubmitted(sessionLog: SessionLog) {
-        onRatingSubmittedCalls.add(sessionLog)
+    override fun onRatingSubmitted(experimentLog: ExperimentLog) {
+        onRatingSubmittedCalls.add(experimentLog)
     }
 
     private fun generateRandomHint() : Probe {

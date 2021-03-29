@@ -4,16 +4,16 @@ import androidx.lifecycle.*
 import app.upaya.timer.probes.Probe
 import app.upaya.timer.session.*
 import app.upaya.timer.session.creator.ISessionCreator
-import app.upaya.timer.session.repository.ISessionRepository
-import app.upaya.timer.session.repository.stats.SessionStatsRepository
+import app.upaya.timer.experiments.repositories.logs.IExperimentLogRepository
+import app.upaya.timer.experiments.repositories.stats.ExperimentStatsRepository
 
 
 class ExperimentViewModel(
     sessionCreator: ISessionCreator,
-    sessionRepository: ISessionRepository,
+    experimentLogRepository: IExperimentLogRepository,
     ) : ViewModel() {
 
-    private val sessionStatsRepository = SessionStatsRepository(sessionRepository)
+    private val sessionStatsRepository = ExperimentStatsRepository(experimentLogRepository)
 
     /**
      * Experiment State
@@ -21,7 +21,7 @@ class ExperimentViewModel(
 
     val state: LiveData<ExperimentState?> = ExperimentState.create(
         sessionCreator = sessionCreator,
-        sessionRepository = sessionRepository,
+        experimentLogRepository = experimentLogRepository,
     ).asLiveData()
 
     val experimentLength: LiveData<Double> = sessionCreator.sessionLength.asLiveData()

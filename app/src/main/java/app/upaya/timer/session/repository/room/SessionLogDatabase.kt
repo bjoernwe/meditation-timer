@@ -5,10 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import app.upaya.timer.session.repository.SessionLog
+import app.upaya.timer.experiments.repositories.logs.ExperimentLog
 
 
-@Database(entities = [SessionLog::class], version = 5, exportSchema = true)
+@Database(entities = [ExperimentLog::class], version = 5, exportSchema = true)
 @TypeConverters(Converters::class)
 abstract class SessionLogDatabase : RoomDatabase() {
 

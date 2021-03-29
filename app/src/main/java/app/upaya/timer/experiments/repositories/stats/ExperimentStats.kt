@@ -1,4 +1,4 @@
-package app.upaya.timer.experiments.repository.stats
+package app.upaya.timer.experiments.repositories.stats
 
 import java.util.*
 

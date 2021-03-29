@@ -1,7 +1,8 @@
 package app.upaya.timer.session.repository.stats
 
-import app.upaya.timer.session.repository.SessionRepositoryFake
-import app.upaya.timer.session.repository.SessionLog
+import app.upaya.timer.session.repository.ExperimentLogRepositoryFake
+import app.upaya.timer.experiments.repositories.logs.ExperimentLog
+import app.upaya.timer.experiments.repositories.stats.ExperimentStatsRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -11,11 +12,11 @@ import java.util.*
 
 class ExperimentStatsRepositoryTest {
 
-    private val sessionLogRepository = SessionRepositoryFake()
-    private val sessionStatsRepository = SessionStatsRepository(sessionLogRepository)
+    private val sessionLogRepository = ExperimentLogRepositoryFake()
+    private val sessionStatsRepository = ExperimentStatsRepository(sessionLogRepository)
 
-    private fun generateSessionLog(length: Int) : SessionLog {
-        return SessionLog(
+    private fun generateSessionLog(length: Int) : ExperimentLog {
+        return ExperimentLog(
             hint = UUID.randomUUID(),
             startDate = Date(0L),
             endDate = Date(length * 1000L)
@@ -32,7 +33,7 @@ class ExperimentStatsRepositoryTest {
         assert(sessionStats.totalLength == null)
 
         // WHEN a session is added
-        sessionLogRepository.storeSession(generateSessionLog(length = 2))
+        sessionLogRepository.storeExperiment(generateSessionLog(length = 2))
 
         // THEN the corresponding Flow is updated accordingly
         sessionStats = sessionStatsRepository.experimentStats.first()
@@ -41,7 +42,7 @@ class ExperimentStatsRepositoryTest {
         assert(sessionStats.totalLength == 2)
 
         // AND WHEN another session is added
-        sessionLogRepository.storeSession(generateSessionLog(length = 4))
+        sessionLogRepository.storeExperiment(generateSessionLog(length = 4))
 
         // THEN the corresponding Flow is updated accordingly
         sessionStats = sessionStatsRepository.experimentStats.first()
