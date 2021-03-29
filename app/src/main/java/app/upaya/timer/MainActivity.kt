@@ -29,9 +29,9 @@ class MainActivity : AppCompatActivity() {
          * Late Inits
          */
 
-        val sessionViewModelFactory = ExperimentViewModelFactory(this)
-        experimentViewModel = ViewModelProvider(this, sessionViewModelFactory).get(
-            ExperimentViewModel::class.java)
+        val experimentViewModelFactory = ExperimentViewModelFactory(this)
+        experimentViewModel = ViewModelProvider(this, experimentViewModelFactory)
+            .get(ExperimentViewModel::class.java)
         sessionLengthRepository = SessionLengthRepository(this)
 
         bell = Bell(
@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
          * Register Event Callbacks
          */
 
-        experimentViewModel.state.observe(this) { onSessionStateChanged(it) }
+        experimentViewModel.state.observe(this) { onExperimentStateChanged(it) }
     }
 
     override fun onStart() {
@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun onSessionStateChanged(newExperimentState: ExperimentState?) {
+    private fun onExperimentStateChanged(newExperimentState: ExperimentState?) {
         when (newExperimentState) {
             is Idle -> { }
             is Running -> { bell.reset() }
