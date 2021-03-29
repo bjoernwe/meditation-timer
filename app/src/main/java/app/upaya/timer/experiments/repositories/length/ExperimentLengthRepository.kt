@@ -4,7 +4,7 @@ import android.content.Context
 import app.upaya.timer.R
 
 
-class SessionLengthRepository(context: Context) : ISessionLengthRepository {
+class ExperimentLengthRepository(context: Context) : IExperimentLengthRepository {
 
     private val defaultSessionLength = 10.0F
     private val prefSessionLengthId = context.getString(R.string.pref_session_length)
@@ -12,13 +12,13 @@ class SessionLengthRepository(context: Context) : ISessionLengthRepository {
         getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE)
     }
 
-    override fun loadSessionLength(): Double {
+    override fun loadExperimentLength(): Double {
         return prefs.getFloat(prefSessionLengthId, defaultSessionLength).toDouble()
     }
 
-    override fun storeSessionLength(sessionLength: Double) {
+    override fun storeExperimentLength(experimentLength: Double) {
         with (prefs.edit()) {
-            putFloat(prefSessionLengthId, sessionLength.toFloat())
+            putFloat(prefSessionLengthId, experimentLength.toFloat())
             apply()
         }
     }

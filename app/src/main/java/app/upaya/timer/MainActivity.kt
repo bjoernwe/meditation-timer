@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import app.upaya.timer.session.*
 import app.upaya.timer.experiments.viewmodel.ExperimentViewModel
 import app.upaya.timer.experiments.viewmodel.ExperimentViewModelFactory
-import app.upaya.timer.experiments.repositories.length.SessionLengthRepository
+import app.upaya.timer.experiments.repositories.length.ExperimentLengthRepository
 import app.upaya.timer.ui.Bell
 import app.upaya.timer.ui.composables.MainLayout
 
@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var bell: Bell
     private lateinit var experimentViewModel: ExperimentViewModel
-    private lateinit var sessionLengthRepository: SessionLengthRepository
+    private lateinit var experimentLengthRepository: ExperimentLengthRepository
 
     @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         val experimentViewModelFactory = ExperimentViewModelFactory(this)
         experimentViewModel = ViewModelProvider(this, experimentViewModelFactory)
             .get(ExperimentViewModel::class.java)
-        sessionLengthRepository = SessionLengthRepository(this)
+        experimentLengthRepository = ExperimentLengthRepository(this)
 
         bell = Bell(
                 context = applicationContext,

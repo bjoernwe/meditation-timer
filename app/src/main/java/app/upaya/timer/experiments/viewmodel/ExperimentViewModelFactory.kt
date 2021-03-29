@@ -8,7 +8,7 @@ import app.upaya.timer.experiments.probes.ProbeRepository
 import app.upaya.timer.experiments.creator.ExperimentCreator
 import app.upaya.timer.experiments.repositories.logs.ExperimentLogRepository
 import app.upaya.timer.experiments.repositories.logs.room.ExperimentLogDatabase
-import app.upaya.timer.experiments.repositories.length.SessionLengthRepository
+import app.upaya.timer.experiments.repositories.length.ExperimentLengthRepository
 import java.lang.IllegalArgumentException
 
 
@@ -38,7 +38,7 @@ class ExperimentViewModelFactory(private val context: Context) : ViewModelProvid
             val probeRepository = ProbeRepository(context)
 
             // SessionRepository
-            val sessionLengthRepository = SessionLengthRepository(context)
+            val sessionLengthRepository = ExperimentLengthRepository(context)
 
             // SessionCreator
             val sessionCreator = ExperimentCreator(

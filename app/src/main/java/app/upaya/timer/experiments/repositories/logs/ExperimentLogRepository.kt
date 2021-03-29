@@ -16,8 +16,8 @@ class ExperimentLogRepository(
     override fun storeExperiment(experimentLog: ExperimentLog) {
         externalScope.launch {
             withContext(ioDispatcher) {
-                // Move session logging to another scope (not ViewModel) to make sure it's completed
-                // independently of the UI lifecycle
+                // Move experiment logging to another scope (not ViewModel) to make sure it's
+                // completed independently of the UI lifecycle
                 experimentLogDao.insert(experimentLog = experimentLog)
             }
         }
