@@ -67,13 +67,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun onCircleClicked() {
         if (experimentViewModel.state.value is Idle) {
-            (experimentViewModel.state.value as? Idle)?.startSession()
+            (experimentViewModel.state.value as? Idle)?.startExperiment()
             bell.vibrate(50, 100)
         }
     }
 
-    private fun onSessionStateChanged(newSessionState: SessionState?) {
-        when (newSessionState) {
+    private fun onSessionStateChanged(newExperimentState: ExperimentState?) {
+        when (newExperimentState) {
             is Idle -> { }
             is Running -> { bell.reset() }
             is Finished -> { bell.play() }

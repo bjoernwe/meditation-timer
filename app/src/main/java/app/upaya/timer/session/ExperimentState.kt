@@ -9,17 +9,17 @@ import java.util.*
 import kotlin.concurrent.schedule
 
 
-sealed class SessionState(
+sealed class ExperimentState(
     /**
-     * This state machine models the session's state transitions. It posts the current state to the
-     * created [MutableFlowState] object. It also updates and stores session logs. Details about the
-     * sessions - like their length and the next hint - are deferred to an injected [SessionCreator]
-     * object, which may be implemented in different ways.
+     * This state machine models the experiment's state transitions. It posts the current state to
+     * the created [MutableFlowState] object. It also updates and stores experiment logs. Details
+     * about the experiments - like their length and the next probe - are deferred to an injected
+     * [SessionCreator] object, which may be provide different implementations.
      **/
     protected val sessionLog: SessionLog,
     protected val sessionCreator: ISessionCreator,
     protected val sessionRepository: ISessionRepository,
-    protected val outputStateFlow: MutableStateFlow<SessionState?>,
+    protected val outputStateFlow: MutableStateFlow<ExperimentState?>,
     ) {
 
     init {
@@ -32,8 +32,8 @@ sealed class SessionState(
         fun create(
             sessionCreator: ISessionCreator,
             sessionRepository: ISessionRepository,
-        ): StateFlow<SessionState?> {
-            val outputStateFlow = MutableStateFlow<SessionState?>(null)
+        ): StateFlow<ExperimentState?> {
+            val outputStateFlow = MutableStateFlow<ExperimentState?>(null)
             outputStateFlow.value = Idle(
                 sessionLog = SessionLog(hint = sessionCreator.currentProbe.value.id),
                 sessionCreator = sessionCreator,
@@ -52,15 +52,15 @@ class Idle internal constructor(
     sessionLog: SessionLog,
     sessionCreator: ISessionCreator,
     sessionRepository: ISessionRepository,
-    outputStateFlow: MutableStateFlow<SessionState?>
-) : SessionState(
+    outputStateFlow: MutableStateFlow<ExperimentState?>
+) : ExperimentState(
     sessionLog = sessionLog,
     sessionCreator = sessionCreator,
     sessionRepository = sessionRepository,
     outputStateFlow = outputStateFlow
 ) {
 
-    fun startSession() {
+    fun startExperiment() {
         val runningState = Running(
             sessionLog = sessionLog.apply { this.startDate = Date() },
             sessionCreator = sessionCreator,
@@ -81,8 +81,8 @@ class Running internal constructor(
     sessionLog: SessionLog,
     sessionCreator: ISessionCreator,
     sessionRepository: ISessionRepository,
-    outputStateFlow: MutableStateFlow<SessionState?>
-) : SessionState(
+    outputStateFlow: MutableStateFlow<ExperimentState?>
+) : ExperimentState(
     sessionLog = sessionLog,
     sessionCreator = sessionCreator,
     sessionRepository = sessionRepository,
@@ -105,15 +105,15 @@ class Finished internal constructor(
     sessionLog: SessionLog,
     sessionCreator: ISessionCreator,
     sessionRepository: ISessionRepository,
-    outputStateFlow: MutableStateFlow<SessionState?>
-) : SessionState(
+    outputStateFlow: MutableStateFlow<ExperimentState?>
+) : ExperimentState(
     sessionLog = sessionLog,
     sessionCreator = sessionCreator,
     sessionRepository = sessionRepository,
     outputStateFlow = outputStateFlow
 ) {
 
-    fun rateSession(rating: Double) {
+    fun rateExperiment(rating: Double) {
 
         // update & store session rating
         sessionLog.ratingDate = Date()

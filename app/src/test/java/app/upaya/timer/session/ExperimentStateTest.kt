@@ -11,7 +11,7 @@ import org.junit.Test
 import java.util.*
 
 
-class SessionStateTest {
+class ExperimentStateTest {
 
     @Test
     fun sessionStateTransitions() = runBlocking {
@@ -21,13 +21,13 @@ class SessionStateTest {
             onRatingSubmittedCalls = ArrayList(),
             initialSessionLength = 2.0
         )
-        val state: StateFlow<SessionState?> = SessionState.create(
+        val state: StateFlow<ExperimentState?> = ExperimentState.create(
             sessionCreator = sessionCreator,
             sessionRepository = SessionRepositoryFake(),
         )
 
         // WHEN a session is started
-        (state.first() as Idle).startSession()
+        (state.first() as Idle).startExperiment()
 
         // THEN the state moves from Idle to Running
         assert(state.first() is Running)
@@ -45,7 +45,7 @@ class SessionStateTest {
         assert(state.first() is Finished)
 
         // AND WHEN the finished session is rated
-        (state.first() as Finished).rateSession(0.0)
+        (state.first() as Finished).rateExperiment(0.0)
 
         // THEN the new state is Idle again
         assert(state.first() is Idle)
@@ -60,7 +60,7 @@ class SessionStateTest {
             initialSessionLength = 1.0
         )
         val sessionRepository: ISessionRepository = SessionRepositoryFake()
-        val state: StateFlow<SessionState?> = SessionState.create(
+        val state: StateFlow<ExperimentState?> = ExperimentState.create(
             sessionCreator = sessionCreator,
             sessionRepository = sessionRepository,
         )
@@ -71,7 +71,7 @@ class SessionStateTest {
         assert(storedSession.ratingDate == null)
 
         // WHEN a session is started
-        (state.first() as Idle).startSession()
+        (state.first() as Idle).startExperiment()
 
         // THEN the stored session has a start timestamp
         assert(storedSession.startDate != null)
@@ -87,7 +87,7 @@ class SessionStateTest {
         assert(storedSession.ratingDate == null)
 
         // AND WHEN the finished session is rated
-        (state.first() as Finished).rateSession(0.0)
+        (state.first() as Finished).rateExperiment(0.0)
 
         // THEN the stored session has an end timestamp
         assert(storedSession.startDate != null)

@@ -19,7 +19,7 @@ class ExperimentViewModel(
      * Experiment State
      */
 
-    val state: LiveData<SessionState?> = SessionState.create(
+    val state: LiveData<ExperimentState?> = ExperimentState.create(
         sessionCreator = sessionCreator,
         sessionRepository = sessionRepository,
     ).asLiveData()

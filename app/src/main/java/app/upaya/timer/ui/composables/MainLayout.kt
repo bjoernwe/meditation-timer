@@ -43,10 +43,10 @@ fun MainLayout(onClick: () -> Unit) {
                         is Running -> Text("There is nothing to see here!")
                         is Finished -> ExperimentFeedbackDialog(
                                 onClickDown = { sheetState.hide {
-                                    (experimentState as Finished).rateSession(1.0)
+                                    (experimentState as Finished).rateExperiment(1.0)
                                 } },
                                 onClickUp = { sheetState.hide {
-                                    (experimentState as Finished).rateSession(0.0)
+                                    (experimentState as Finished).rateExperiment(0.0)
                                 } }
                         )
                     }
