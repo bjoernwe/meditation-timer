@@ -1,6 +1,7 @@
 <resources>
     <string-array name="hints">
         <item>Notice your breath - wherever you can sense it most easily.</item>
+        <item>Follow your breath while focusing on a place where you can feel it the least.</item>
         <item>You don\'t need to locate your breath in a specific location. Just be aware of it - however it appears.</item>
         <item>Notice the sensations of the breath in the belly.</item>
         <item>Notice the sensations of the breath in the chest.</item>
@@ -40,5 +41,7 @@
         <item>In a way, the breath is watching you.</item>
         <item>If there are thoughts, restrict them to current moment.</item>
         <item>Can you follow the mind wherever it moves?</item>
+        <item>Pick an experiment that you enjoyed before.</item>
+        <item>Pick an experience (however small) from the current session that surprised you (i.e., that you didn\'t see coming) and focus on that.</item>
     </string-array>
 </resources>
