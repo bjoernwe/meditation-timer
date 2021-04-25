@@ -7,13 +7,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
 import androidx.ui.tooling.preview.Preview
 
 
 @Composable
 fun TimerLayout(
+    rowWeights: Triple<Float, Float, Float> = Triple(2f, 5f, 3f),
     topContent: @Composable () -> Unit = {},
     bottomContent: @Composable () -> Unit = {},
     centerContent: @Composable () -> Unit = {}
@@ -22,20 +22,22 @@ fun TimerLayout(
         .fillMaxWidth()
         .background(Color.Red)
     ) {
+
         Row(
             horizontalArrangement = Arrangement.End,
             modifier = Modifier
-                .weight(1f)
+                .weight(rowWeights.first)
                 .fillMaxWidth()
                 .background(MaterialTheme.colors.background),
         ) {
             topContent()
         }
+
         Row(
             horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.Bottom,
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .weight(5f)
+                .weight(rowWeights.second)
                 .fillMaxWidth()
                 .background(MaterialTheme.colors.background),
         ) {
@@ -49,11 +51,12 @@ fun TimerLayout(
                 }
             }
         }
+
         Row(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.Bottom,
             modifier = Modifier
-                .weight(4f)
+                .weight(rowWeights.third)
                 .fillMaxWidth()
                 .background(MaterialTheme.colors.background),
         ) {
