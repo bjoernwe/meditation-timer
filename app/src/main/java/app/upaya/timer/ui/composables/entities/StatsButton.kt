@@ -11,7 +11,11 @@ import androidx.compose.ui.Modifier
 fun StatsButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
 
     IconButton(onClick = onClick, modifier = modifier) {
-        Icon(Icons.Default.Assessment, tint = MaterialTheme.colors.onBackground)
+        Icon(
+            imageVector = Icons.Default.Assessment,
+            contentDescription = "Statistics",
+            tint = MaterialTheme.colors.onBackground
+        )
     }
 
 }

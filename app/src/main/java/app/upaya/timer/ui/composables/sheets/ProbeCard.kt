@@ -10,7 +10,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.viewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.ui.tooling.preview.Preview
 import app.upaya.timer.experiments.viewmodel.ExperimentViewModel
 import app.upaya.timer.ui.composables.blueGrey800Light
@@ -29,6 +29,7 @@ fun ProbeCard(modifier: Modifier = Modifier) {
 
         Icon(
                 Icons.Default.Science,
+                contentDescription = "Test Tube",
                 tint = blueGrey800Light,
                 modifier = Modifier.padding(8.dp)
         )

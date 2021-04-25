@@ -21,7 +21,7 @@ fun ExperimentStatsChart(experimentStats: State<List<ExperimentStats>>, modifier
 
     AndroidView(
             modifier = modifier,
-            viewBlock = {
+            factory = {
                 BarChartView(it).apply {
                     this.labelsSize = 0f
                     this.barRadius = 6f

@@ -8,21 +8,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.AmbientContext
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.viewModel
-import app.upaya.timer.experiments.repositories.stats.ExperimentStats
-import app.upaya.timer.experiments.viewmodel.ExperimentViewModel
-import app.upaya.timer.experiments.viewmodel.ExperimentViewModelFactory
-import app.upaya.timer.ui.composables.entities.ExperimentStatsChart
+import androidx.lifecycle.viewmodel.compose.viewModel
+import app.upaya.timer.session.repository.stats.SessionStats
+import app.upaya.timer.session.viewmodel.SessionViewModel
+import app.upaya.timer.session.viewmodel.SessionViewModelFactory
+import app.upaya.timer.ui.composables.entities.SessionChart
 import app.upaya.timer.ui.fromSecsToTimeString
 
 
 @Composable
 fun ExperimentationStats() {
 
-    val experimentViewModel: ExperimentViewModel = viewModel(factory = ExperimentViewModelFactory(AmbientContext.current))
+    val experimentViewModel: ExperimentViewModel = viewModel(factory = ExperimentViewModelFactory(LocalContext.current))
     val experimentLength = experimentViewModel.experimentLength.observeAsState(initial = 0.0)
     val experimentStats = experimentViewModel.experimentStats.observeAsState(ExperimentStats())
     val experimentStatsOfLastDays = experimentViewModel.experimentStatsOfLastDays.observeAsState(listOf())
