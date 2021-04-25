@@ -2,16 +2,18 @@ package app.upaya.timer
 
 import android.os.Bundle
 import android.view.WindowManager
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.ui.platform.setContent
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.lifecycle.ViewModelProvider
 import app.upaya.timer.session.*
 import app.upaya.timer.session.viewmodel.SessionViewModel
 import app.upaya.timer.session.viewmodel.SessionViewModelFactory
 import app.upaya.timer.settings.SessionLengthRepository
 import app.upaya.timer.ui.Bell
-import app.upaya.timer.ui.composables.MainLayout
+import app.upaya.timer.ui.composables.MainContent
 
 
 class MainActivity : AppCompatActivity() {
@@ -20,6 +22,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var sessionViewModel: SessionViewModel
     private lateinit var sessionLengthRepository: SessionLengthRepository
 
+    @ExperimentalComposeUiApi
+    @ExperimentalMaterialApi
     @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -42,7 +46,7 @@ class MainActivity : AppCompatActivity() {
          * Emit Main Composable
          */
 
-        setContent { MainLayout(onClick = ::onCircleClicked) }
+        setContent { MainContent(onClick = ::onCircleClicked) }
 
 
         /**

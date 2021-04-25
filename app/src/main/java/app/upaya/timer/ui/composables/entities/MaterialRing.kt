@@ -4,7 +4,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.preferredSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -36,10 +36,13 @@ fun MaterialRing(
         color: Color = MaterialTheme.colors.primary
 ) {
 
-    Box(contentAlignment = Alignment.Center,
-        modifier = modifier.background(MaterialTheme.colors.background)) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = modifier
+            .background(MaterialTheme.colors.background)
+    ) {
 
-        Canvas(Modifier.preferredSize(size).padding(7.dp)) {
+        Canvas(Modifier.size(size).padding(7.dp)) {
 
             val radius = this.size.minDimension / 2f
             val shadowColorLight = Color(alpha = 24, red = 0, green = 0, blue = 0)
