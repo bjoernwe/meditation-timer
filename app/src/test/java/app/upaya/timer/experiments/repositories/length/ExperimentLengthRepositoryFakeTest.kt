@@ -1,7 +1,5 @@
-package app.upaya.timer.experiments.repository.length
+package app.upaya.timer.experiments.repositories.length
 
-import app.upaya.timer.experiments.repositories.length.ExperimentLengthRepositoryFake
-import app.upaya.timer.experiments.repositories.length.IExperimentLengthRepository
 import org.junit.Before
 import org.junit.Test
 

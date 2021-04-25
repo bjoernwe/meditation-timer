@@ -1,8 +1,7 @@
-package app.upaya.timer.experiments.repository.stats
+package app.upaya.timer.experiments.repositories.stats
 
 import app.upaya.timer.experiments.repositories.logs.ExperimentLogRepositoryFake
 import app.upaya.timer.experiments.repositories.logs.ExperimentLog
-import app.upaya.timer.experiments.repositories.stats.ExperimentStatsRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals

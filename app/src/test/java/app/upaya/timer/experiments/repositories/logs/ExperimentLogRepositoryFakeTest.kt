@@ -1,7 +1,5 @@
-package app.upaya.timer.experiments.repository.logs
+package app.upaya.timer.experiments.repositories.logs
 
-import app.upaya.timer.experiments.repositories.logs.ExperimentLog
-import app.upaya.timer.experiments.repositories.logs.ExperimentLogRepositoryFake
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.runBlocking

@@ -1,4 +1,4 @@
-package app.upaya.timer.experiments.repository.states
+package app.upaya.timer.experiments.repositories.states
 
 import app.upaya.timer.experiments.ExperimentState
 import app.upaya.timer.experiments.Finished
