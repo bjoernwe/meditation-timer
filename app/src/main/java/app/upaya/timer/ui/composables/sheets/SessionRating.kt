@@ -1,4 +1,4 @@
-package app.upaya.timer.ui.composables
+package app.upaya.timer.ui.composables.sheets
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
@@ -37,11 +37,19 @@ fun SessionRatingDialog(onClickDown: () -> Unit, onClickUp: () -> Unit) {
         ) {
 
             IconButton(onClick = onClickDown) {
-                Icon(Icons.Default.ThumbDown, tint = MaterialTheme.colors.onBackground)
+                Icon(
+                    Icons.Default.ThumbDown,
+                    contentDescription = "Thumb Down",
+                    tint = MaterialTheme.colors.onBackground
+                )
             }
 
             IconButton(onClick = onClickUp) {
-                Icon(Icons.Default.ThumbUp, tint = MaterialTheme.colors.onBackground)
+                Icon(
+                    Icons.Default.ThumbUp,
+                    contentDescription = "Thumb Up",
+                    tint = MaterialTheme.colors.onBackground
+                )
             }
 
         }

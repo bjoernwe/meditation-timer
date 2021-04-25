@@ -21,7 +21,7 @@ fun SessionChart(sessionStats: State<List<SessionStats>>, modifier: Modifier = M
 
     AndroidView(
             modifier = modifier,
-            viewBlock = {
+            factory = {
                 BarChartView(it).apply {
                     this.labelsSize = 0f
                     this.barRadius = 6f

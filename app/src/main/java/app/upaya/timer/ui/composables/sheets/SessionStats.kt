@@ -1,4 +1,4 @@
-package app.upaya.timer.ui.composables
+package app.upaya.timer.ui.composables.sheets
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
@@ -8,10 +8,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.AmbientContext
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.viewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import app.upaya.timer.session.repository.stats.SessionStats
 import app.upaya.timer.session.viewmodel.SessionViewModel
 import app.upaya.timer.session.viewmodel.SessionViewModelFactory
@@ -22,7 +22,7 @@ import app.upaya.timer.ui.fromSecsToTimeString
 @Composable
 fun SessionStats() {
 
-    val sessionViewModel: SessionViewModel = viewModel(factory = SessionViewModelFactory(AmbientContext.current))
+    val sessionViewModel: SessionViewModel = viewModel(factory = SessionViewModelFactory(LocalContext.current))
     val sessionLength = sessionViewModel.sessionLength.observeAsState(initial = 0.0)
     val sessionAggOfAll = sessionViewModel.sessionStats.observeAsState(SessionStats())
     val sessionAggOfLastDays = sessionViewModel.sessionStatsOfLastDays.observeAsState(listOf())
