@@ -13,13 +13,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import app.upaya.timer.session.*
-import app.upaya.timer.session.viewmodel.SessionViewModel
+import app.upaya.timer.experiments.Finished
+import app.upaya.timer.experiments.Idle
+import app.upaya.timer.experiments.Running
+import app.upaya.timer.experiments.viewmodel.ExperimentViewModel
 import app.upaya.timer.ui.composables.entities.StatsButton
 import app.upaya.timer.ui.composables.layouts.TimerLayout
-import app.upaya.timer.ui.composables.sheets.SessionHintsCard
-import app.upaya.timer.ui.composables.sheets.SessionRatingDialog
-import app.upaya.timer.ui.composables.sheets.SessionStats
+import app.upaya.timer.ui.composables.sheets.ExperimentFeedbackDialog
+import app.upaya.timer.ui.composables.sheets.ExperimentationStats
+import app.upaya.timer.ui.composables.sheets.ProbeCard
 import kotlinx.coroutines.launch
 
 
@@ -33,22 +35,21 @@ fun MainContent(onClick: () -> Unit) {
 
         val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
         val coroutineScope = rememberCoroutineScope()
-        val sessionViewModel: SessionViewModel = viewModel()
-        val sessionIsIdle by sessionViewModel.isIdle.observeAsState(true)
-        val sessionIsRunning by sessionViewModel.isRunning.observeAsState(false)
-        val sessionState by sessionViewModel.state.observeAsState()
+        val experimentViewModel: ExperimentViewModel = viewModel()
+        val experimentIsIdle by experimentViewModel.isIdle.observeAsState(true)
+        val experimentIsRunning by experimentViewModel.isRunning.observeAsState(false)
+        val experimentState by experimentViewModel.state.observeAsState()
 
         ModalBottomSheetLayout(
                 sheetState = sheetState,
                 scrimColor = Color(0, 0, 0, 128),
                 sheetBackgroundColor = MaterialTheme.colors.background,
-                sheetContent = { SessionStats() }
+                sheetContent = { ExperimentationStats() }
         ) {
 
             TimerLayout(
                 topContent = {
-
-                    AnimatedVisibility(visible = sessionIsIdle) {
+                    AnimatedVisibility(visible = experimentIsIdle) {
                         StatsButton(onClick = {
                             coroutineScope.launch { if (!sheetState.isVisible) sheetState.show() }
                         } )
@@ -56,25 +57,25 @@ fun MainContent(onClick: () -> Unit) {
                 },
                 bottomContent = {
                     AnimatedVisibility(
-                        visible = !sessionIsRunning,
+                        visible = !experimentIsRunning,
                         enter = fadeIn(),
                         modifier = Modifier
                             .padding(24.dp)
                             .fillMaxWidth()
                     ) {
-                        when (sessionState) {
-                            is Idle -> SessionHintsCard()
+                        when (experimentState) {
+                            is Idle -> ProbeCard()
                             is Running -> {}
-                            is Finished -> SessionRatingDialog(
-                                onClickDown = { (sessionState as Finished).rateSession(1.0) },
-                                onClickUp = { (sessionState as Finished).rateSession(0.0) } )
+                            is Finished -> ExperimentFeedbackDialog(
+                                onClickDown = { (experimentState as Finished).rateExperiment(1.0) },
+                                onClickUp = { (experimentState as Finished).rateExperiment(0.0) } )
                         }
                     }
                 }
             ) {
 
                 TimerRing(
-                    activated = sessionIsRunning,
+                    activated = experimentIsRunning,
                     onClick = onClick
                 )
 

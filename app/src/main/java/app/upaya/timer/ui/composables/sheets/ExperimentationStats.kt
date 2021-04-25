@@ -12,10 +12,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import app.upaya.timer.session.repository.stats.SessionStats
-import app.upaya.timer.session.viewmodel.SessionViewModel
-import app.upaya.timer.session.viewmodel.SessionViewModelFactory
-import app.upaya.timer.ui.composables.entities.SessionChart
+import app.upaya.timer.experiments.repositories.stats.ExperimentStats
+import app.upaya.timer.experiments.viewmodel.ExperimentViewModel
+import app.upaya.timer.experiments.viewmodel.ExperimentViewModelFactory
+import app.upaya.timer.ui.composables.entities.ExperimentStatsChart
 import app.upaya.timer.ui.fromSecsToTimeString
 
 
