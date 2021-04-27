@@ -8,10 +8,13 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.lifecycle.ViewModelProvider
-import app.upaya.timer.session.*
-import app.upaya.timer.session.viewmodel.SessionViewModel
-import app.upaya.timer.session.viewmodel.SessionViewModelFactory
-import app.upaya.timer.settings.SessionLengthRepository
+import app.upaya.timer.experiments.ExperimentState
+import app.upaya.timer.experiments.Finished
+import app.upaya.timer.experiments.Idle
+import app.upaya.timer.experiments.Running
+import app.upaya.timer.experiments.viewmodel.ExperimentViewModel
+import app.upaya.timer.experiments.viewmodel.ExperimentViewModelFactory
+import app.upaya.timer.experiments.repositories.length.ExperimentLengthRepository
 import app.upaya.timer.ui.Bell
 import app.upaya.timer.ui.composables.MainContent
 
@@ -19,8 +22,8 @@ import app.upaya.timer.ui.composables.MainContent
 class MainActivity : AppCompatActivity() {
 
     private lateinit var bell: Bell
-    private lateinit var sessionViewModel: SessionViewModel
-    private lateinit var sessionLengthRepository: SessionLengthRepository
+    private lateinit var experimentViewModel: ExperimentViewModel
+    private lateinit var experimentLengthRepository: ExperimentLengthRepository
 
     @ExperimentalComposeUiApi
     @ExperimentalMaterialApi
@@ -33,9 +36,10 @@ class MainActivity : AppCompatActivity() {
          * Late Inits
          */
 
-        val sessionViewModelFactory = SessionViewModelFactory(this)
-        sessionViewModel = ViewModelProvider(this, sessionViewModelFactory).get(SessionViewModel::class.java)
-        sessionLengthRepository = SessionLengthRepository(this)
+        val experimentViewModelFactory = ExperimentViewModelFactory(this)
+        experimentViewModel = ViewModelProvider(this, experimentViewModelFactory)
+            .get(ExperimentViewModel::class.java)
+        experimentLengthRepository = ExperimentLengthRepository(this)
 
         bell = Bell(
                 context = applicationContext,
@@ -53,7 +57,7 @@ class MainActivity : AppCompatActivity() {
          * Register Event Callbacks
          */
 
-        sessionViewModel.state.observe(this) { onSessionStateChanged(it) }
+        experimentViewModel.state.observe(this) { onExperimentStateChanged(it) }
     }
 
     override fun onStart() {
@@ -69,14 +73,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onCircleClicked() {
-        if (sessionViewModel.state.value is Idle) {
-            (sessionViewModel.state.value as? Idle)?.startSession()
+        if (experimentViewModel.state.value is Idle) {
+            (experimentViewModel.state.value as? Idle)?.startExperiment()
             bell.vibrate(50, 100)
         }
     }
 
-    private fun onSessionStateChanged(newSessionState: SessionState?) {
-        when (newSessionState) {
+    private fun onExperimentStateChanged(newExperimentState: ExperimentState?) {
+        when (newExperimentState) {
             is Idle -> { }
             is Running -> { bell.reset() }
             is Finished -> { bell.play() }
