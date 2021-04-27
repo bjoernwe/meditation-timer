@@ -20,7 +20,7 @@ import app.upaya.timer.experiments.viewmodel.ExperimentViewModel
 import app.upaya.timer.ui.composables.entities.StatsButton
 import app.upaya.timer.ui.composables.layouts.TimerLayout
 import app.upaya.timer.ui.composables.sheets.ExperimentFeedbackDialog
-import app.upaya.timer.ui.composables.sheets.ExperimentationStats
+import app.upaya.timer.ui.composables.sheets.ExperimentStatsSheet
 import app.upaya.timer.ui.composables.sheets.ProbeCard
 import kotlinx.coroutines.launch
 
@@ -44,7 +44,7 @@ fun MainContent(onClick: () -> Unit) {
                 sheetState = sheetState,
                 scrimColor = Color(0, 0, 0, 128),
                 sheetBackgroundColor = MaterialTheme.colors.background,
-                sheetContent = { ExperimentationStats() }
+                sheetContent = { ExperimentStatsSheet() }
         ) {
 
             TimerLayout(

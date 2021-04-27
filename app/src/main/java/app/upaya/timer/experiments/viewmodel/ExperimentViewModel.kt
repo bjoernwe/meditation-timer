@@ -15,8 +15,6 @@ class ExperimentViewModel(
     experimentLogRepository: IExperimentLogRepository,
     ) : ViewModel() {
 
-    private val experimentStatsRepository = ExperimentStatsRepository(experimentLogRepository)
-
     /**
      * Experiment State
      */
@@ -38,8 +36,16 @@ class ExperimentViewModel(
     val currentProbe: LiveData<Probe> = experimentCreator.currentProbe.asLiveData()
 
     /**
+     * Experiments
+     */
+
+    val experiments = experimentLogRepository.experiments.asLiveData()
+
+    /**
      * Experiments Stats
      */
+
+    private val experimentStatsRepository = ExperimentStatsRepository(experimentLogRepository)
 
     val experimentStats = experimentStatsRepository.experimentStats.asLiveData()
     val experimentStatsOfLastDays = experimentStatsRepository.experimentStatsOfLastDays.asLiveData()
