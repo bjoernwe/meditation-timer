@@ -20,7 +20,7 @@ fun List<ExperimentLog>.toCSV() : String {
             it.endDate.toTimestamp(),
             it.ratingDate.toTimestamp(),
             it.rating
-        ).joinToString() }
+        ).joinToString(separator = ",") }
     return lines.joinToString(separator = "\n")
 }
 
