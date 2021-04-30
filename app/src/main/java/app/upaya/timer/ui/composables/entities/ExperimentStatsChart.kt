@@ -2,7 +2,6 @@ package app.upaya.timer.ui.composables.entities
 
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.viewinterop.AndroidView
@@ -11,9 +10,9 @@ import com.db.williamchart.view.BarChartView
 
 
 @Composable
-fun ExperimentStatsChart(experimentStats: State<List<ExperimentStats>>, modifier: Modifier = Modifier) {
+fun ExperimentStatsChart(experimentStats: List<ExperimentStats>, modifier: Modifier = Modifier) {
 
-    val experimentLogs = experimentStats.value.reversed().mapIndexed { index, stats ->
+    val experimentLogs = experimentStats.reversed().mapIndexed { index, stats ->
         index.toString() to stats.count.toFloat()
     }
 
