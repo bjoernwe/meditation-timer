@@ -48,8 +48,17 @@ class ExperimentLogDatabaseTest {
         experimentLogDao.insert(experiment)
 
         // THEN it can be retrieved again from the database
-        val experiments: List<ExperimentLog> = experimentLogDao.getExperiments().first()
+        var experiments: List<ExperimentLog> = experimentLogDao.getExperiments().first()
         assertThat(experiments.count(), equalTo(1))
         assertThat(experiments[0].hint, equalTo(experiment.hint))
+
+        // AND WHEN a second experiment is stored
+        val experiment2 = ExperimentLog(hint = UUID.randomUUID())
+        experimentLogDao.insert(experiment2)
+
+        // THEN it can also be retrieved from the database
+        experiments = experimentLogDao.getExperiments().first()
+        assertThat(experiments.count(), equalTo(2))
+        assertThat(experiments[0].hint, equalTo(experiment2.hint))
     }
 }
