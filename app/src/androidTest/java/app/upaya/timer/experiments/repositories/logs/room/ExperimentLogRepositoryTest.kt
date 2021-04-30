@@ -42,7 +42,7 @@ class ExperimentLogDatabaseTest {
     fun writeAndReadExperiment() = runBlocking {
 
         // GIVEN an ExperimentLogDatabase
-        val experiment = ExperimentLog(hint = UUID.randomUUID())
+        val experiment = ExperimentLog(initDate = Date(1000), hint = UUID.randomUUID())
 
         // WHEN an experiment is stored
         experimentLogDao.insert(experiment)
@@ -53,7 +53,7 @@ class ExperimentLogDatabaseTest {
         assertThat(experiments[0].hint, equalTo(experiment.hint))
 
         // AND WHEN a second experiment is stored
-        val experiment2 = ExperimentLog(hint = UUID.randomUUID())
+        val experiment2 = ExperimentLog(initDate = Date(2000), hint = UUID.randomUUID())
         experimentLogDao.insert(experiment2)
 
         // THEN it can also be retrieved from the database
