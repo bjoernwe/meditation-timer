@@ -41,10 +41,10 @@ fun List<ExperimentLog>.calcStats() : ExperimentStats {
     val avgInitDate = Date(this.map { s -> s.initDate.time }.average().toLong())
 
     return ExperimentStats(
-            count = experimentLengths.size,
-            avgLength = avgLength,
-            totalLength = totalLength,
-            date = avgInitDate
+        count = experimentLengths.size,
+        avgLength = avgLength,
+        totalLength = totalLength,
+        date = avgInitDate
     )
 
 }

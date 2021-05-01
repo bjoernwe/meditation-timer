@@ -12,7 +12,7 @@ import com.db.williamchart.view.BarChartView
 @Composable
 fun ExperimentStatsChart(experimentStats: List<ExperimentStats>, modifier: Modifier = Modifier) {
 
-    val experimentLogs = experimentStats.reversed().mapIndexed { index, stats ->
+    val experimentLogs = experimentStats.mapIndexed { index, stats ->
         index.toString() to stats.count.toFloat()
     }
 

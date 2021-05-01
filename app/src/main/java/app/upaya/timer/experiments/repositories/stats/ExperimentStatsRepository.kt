@@ -1,7 +1,9 @@
 package app.upaya.timer.experiments.repositories.stats
 
 import app.upaya.timer.experiments.repositories.logs.IExperimentLogRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapLatest
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -13,7 +15,7 @@ class ExperimentStatsRepository(
 
     override val experimentStats = experimentLogRepository.experiments.map { it.calcStats() }
 
-    override val experimentStatsOfLastDays = experimentLogRepository.experiments.map { experimentLogs ->
+    override val experimentStatsOfLastDays: Flow<List<ExperimentStats>> = experimentLogRepository.experiments.mapLatest { experimentLogs ->
         experimentLogs.groupBy {
             SimpleDateFormat(
                 "y-M-d",
@@ -21,7 +23,7 @@ class ExperimentStatsRepository(
             ).format(it.initDate)
         }
             .map { it.value.calcStats() }
-            .sortedByDescending { stats -> stats.date }
+            .sortedBy { stats -> stats.date }
             .takeLast(recentDaysLimit)
     }
 
