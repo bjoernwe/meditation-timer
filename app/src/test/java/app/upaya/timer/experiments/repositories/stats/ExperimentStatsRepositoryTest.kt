@@ -50,4 +50,30 @@ class ExperimentStatsRepositoryTest {
         assert(experimentStats.totalLength == 6)
     }
 
+    @Test
+    fun experimentLiveDataStatisticsOfLastDays() = runBlocking {
+
+        // GIVEN an empty ExperimentRepository
+        var experimentStats = experimentStatsRepository.experimentStatsOfLastDays.first()
+        assert(experimentStats.count() == 0)
+
+        // WHEN an experiment is added
+        experimentLogRepository.storeExperiment(generateExperimentLog(length = 2))
+
+        // THEN the corresponding Flow is updated accordingly
+        experimentStats = experimentStatsRepository.experimentStatsOfLastDays.first()
+        assertEquals(2.0, experimentStats[0].avgLength!!, 0.001)
+        assert(experimentStats[0].count == 1)
+        assert(experimentStats[0].totalLength == 2)
+
+        // AND WHEN another experiment is added
+        experimentLogRepository.storeExperiment(generateExperimentLog(length = 4))
+
+        // THEN the corresponding Flow is updated accordingly
+        experimentStats = experimentStatsRepository.experimentStatsOfLastDays.first()
+        assertEquals(3.0, experimentStats[0].avgLength!!, 0.001)
+        assert(experimentStats[0].count == 2)
+        assert(experimentStats[0].totalLength == 6)
+    }
+
 }

@@ -5,6 +5,7 @@ import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,13 +24,13 @@ import app.upaya.timer.ui.fromSecsToTimeString
 fun ExperimentationStats() {
 
     val experimentViewModel: ExperimentViewModel = viewModel(factory = ExperimentViewModelFactory(LocalContext.current))
-    val experimentLength = experimentViewModel.experimentLength.observeAsState(initial = 0.0)
-    val experimentStats = experimentViewModel.experimentStats.observeAsState(ExperimentStats())
-    val experimentStatsOfLastDays = experimentViewModel.experimentStatsOfLastDays.observeAsState(listOf())
+    val experimentLength by experimentViewModel.experimentLength.observeAsState(initial = 0.0)
+    val experimentStats by experimentViewModel.experimentStats.observeAsState(ExperimentStats())
+    val experimentStatsOfLastDays by experimentViewModel.experimentStatsOfLastDays.observeAsState(listOf())
 
     Column(Modifier.padding(16.dp)) {
 
-        if (experimentStatsOfLastDays.value.size >= 3) {
+        if (experimentStatsOfLastDays.size >= 3) {
             ExperimentStatsChart(
                     experimentStats = experimentStatsOfLastDays,
                     modifier = Modifier
@@ -55,13 +56,13 @@ fun ExperimentationStats() {
             Divider(Modifier.padding(bottom = 24.dp))
 
             Text(
-                    text = "${experimentStats.value.count} experiments "
-                            + "(${fromSecsToTimeString(experimentStats.value.totalLength)} total)",
+                    text = "${experimentStats.count} experiments "
+                            + "(${fromSecsToTimeString(experimentStats.totalLength)} total)",
                     color = MaterialTheme.colors.onSurface,
             )
 
             Text(
-                    text = "Current experiment length: ${experimentLength.value.toInt()}",
+                    text = "Current experiment length: ${experimentLength.toInt()}",
                     color = MaterialTheme.colors.onSurface,
             )
 
