@@ -3,17 +3,19 @@ package app.upaya.timer.experiments.creator
 import app.upaya.timer.experiments.probes.Probe
 import app.upaya.timer.experiments.probes.ProbeRepository
 import app.upaya.timer.experiments.repositories.logs.ExperimentLog
-import app.upaya.timer.experiments.repositories.length.ExperimentLengthRepository
+import app.upaya.timer.experiments.repositories.length.IExperimentLengthRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 
 class ExperimentCreator(
     private val probeRepository: ProbeRepository,
-    private val experimentLengthRepository: ExperimentLengthRepository,
+    private val experimentLengthRepository: IExperimentLengthRepository,
     ) : IExperimentCreator {
 
-    private val experimentLength = ExperimentLength(experimentLengthRepository.loadExperimentLength())
+    private val prefKey = "experiment_length"
+
+    private val experimentLength = ExperimentLength(experimentLengthRepository.loadExperimentLength(key=prefKey))
     private val _experimentLength: MutableStateFlow<Double> = MutableStateFlow(experimentLength.value)
     override val currentLength: StateFlow<Double> = _experimentLength
 
@@ -25,7 +27,10 @@ class ExperimentCreator(
         experimentLog.rating?.let {
             val newExperimentLength = experimentLength.updateFromFeedback(it.toDouble())
             _experimentLength.value = newExperimentLength
-            experimentLengthRepository.storeExperimentLength(newExperimentLength)
+            experimentLengthRepository.storeExperimentLength(
+                key = prefKey,
+                experimentLength = newExperimentLength
+            )
         }
     }
 
