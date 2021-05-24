@@ -1,13 +1,12 @@
 package app.upaya.timer.experiments.repositories.length
 
 import android.content.Context
-import app.upaya.timer.R
 
 
-class ExperimentLengthRepository(context: Context) : IExperimentLengthRepository {
+class ExperimentLengthRepository(context: Context, sharedPrefsName: String) : IExperimentLengthRepository {
 
     private val prefs = with (context.applicationContext) {
-        getSharedPreferences(getString(R.string.experiment_length_pref_file), Context.MODE_PRIVATE)
+        getSharedPreferences(sharedPrefsName, Context.MODE_PRIVATE)
     }
 
     override fun loadExperimentLength(key: String, default: Double): Double {
