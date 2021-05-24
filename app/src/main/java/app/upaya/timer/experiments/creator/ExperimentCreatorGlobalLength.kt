@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 
-class ExperimentCreator(
+class ExperimentCreatorGlobalLength(
     private val probeRepository: ProbeRepository,
     private val experimentLengthRepository: IExperimentLengthRepository,
     ) : IExperimentCreator {

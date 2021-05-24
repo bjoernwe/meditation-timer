@@ -41,7 +41,7 @@ class ExperimentViewModelFactory(private val context: Context) : ViewModelProvid
             val experimentLengthRepository = ExperimentLengthRepository(context)
 
             // ExperimentCreator
-            val experimentCreator = ExperimentCreator(
+            val experimentCreator = ExperimentCreatorGlobalLength(
                 probeRepository = probeRepository,
                 experimentLengthRepository = experimentLengthRepository,
             )
