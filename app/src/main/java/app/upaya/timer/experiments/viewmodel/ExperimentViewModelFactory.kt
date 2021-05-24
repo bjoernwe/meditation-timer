@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import app.upaya.timer.MeditationTimerApplication
 import app.upaya.timer.experiments.probes.ProbeRepository
-import app.upaya.timer.experiments.creator.ExperimentCreator
+import app.upaya.timer.experiments.creator.ExperimentCreatorGlobalLength
 import app.upaya.timer.experiments.repositories.logs.ExperimentLogRepository
 import app.upaya.timer.experiments.repositories.logs.room.ExperimentLogDatabase
 import app.upaya.timer.experiments.repositories.length.ExperimentLengthRepository
@@ -41,7 +41,7 @@ class ExperimentViewModelFactory(private val context: Context) : ViewModelProvid
             val experimentLengthRepository = ExperimentLengthRepository(context)
 
             // ExperimentCreator
-            val experimentCreator = ExperimentCreator(
+            val experimentCreator = ExperimentCreatorGlobalLength(
                 probeRepository = probeRepository,
                 experimentLengthRepository = experimentLengthRepository,
             )
