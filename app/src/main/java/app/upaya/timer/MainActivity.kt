@@ -14,7 +14,6 @@ import app.upaya.timer.experiments.Idle
 import app.upaya.timer.experiments.Running
 import app.upaya.timer.experiments.viewmodel.ExperimentViewModel
 import app.upaya.timer.experiments.viewmodel.ExperimentViewModelFactory
-import app.upaya.timer.experiments.repositories.length.ExperimentLengthRepository
 import app.upaya.timer.ui.Bell
 import app.upaya.timer.ui.composables.MainContent
 
@@ -23,7 +22,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var bell: Bell
     private lateinit var experimentViewModel: ExperimentViewModel
-    private lateinit var experimentLengthRepository: ExperimentLengthRepository
 
     @ExperimentalComposeUiApi
     @ExperimentalMaterialApi
@@ -39,7 +37,6 @@ class MainActivity : AppCompatActivity() {
         val experimentViewModelFactory = ExperimentViewModelFactory(this)
         experimentViewModel = ViewModelProvider(this, experimentViewModelFactory)
             .get(ExperimentViewModel::class.java)
-        experimentLengthRepository = ExperimentLengthRepository(this)
 
         bell = Bell(
                 context = applicationContext,
