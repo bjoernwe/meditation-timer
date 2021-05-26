@@ -1,4 +1,4 @@
-package app.upaya.timer.experiments
+package app.upaya.timer.experiments.states
 
 import app.upaya.timer.experiments.creator.IExperimentCreator
 import app.upaya.timer.experiments.repositories.logs.IExperimentLogRepository
@@ -35,7 +35,7 @@ sealed class ExperimentState(
         ): StateFlow<ExperimentState?> {
             val outputStateFlow = MutableStateFlow<ExperimentState?>(null)
             outputStateFlow.value = Idle(
-                experimentLog = ExperimentLog(hint = experimentCreator.currentProbe.value.id),
+                experimentLog = ExperimentLog(probeId = experimentCreator.currentProbe.value.id),
                 experimentCreator = experimentCreator,
                 experimentLogRepository = experimentLogRepository,
                 outputStateFlow = outputStateFlow,
@@ -127,7 +127,7 @@ class Finished internal constructor(
 
         // update StateFlow
         outputStateFlow.value = Idle(
-            experimentLog = ExperimentLog(hint = experimentCreator.currentProbe.value.id),
+            experimentLog = ExperimentLog(probeId = experimentCreator.currentProbe.value.id),
             experimentCreator = experimentCreator,
             experimentLogRepository = experimentLogRepository,
             outputStateFlow = outputStateFlow

@@ -1,5 +1,5 @@
 <resources>
-    <string-array name="hints">
+    <string-array name="probes">
         <item>Notice your breath - wherever you can sense it most easily.</item>
         <item>Follow your breath while focusing on a place where you can feel it the least.</item>
         <item>You don\'t need to locate your breath in a specific location. Just be aware of it - however it appears.</item>

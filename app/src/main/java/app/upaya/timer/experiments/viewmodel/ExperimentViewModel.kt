@@ -1,13 +1,14 @@
 package app.upaya.timer.experiments.viewmodel
 
 import androidx.lifecycle.*
-import app.upaya.timer.experiments.ExperimentState
-import app.upaya.timer.experiments.Idle
-import app.upaya.timer.experiments.Running
+import app.upaya.timer.experiments.states.ExperimentState
+import app.upaya.timer.experiments.states.Idle
+import app.upaya.timer.experiments.states.Running
 import app.upaya.timer.experiments.probes.Probe
 import app.upaya.timer.experiments.creator.IExperimentCreator
 import app.upaya.timer.experiments.repositories.logs.IExperimentLogRepository
 import app.upaya.timer.experiments.repositories.stats.ExperimentStatsRepository
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
 class ExperimentViewModel(
@@ -41,7 +42,8 @@ class ExperimentViewModel(
      * Experiments Stats
      */
 
-    val experimentStats = experimentStatsRepository.experimentStats.asLiveData()
+    @ExperimentalCoroutinesApi
     val experimentStatsOfLastDays = experimentStatsRepository.experimentStatsOfLastDays.asLiveData()
+    val experimentStats = experimentStatsRepository.experimentStats.asLiveData()
 
 }
