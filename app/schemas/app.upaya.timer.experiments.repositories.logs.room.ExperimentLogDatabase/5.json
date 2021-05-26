@@ -1,0 +1,87 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 5,
+    "identityHash": "1e98b607874c52657fb40513a1e1c495",
+    "entities": [
+      {
+        "tableName": "experiments",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`experimentId` INTEGER NOT NULL, `probe` TEXT NOT NULL, `init_time` INTEGER NOT NULL, `start_time` INTEGER, `end_time` INTEGER, `rating_time` INTEGER, `rating` REAL, PRIMARY KEY(`experimentId`))",
+        "fields": [
+          {
+            "fieldPath": "experimentId",
+            "columnName": "experimentId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "probe",
+            "columnName": "probe",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "initDate",
+            "columnName": "init_time",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "startDate",
+            "columnName": "start_time",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "endDate",
+            "columnName": "end_time",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ratingDate",
+            "columnName": "rating_time",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "rating",
+            "columnName": "rating",
+            "affinity": "REAL",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "experimentId"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_experiments_init_time",
+            "unique": false,
+            "columnNames": [
+              "init_time"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_experiments_init_time` ON `${TABLE_NAME}` (`init_time`)"
+          },
+          {
+            "name": "index_experiments_end_time",
+            "unique": false,
+            "columnNames": [
+              "end_time"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_experiments_end_time` ON `${TABLE_NAME}` (`end_time`)"
+          }
+        ],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1e98b607874c52657fb40513a1e1c495')"
+    ]
+  }
+}
