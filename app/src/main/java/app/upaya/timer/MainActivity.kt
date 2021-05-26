@@ -8,10 +8,10 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.lifecycle.ViewModelProvider
-import app.upaya.timer.experiments.ExperimentState
-import app.upaya.timer.experiments.Finished
-import app.upaya.timer.experiments.Idle
-import app.upaya.timer.experiments.Running
+import app.upaya.timer.experiments.states.ExperimentState
+import app.upaya.timer.experiments.states.Finished
+import app.upaya.timer.experiments.states.Idle
+import app.upaya.timer.experiments.states.Running
 import app.upaya.timer.experiments.viewmodel.ExperimentViewModel
 import app.upaya.timer.experiments.viewmodel.ExperimentViewModelFactory
 import app.upaya.timer.experiments.repositories.length.ExperimentLengthRepository

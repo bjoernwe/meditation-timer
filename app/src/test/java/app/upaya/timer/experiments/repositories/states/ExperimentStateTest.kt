@@ -1,9 +1,9 @@
 package app.upaya.timer.experiments.repositories.states
 
-import app.upaya.timer.experiments.ExperimentState
-import app.upaya.timer.experiments.Finished
-import app.upaya.timer.experiments.Idle
-import app.upaya.timer.experiments.Running
+import app.upaya.timer.experiments.states.ExperimentState
+import app.upaya.timer.experiments.states.Finished
+import app.upaya.timer.experiments.states.Idle
+import app.upaya.timer.experiments.states.Running
 import app.upaya.timer.experiments.creator.IExperimentCreator
 import app.upaya.timer.experiments.repositories.creator.ExperimentCreatorMock
 import app.upaya.timer.experiments.repositories.logs.IExperimentLogRepository

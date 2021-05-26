@@ -11,10 +11,10 @@ interface ExperimentLogDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(experimentLog: ExperimentLog)
 
-    @Query("SELECT * FROM SESSIONS ORDER BY init_time DESC")
+    @Query("SELECT * FROM EXPERIMENTS ORDER BY init_time DESC")
     fun getExperiments(): Flow<List<ExperimentLog>>
 
-    @Query("SELECT * FROM SESSIONS ORDER BY init_time DESC LIMIT 1")
+    @Query("SELECT * FROM EXPERIMENTS ORDER BY init_time DESC LIMIT 1")
     fun getLastExperiment(): Flow<ExperimentLog>
 
 }

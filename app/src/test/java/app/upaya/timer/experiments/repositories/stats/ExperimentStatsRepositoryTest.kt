@@ -2,6 +2,7 @@ package app.upaya.timer.experiments.repositories.stats
 
 import app.upaya.timer.experiments.repositories.logs.ExperimentLogRepositoryFake
 import app.upaya.timer.experiments.repositories.logs.ExperimentLog
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -16,7 +17,7 @@ class ExperimentStatsRepositoryTest {
 
     private fun generateExperimentLog(length: Int) : ExperimentLog {
         return ExperimentLog(
-            hint = UUID.randomUUID(),
+            probeId = UUID.randomUUID(),
             startDate = Date(0L),
             endDate = Date(length * 1000L)
         )
@@ -50,6 +51,7 @@ class ExperimentStatsRepositoryTest {
         assert(experimentStats.totalLength == 6)
     }
 
+    @ExperimentalCoroutinesApi
     @Test
     fun experimentLiveDataStatisticsOfLastDays() = runBlocking {
 

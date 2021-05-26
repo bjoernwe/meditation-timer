@@ -27,7 +27,7 @@ abstract class ExperimentLogDatabase : RoomDatabase() {
                     instance = Room.databaseBuilder(
                         context.applicationContext,
                         ExperimentLogDatabase::class.java,
-                        "session_database"
+                        "experiment_database"
                     )
                         //.fallbackToDestructiveMigration()
                         .build()
