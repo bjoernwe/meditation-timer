@@ -8,14 +8,14 @@ import kotlin.math.abs
 import kotlin.random.Random
 
 
-@Entity(tableName = "sessions")
+@Entity(tableName = "experiments")
 data class ExperimentLog @JvmOverloads constructor(
 
         @PrimaryKey
-        val sessionId: Long = abs(Random.nextLong()),
+        val experimentId: Long = abs(Random.nextLong()),
 
-        @ColumnInfo(name = "hint")
-        var hint: UUID,
+        @ColumnInfo(name = "probe")
+        var probeId: UUID,
 
         @ColumnInfo(name = "init_time", index = true)
         val initDate: Date = Date(),

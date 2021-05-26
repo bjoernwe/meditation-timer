@@ -17,7 +17,7 @@ class ExperimentLogRepositoryFakeTest {
         assert(experimentLogRepository.experiments.first().isEmpty())
 
         // WHEN an experiment is stored
-        val experimentLog = ExperimentLog(hint = UUID.randomUUID())
+        val experimentLog = ExperimentLog(probeId = UUID.randomUUID())
         experimentLogRepository.storeExperiment(experimentLog)
 
         // THEN the experiment's FlowState updates accordingly

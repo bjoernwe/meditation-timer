@@ -13,9 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import app.upaya.timer.experiments.Finished
-import app.upaya.timer.experiments.Idle
-import app.upaya.timer.experiments.Running
+import app.upaya.timer.experiments.states.Finished
+import app.upaya.timer.experiments.states.Idle
+import app.upaya.timer.experiments.states.Running
 import app.upaya.timer.experiments.viewmodel.ExperimentViewModel
 import app.upaya.timer.ui.composables.entities.StatsButton
 import app.upaya.timer.ui.composables.layouts.TimerLayout
