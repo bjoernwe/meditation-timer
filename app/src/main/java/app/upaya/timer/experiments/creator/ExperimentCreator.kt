@@ -28,11 +28,11 @@ class ExperimentCreator(
 
         experimentLog.rating?.let {
             val newExperimentLength = experimentLengths.updateFromFeedback(
-                hint = experimentLog.hint,
+                hint = experimentLog.probeId,
                 feedback = it.toDouble(),
             )
             experimentLengthRepository.storeExperimentLength(
-                key = experimentLog.hint.toString(),
+                key = experimentLog.probeId.toString(),
                 experimentLength = newExperimentLength,
             )
         }
