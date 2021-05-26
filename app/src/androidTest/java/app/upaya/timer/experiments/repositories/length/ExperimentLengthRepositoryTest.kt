@@ -16,7 +16,10 @@ class ExperimentLengthRepositoryTest {
     @Before
     fun setUp() {
         context = ApplicationProvider.getApplicationContext()
-        experimentLengthRepository = ExperimentLengthRepository(context)
+        experimentLengthRepository = ExperimentLengthRepository(
+            context = context,
+            sharedPrefsName = "test_prefs"
+        )
     }
 
     @Test
