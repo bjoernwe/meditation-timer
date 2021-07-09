@@ -4,8 +4,8 @@ import app.upaya.timer.experiments.probes.Probe
 import app.upaya.timer.experiments.probes.ProbeRepository
 import app.upaya.timer.experiments.repositories.logs.ExperimentLog
 import app.upaya.timer.experiments.repositories.length.IExperimentLengthRepository
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.*
+import java.util.*
 
 
 class ExperimentCreator(
@@ -14,11 +14,6 @@ class ExperimentCreator(
     ) : IExperimentCreator {
 
     private val defaultExperimentLength = 10.0
-    private val experimentLengths: ExperimentLengths = ExperimentLengths(
-        defaultFactory = {
-            ExperimentLength(initialLength = experimentLengthRepository.loadExperimentLength(it.toString()))
-        }
-    )
 
     private val _currentLength: MutableStateFlow<Double> = MutableStateFlow(defaultExperimentLength)
     override val currentLength: StateFlow<Double> = _currentLength
@@ -27,22 +22,32 @@ class ExperimentCreator(
     override val currentProbe: StateFlow<Probe> = _currentProbe
 
     override fun onFeedbackSubmitted(experimentLog: ExperimentLog) {
+        storeUpdatedExperimentLength(experimentLog = experimentLog)
+        val nextProbe = calcNextProbe()
+        _currentProbe.value = nextProbe
+        _currentLength.value = calcNextExperimentLength(nextProbe.id)
+    }
 
-        experimentLog.rating?.let {
-            val newExperimentLength = experimentLengths.updateFromFeedback(
-                hint = experimentLog.probeId,
-                feedback = it.toDouble(),
-            )
+    private fun storeUpdatedExperimentLength(experimentLog: ExperimentLog) {
+        experimentLog.rating?.let { rating ->
+            val feedback = rating.toDouble()
+            val newExperimentLength = ExperimentLength(_currentLength.value).updateFromFeedback(feedback)
             experimentLengthRepository.storeExperimentLength(
                 key = experimentLog.probeId.toString(),
                 experimentLength = newExperimentLength,
             )
         }
+    }
 
-        val newProbe = probeRepository.getRandomProbe()
-        _currentProbe.value = newProbe
-        _currentLength.value = experimentLengths[newProbe.id].value
+    private fun calcNextProbe(): Probe {
+        return probeRepository.getRandomProbe()
+    }
 
+    private fun calcNextExperimentLength(probeId: UUID): Double {
+        return experimentLengthRepository.loadExperimentLength(
+            key = probeId.toString(),
+            default = defaultExperimentLength
+        )
     }
 
 }
