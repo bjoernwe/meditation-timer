@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 
+@Deprecated("Use ExperimentCreator instead")
 class ExperimentCreatorGlobalLength(
     private val probeRepository: ProbeRepository,
     private val experimentLengthRepository: IExperimentLengthRepository,
@@ -15,9 +16,12 @@ class ExperimentCreatorGlobalLength(
 
     private val prefKey = "experiment_length"
 
-    private val experimentLength = ExperimentLength(experimentLengthRepository.loadExperimentLength(key=prefKey))
-    private val _experimentLength: MutableStateFlow<Double> = MutableStateFlow(experimentLength.value)
-    override val currentLength: StateFlow<Double> = _experimentLength
+    private val experimentLength = ExperimentLength(
+        initialLength = experimentLengthRepository.loadExperimentLength(key=prefKey)
+    )
+
+    private val _currentLength: MutableStateFlow<Double> = MutableStateFlow(experimentLength.value)
+    override val currentLength: StateFlow<Double> = _currentLength
 
     private val _currentProbe: MutableStateFlow<Probe> = MutableStateFlow(probeRepository.getRandomProbe())
     override val currentProbe: StateFlow<Probe> = _currentProbe
@@ -26,7 +30,7 @@ class ExperimentCreatorGlobalLength(
         _currentProbe.value = probeRepository.getRandomProbe()
         experimentLog.rating?.let {
             val newExperimentLength = experimentLength.updateFromFeedback(it.toDouble())
-            _experimentLength.value = newExperimentLength
+            _currentLength.value = newExperimentLength
             experimentLengthRepository.storeExperimentLength(
                 key = prefKey,
                 experimentLength = newExperimentLength
