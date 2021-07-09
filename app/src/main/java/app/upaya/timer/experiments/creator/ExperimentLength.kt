@@ -3,11 +3,11 @@ package app.upaya.timer.experiments.creator
 import kotlin.math.max
 
 
-class ExperimentLength(length: Double) {
+class ExperimentLength(initialLength: Double) {
 
     private val minLength: Double = 1.0
 
-    var value = max(length, minLength)
+    var value = max(initialLength, minLength)
         private set
 
     fun updateFromFeedback(feedback: Double) : Double {
@@ -24,9 +24,9 @@ class ExperimentLength(length: Double) {
     }
 
     private fun decrease() {
-        val newExperimentLength = value.times(.8)
-        if (newExperimentLength >= minLength) {
-            value = newExperimentLength
+        val decreasedExperimentLength = value.times(.8)
+        if (decreasedExperimentLength >= minLength) {
+            value = decreasedExperimentLength
         }
     }
 

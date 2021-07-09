@@ -8,41 +8,34 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 
-class ExperimentCreator(
+@Deprecated("Use ExperimentCreator instead")
+class ExperimentCreatorGlobalLength(
     private val probeRepository: ProbeRepository,
     private val experimentLengthRepository: IExperimentLengthRepository,
     ) : IExperimentCreator {
 
-    private val defaultExperimentLength = 10.0
-    private val experimentLengths: ExperimentLengths = ExperimentLengths(
-        defaultFactory = {
-            ExperimentLength(initialLength = experimentLengthRepository.loadExperimentLength(it.toString()))
-        }
+    private val prefKey = "experiment_length"
+
+    private val experimentLength = ExperimentLength(
+        initialLength = experimentLengthRepository.loadExperimentLength(key=prefKey)
     )
 
-    private val _currentLength: MutableStateFlow<Double> = MutableStateFlow(defaultExperimentLength)
+    private val _currentLength: MutableStateFlow<Double> = MutableStateFlow(experimentLength.value)
     override val currentLength: StateFlow<Double> = _currentLength
 
     private val _currentProbe: MutableStateFlow<Probe> = MutableStateFlow(probeRepository.getRandomProbe())
     override val currentProbe: StateFlow<Probe> = _currentProbe
 
     override fun onFeedbackSubmitted(experimentLog: ExperimentLog) {
-
+        _currentProbe.value = probeRepository.getRandomProbe()
         experimentLog.rating?.let {
-            val newExperimentLength = experimentLengths.updateFromFeedback(
-                hint = experimentLog.probeId,
-                feedback = it.toDouble(),
-            )
+            val newExperimentLength = experimentLength.updateFromFeedback(it.toDouble())
+            _currentLength.value = newExperimentLength
             experimentLengthRepository.storeExperimentLength(
-                key = experimentLog.probeId.toString(),
-                experimentLength = newExperimentLength,
+                key = prefKey,
+                experimentLength = newExperimentLength
             )
         }
-
-        val newProbe = probeRepository.getRandomProbe()
-        _currentProbe.value = newProbe
-        _currentLength.value = experimentLengths[newProbe.id].value
-
     }
 
 }
