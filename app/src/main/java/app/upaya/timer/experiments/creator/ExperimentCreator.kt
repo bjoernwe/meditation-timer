@@ -14,9 +14,11 @@ class ExperimentCreator(
     ) : IExperimentCreator {
 
     private val defaultExperimentLength = 10.0
-    private val experimentLengths: ExperimentLengths = ExperimentLengths {
-        ExperimentLength(length = experimentLengthRepository.loadExperimentLength(it.toString()))
-    }
+    private val experimentLengths: ExperimentLengths = ExperimentLengths(
+        defaultFactory = {
+            ExperimentLength(initialLength = experimentLengthRepository.loadExperimentLength(it.toString()))
+        }
+    )
 
     private val _currentLength: MutableStateFlow<Double> = MutableStateFlow(defaultExperimentLength)
     override val currentLength: StateFlow<Double> = _currentLength
