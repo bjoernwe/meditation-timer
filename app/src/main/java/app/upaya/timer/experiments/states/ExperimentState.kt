@@ -23,7 +23,7 @@ sealed class ExperimentState(
     ) {
 
     init {
-        // store the current experiment on every state transition
+        // init is called whenever the state transitions to a new state
         experimentLogRepository.storeExperiment(experimentLog = experimentLog)
     }
 
@@ -116,16 +116,8 @@ class Finished internal constructor(
 ) {
 
     fun rateExperiment(rating: Double) {
-
-        // update & store experiment rating
-        experimentLog.ratingDate = Date()
-        experimentLog.rating = rating.toFloat()
-        experimentLogRepository.storeExperiment(experimentLog = experimentLog)
-
-        // inform ExperimentCreator
+        updateAndStoreExperimentLog(rating = rating)
         experimentCreator.onFeedbackSubmitted(experimentLog = experimentLog)
-
-        // update StateFlow
         outputStateFlow.value = Idle(
             experimentLog = ExperimentLog(probeId = experimentCreator.currentProbe.value.id),
             experimentCreator = experimentCreator,
@@ -133,6 +125,12 @@ class Finished internal constructor(
             outputStateFlow = outputStateFlow
         )
 
+    }
+
+    private fun updateAndStoreExperimentLog(rating: Double) {
+        experimentLog.ratingDate = Date()
+        experimentLog.rating = rating.toFloat()
+        experimentLogRepository.storeExperiment(experimentLog = experimentLog)
     }
 
 }
