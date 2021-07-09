@@ -22,13 +22,13 @@ class ExperimentCreator(
     override val currentProbe: StateFlow<Probe> = _currentProbe
 
     override fun onFeedbackSubmitted(experimentLog: ExperimentLog) {
-        storeUpdatedExperimentLength(experimentLog = experimentLog)
+        learnFromFeedback(experimentLog = experimentLog)
         val nextProbe = calcNextProbe()
         _currentProbe.value = nextProbe
         _currentLength.value = calcNextExperimentLength(nextProbe.id)
     }
 
-    private fun storeUpdatedExperimentLength(experimentLog: ExperimentLog) {
+    private fun learnFromFeedback(experimentLog: ExperimentLog) {
         experimentLog.rating?.let { rating ->
             val feedback = rating.toDouble()
             val newExperimentLength = ExperimentLength(_currentLength.value).updateFromFeedback(feedback)
