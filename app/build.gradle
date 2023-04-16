@@ -108,7 +108,7 @@ dependencies {
     implementation "androidx.room:room-ktx:2.3.0"
 
     // WilliamChart
-    implementation "com.diogobernardino:williamchart:3.9.1"
+    implementation "com.diogobernardino:williamchart:3.10.1"
 
     // Testing
     testImplementation "junit:junit:4.13.2"
