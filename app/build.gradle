@@ -9,6 +9,7 @@ apply plugin: 'com.google.firebase.firebase-perf'
 
 android {
 
+    namespace 'app.upaya.timer'
     compileSdkVersion rootProject.compileSdkVersion
 
     defaultConfig {
@@ -47,11 +48,12 @@ android {
         jvmTarget = "1.8"
         useIR = true
     }
-
     packagingOptions {
-        pickFirst "META-INF/AL2.0"
-        pickFirst "META-INF/LGPL2.1"
+        resources {
+            pickFirsts += ['META-INF/AL2.0', 'META-INF/LGPL2.1']
+        }
     }
+
 
     sourceSets {
         androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
